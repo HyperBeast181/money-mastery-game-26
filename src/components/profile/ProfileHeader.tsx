@@ -1,32 +1,44 @@
 
 import React from 'react';
-import TopBar from '../../components/TopBar';
-import { currentUser } from '../../data/modules';
-import { useLanguage } from '../../context/LanguageContext';
+import { User } from '../../types';
+import TopBar from '../TopBar';
+import { PenSquare } from 'lucide-react';
 
-const ProfileHeader: React.FC = () => {
-  const { t } = useLanguage();
-  
+interface ProfileHeaderProps {
+  user: User;
+}
+
+const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
   return (
-    <>
-      <div className="bg-app-blue h-40 relative">
-        <TopBar showBackButton color="blue" showEdit />
-        
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-app-blue/0 to-app-blue"></div>
-      </div>
-      
-      <div className="flex flex-col items-center -mt-16 mb-4">
-        <div className="w-20 h-20 rounded-full border-4 border-white overflow-hidden mb-2">
-          <img 
-            src={currentUser.avatar} 
-            alt={currentUser.name}
-            className="w-full h-full object-cover"
-          />
+    <div>
+      <TopBar 
+        user={user} 
+        showBackButton={true} 
+        title="Профиль"
+      />
+      <div className="relative p-5 pt-3 pb-20 bg-app-blue text-white">
+        <div className="absolute right-5 top-5">
+          <button className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+            <PenSquare size={16} className="text-white" />
+          </button>
         </div>
-        <h2 className="text-xl font-bold text-app-dark">{currentUser.name}</h2>
-        <p className="text-app-text-light text-sm">{t('joined')} {currentUser.joinedDate}</p>
+        
+        <div className="flex items-center mt-4">
+          <div className="relative">
+            <div className="w-20 h-20 rounded-xl overflow-hidden">
+              <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+            </div>
+            <div className="absolute bottom-0 right-0 w-5 h-5 bg-green-400 rounded-full border-2 border-app-blue"></div>
+          </div>
+          <div className="ml-4">
+            <h1 className="text-2xl font-bold">{user.name}</h1>
+            <p className="text-white/80 text-sm">
+              Присоединился: {user.joinedDate}
+            </p>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

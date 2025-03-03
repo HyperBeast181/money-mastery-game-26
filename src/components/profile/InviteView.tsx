@@ -1,58 +1,104 @@
 
-import React from 'react';
-import { Share, Users } from 'lucide-react';
-import { useLanguage } from '../../context/LanguageContext';
+import React, { useState } from 'react';
+import { ChevronLeft, Copy, Share2, Check, Users } from 'lucide-react';
+import { User } from '../../types';
 
 interface InviteViewProps {
-  onBackClick: () => void;
+  user: User;
+  onBack: () => void;
 }
 
-const InviteView: React.FC<InviteViewProps> = ({ onBackClick }) => {
-  const { t } = useLanguage();
+const InviteView: React.FC<InviteViewProps> = ({ user, onBack }) => {
+  const [copied, setCopied] = useState(false);
+  const referralCode = 'ZOGO' + user.id.substring(0, 6).toUpperCase();
+  
+  const handleCopy = () => {
+    navigator.clipboard.writeText(referralCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
   
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-6">
-        <button 
-          onClick={onBackClick}
-          className="text-app-blue font-medium"
-        >
-          {t('back')}
+    <div>
+      <div className="p-4 border-b border-gray-100 flex items-center">
+        <button onClick={onBack} className="mr-3">
+          <ChevronLeft size={24} />
         </button>
-        <h2 className="text-lg font-bold text-app-dark">{t('invite')}</h2>
-        <div className="w-10"></div>
+        <h2 className="text-xl font-bold">Пригласить друзей</h2>
       </div>
       
-      <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
-        <div className="flex justify-center mb-4">
-          <div className="w-16 h-16 bg-app-light-blue rounded-full flex items-center justify-center">
-            <Users size={28} className="text-app-blue" />
+      <div className="p-4">
+        <div className="bg-app-blue rounded-xl p-5 text-white mb-6">
+          <h3 className="text-xl font-semibold mb-2">Пригласите своих друзей</h3>
+          <p className="text-white/80 mb-4">
+            Вы оба получите 1000 монет, когда они присоединятся и завершат свой первый модуль.
+          </p>
+          
+          <div className="bg-white/10 rounded-lg p-3 flex justify-between items-center mb-4">
+            <div className="font-mono font-bold text-lg">{referralCode}</div>
+            <button 
+              onClick={handleCopy}
+              className="bg-white text-app-blue px-3 py-1 rounded-full text-sm font-medium flex items-center"
+            >
+              {copied ? (
+                <>
+                  <Check size={14} className="mr-1" /> Скопировано
+                </>
+              ) : (
+                <>
+                  <Copy size={14} className="mr-1" /> Копировать
+                </>
+              )}
+            </button>
+          </div>
+          
+          <button className="w-full bg-white text-app-blue font-medium py-2 rounded-lg flex items-center justify-center">
+            <Share2 size={16} className="mr-2" />
+            Поделиться приглашением
+          </button>
+        </div>
+        
+        <div className="bg-white rounded-xl p-5 border border-gray-100">
+          <h3 className="text-lg font-semibold mb-4">Как это работает</h3>
+          
+          <div className="space-y-4">
+            <div className="flex items-start">
+              <div className="w-8 h-8 bg-app-light-blue rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                <span className="font-medium text-app-blue">1</span>
+              </div>
+              <div>
+                <p className="font-medium">Поделитесь своим реферальным кодом с друзьями</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start">
+              <div className="w-8 h-8 bg-app-light-blue rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                <span className="font-medium text-app-blue">2</span>
+              </div>
+              <div>
+                <p className="font-medium">Они вводят ваш код при регистрации</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start">
+              <div className="w-8 h-8 bg-app-light-blue rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                <span className="font-medium text-app-blue">3</span>
+              </div>
+              <div>
+                <p className="font-medium">Они завершают свой первый модуль</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start">
+              <div className="w-8 h-8 bg-app-light-blue rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                <span className="font-medium text-app-blue">4</span>
+              </div>
+              <div>
+                <p className="font-medium">Вы оба получаете 1000 монет</p>
+              </div>
+            </div>
           </div>
         </div>
-        
-        <h3 className="font-semibold text-app-dark text-center mb-2">{t('inviteFriends')}</h3>
-        <p className="text-app-text-light text-center mb-4">
-          {t('inviteDescription')}
-        </p>
-        
-        <div className="bg-gray-100 p-3 rounded-lg flex justify-between items-center mb-4">
-          <span className="text-app-text-light font-medium">FRIEND1000</span>
-          <button className="text-app-blue font-medium text-sm">{t('copy')}</button>
-        </div>
-        
-        <button className="w-full flex items-center justify-center bg-app-blue text-white font-medium py-3 rounded-full mb-3">
-          <Share size={18} className="mr-2" /> {t('shareInvitation')}
-        </button>
-      </div>
-      
-      <div className="bg-white rounded-xl p-4 shadow-sm">
-        <h3 className="font-semibold text-app-dark mb-3">{t('howItWorks')}</h3>
-        <ol className="list-decimal pl-4 space-y-2 text-app-text-light">
-          <li>{t('inviteStep1')}</li>
-          <li>{t('inviteStep2')}</li>
-          <li>{t('inviteStep3')}</li>
-          <li>{t('inviteStep4')}</li>
-        </ol>
       </div>
     </div>
   );

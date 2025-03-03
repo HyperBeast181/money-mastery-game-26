@@ -3,18 +3,16 @@ import React, { FC } from 'react';
 import { User } from '../types';
 import { Link } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
-import LanguageSwitcher from './LanguageSwitcher';
 
-// Add title to TopBarProps interface
+// Update TopBarProps interface
 interface TopBarProps {
   user: User;
   showBackButton?: boolean;
   title?: string;
 }
 
-// Update the TopBar component to use the title
+// Update the TopBar component to use only Russian
 const TopBar: FC<TopBarProps> = ({ user, showBackButton = false, title }) => {
-  // Add logic to display the title if provided
   return (
     <div className="bg-app-blue py-4 px-4 text-white shadow-sm">
       <div className="flex items-center justify-between">
@@ -30,7 +28,7 @@ const TopBar: FC<TopBarProps> = ({ user, showBackButton = false, title }) => {
             <div className="flex items-center">
               <img
                 src="/logo.png"
-                alt="Logo"
+                alt="Логотип"
                 className="w-8 h-8 mr-2"
                 width={32}
                 height={32}
@@ -41,8 +39,7 @@ const TopBar: FC<TopBarProps> = ({ user, showBackButton = false, title }) => {
         </div>
         
         <div className="flex items-center space-x-3">
-          <LanguageSwitcher />
-          <img src={user.avatar} alt="Avatar" className="w-8 h-8 rounded-full" />
+          <img src={user.avatar} alt="Аватар" className="w-8 h-8 rounded-full" />
         </div>
       </div>
     </div>

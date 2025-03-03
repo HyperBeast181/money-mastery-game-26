@@ -1,56 +1,48 @@
 
 import React from 'react';
-import { currentUser } from '../../data/modules';
-import { useLanguage } from '../../context/LanguageContext';
+import { User } from '../../types';
+import { Zap, Calendar, Heart } from 'lucide-react';
 
-const StatsGrid: React.FC = () => {
-  const { t } = useLanguage();
+interface StatsGridProps {
+  user: User;
+}
+
+const StatsGrid: React.FC<StatsGridProps> = ({ user }) => {
+  const stats = [
+    {
+      id: 'coins',
+      title: 'Монеты',
+      value: user.coins.toLocaleString(),
+      icon: <Zap size={20} className="text-yellow-600" />,
+      bgColor: 'bg-yellow-100'
+    },
+    {
+      id: 'streak',
+      title: 'Дней подряд',
+      value: user.streak.toString(),
+      icon: <Calendar size={20} className="text-blue-600" />,
+      bgColor: 'bg-blue-100'
+    },
+    {
+      id: 'hearts',
+      title: 'Сердца',
+      value: user.hearts.toString(),
+      icon: <Heart size={20} className="text-red-600" />,
+      bgColor: 'bg-red-100'
+    }
+  ];
   
   return (
-    <div className="grid grid-cols-4 gap-2 mb-6">
-      <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-100 flex flex-col items-center justify-center">
-        <div className="flex items-center mb-1">
-          <span className="w-6 h-6 bg-app-yellow rounded-full flex items-center justify-center">
-            <span className="text-xs text-app-dark">¢</span>
-          </span>
+    <div className="grid grid-cols-3 p-5 gap-3">
+      {stats.map(stat => (
+        <div key={stat.id} className="bg-white rounded-xl border border-gray-100 p-3 shadow-sm">
+          <div className={`w-10 h-10 ${stat.bgColor} rounded-full flex items-center justify-center mb-2`}>
+            {stat.icon}
+          </div>
+          <div className="text-sm text-gray-500">{stat.title}</div>
+          <div className="text-xl font-bold text-gray-800">{stat.value}</div>
         </div>
-        <span className="text-lg font-bold text-app-dark">{currentUser.coins}</span>
-        <span className="text-xs text-app-text-light">{t('coins')}</span>
-      </div>
-      
-      <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-100 flex flex-col items-center justify-center">
-        <div className="flex items-center mb-1">
-          <span className="w-6 h-6 bg-app-red rounded-full flex items-center justify-center">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-            </svg>
-          </span>
-        </div>
-        <span className="text-lg font-bold text-app-dark">{currentUser.streak}</span>
-        <span className="text-xs text-app-text-light">{t('dayStreak')}</span>
-      </div>
-      
-      <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-100 flex flex-col items-center justify-center">
-        <div className="flex items-center mb-1">
-          <span className="w-6 h-6 bg-app-blue rounded-full flex items-center justify-center">
-            <span className="text-xs text-white">XP</span>
-          </span>
-        </div>
-        <span className="text-lg font-bold text-app-dark">{currentUser.xp.toLocaleString()}</span>
-        <span className="text-xs text-app-text-light">XP</span>
-      </div>
-      
-      <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-100 flex flex-col items-center justify-center">
-        <div className="flex items-center mb-1">
-          <span className="w-6 h-6 bg-app-red rounded-full flex items-center justify-center">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-            </svg>
-          </span>
-        </div>
-        <span className="text-lg font-bold text-app-dark">{currentUser.hearts}</span>
-        <span className="text-xs text-app-text-light">{t('hearts')}</span>
-      </div>
+      ))}
     </div>
   );
 };

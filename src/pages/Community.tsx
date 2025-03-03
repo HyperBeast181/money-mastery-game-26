@@ -2,7 +2,7 @@
 import { FC, useState } from 'react';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
-import { leaderboardUsers, triviaEvents } from '../data/modules';
+import { leaderboardUsers, triviaEvents, currentUser } from '../data/modules';
 import { Plus } from 'lucide-react';
 
 const Community: FC = () => {
@@ -11,7 +11,7 @@ const Community: FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <div className="bg-app-blue text-white">
-        <TopBar color="blue" title="Community" />
+        <TopBar user={currentUser} title="Сообщество" />
         
         <div className="p-4 flex items-center justify-between">
           <div className="flex space-x-2 overflow-x-auto pb-2 w-full">
@@ -19,7 +19,7 @@ const Community: FC = () => {
               className={`px-4 py-2 rounded-full font-medium whitespace-nowrap ${activeTab === 'party' ? 'bg-app-dark' : 'bg-white/20'}`}
               onClick={() => setActiveTab('party')}
             >
-              Party
+              Вечеринка
             </button>
             <button 
               className={`px-4 py-2 rounded-full font-medium whitespace-nowrap ${activeTab === 'fairwin' ? 'bg-app-dark' : 'bg-white/20'}`}
@@ -31,7 +31,7 @@ const Community: FC = () => {
               className={`px-4 py-2 rounded-full font-medium whitespace-nowrap ${activeTab === 'friends' ? 'bg-app-dark' : 'bg-white/20'}`}
               onClick={() => setActiveTab('friends')}
             >
-              Friends
+              Друзья
             </button>
             <button className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
               <Plus size={18} />
@@ -39,7 +39,7 @@ const Community: FC = () => {
           </div>
           
           <button className="ml-2 px-4 py-1 rounded-full bg-white/10 font-medium text-sm whitespace-nowrap">
-            Rules
+            Правила
           </button>
         </div>
       </div>
@@ -52,7 +52,7 @@ const Community: FC = () => {
                 <div className="p-4 text-white">
                   <div className="flex items-center">
                     <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mr-4">
-                      <img src={event.icon} alt="Event icon" className="w-8 h-8" />
+                      <img src={event.icon} alt="Иконка события" className="w-8 h-8" />
                     </div>
                     <div>
                       <h2 className="text-xl font-bold">{event.title}</h2>
@@ -71,7 +71,7 @@ const Community: FC = () => {
                 <div className="border-t border-white/10 p-4 text-white">
                   <div className="flex justify-between items-center">
                     <span className="font-medium">{event.date}</span>
-                    <span className="text-sm opacity-80">Play daily. Win prizes.</span>
+                    <span className="text-sm opacity-80">Играйте ежедневно. Выигрывайте призы.</span>
                   </div>
                   
                   <div className="flex items-center mt-2 text-sm opacity-80">
@@ -80,7 +80,7 @@ const Community: FC = () => {
                       <div className="w-6 h-6 rounded-full bg-blue-400 border-2 border-app-blue"></div>
                       <div className="w-6 h-6 rounded-full bg-green-400 border-2 border-app-blue"></div>
                     </div>
-                    {event.participants} PLAYING
+                    {event.participants} ИГРАЮТ
                   </div>
                 </div>
               </div>
@@ -117,7 +117,7 @@ const Community: FC = () => {
             </div>
             
             <button className="w-full bg-app-blue text-white font-semibold py-4 rounded-xl shadow-md hover:bg-app-blue/90 transition-colors">
-              Join Trivia Party
+              Присоединиться к Викторине
             </button>
             
             <div className="flex items-center justify-center mt-4 text-app-text-light text-sm">
@@ -126,20 +126,20 @@ const Community: FC = () => {
                 <div className="w-6 h-6 rounded-full bg-blue-400 border-2 border-gray-50"></div>
                 <div className="w-6 h-6 rounded-full bg-green-400 border-2 border-gray-50"></div>
               </div>
-              645 Playing
+              645 Игроков
             </div>
           </div>
         )}
         
         {activeTab === 'fairwin' && (
           <div className="flex items-center justify-center h-40 text-app-text-light">
-            FAIRWIN content coming soon!
+            Контент FAIRWIN скоро появится!
           </div>
         )}
         
         {activeTab === 'friends' && (
           <div className="flex items-center justify-center h-40 text-app-text-light">
-            Friends content coming soon!
+            Контент Друзей скоро появится!
           </div>
         )}
       </div>

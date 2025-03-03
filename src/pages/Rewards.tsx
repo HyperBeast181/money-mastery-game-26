@@ -5,10 +5,9 @@ import { currentUser, rewards as allRewards } from '../data/modules';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import { Reward } from '../types';
-import Confetti from 'react-confetti';
 import { useWindowSize } from '@uidotdev/usehooks';
 import { useToast } from '@/hooks/use-toast';
-import { useLanguage } from '../context/LanguageContext';
+import Confetti from 'react-confetti';
 
 const Rewards: FC = () => {
   const [rewards, setRewards] = useState<Reward[]>(allRewards);
@@ -16,7 +15,6 @@ const Rewards: FC = () => {
   const [showConfetti, setShowConfetti] = useState(false);
   const { width, height } = useWindowSize();
   const { toast } = useToast();
-  const { t } = useLanguage();
   
   const handleRewardClick = (reward: Reward) => {
     setSelectedReward(reward);
@@ -41,8 +39,8 @@ const Rewards: FC = () => {
       setSelectedReward(null);
     } else {
       toast({
-        title: t('notEnoughCoins'),
-        description: t('earnMoreCoins'),
+        title: "Недостаточно монет",
+        description: "Завершите больше модулей, чтобы заработать монеты",
         variant: "destructive",
       });
     }
@@ -51,20 +49,20 @@ const Rewards: FC = () => {
   useEffect(() => {
     if (showConfetti) {
       toast({
-        title: t('congratulations'),
-        description: t('redeemed', [selectedReward?.name]),
-        variant: "default", // Changed from "success" to "default"
+        title: "Поздравляем!",
+        description: `Вы получили ${selectedReward?.name}`,
+        variant: "default",
       });
       
       setTimeout(() => {
         setShowConfetti(false);
       }, 3000);
     }
-  }, [showConfetti, selectedReward, toast, t]);
+  }, [showConfetti, selectedReward, toast]);
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <TopBar user={currentUser} title={t('rewards')} showBackButton />
+      <TopBar user={currentUser} title="Награды" showBackButton />
       
       {showConfetti && (
         <Confetti width={width} height={height} recycle={false} />
@@ -72,8 +70,8 @@ const Rewards: FC = () => {
       
       <div className="p-4">
         <div className="bg-white rounded-2xl p-6 shadow-sm">
-          <h2 className="text-2xl font-bold text-app-dark mb-4">{t('availableRewards')}</h2>
-          <p className="text-app-text-light mb-6">{t('redeemYourCoins')}</p>
+          <h2 className="text-2xl font-bold text-app-dark mb-4">Доступные награды</h2>
+          <p className="text-app-text-light mb-6">Обменяйте ваши монеты на эксклюзивные награды</p>
           
           <div className="grid grid-cols-2 gap-4">
             {rewards.map(reward => (
@@ -94,10 +92,10 @@ const Rewards: FC = () => {
                     <span className="text-app-dark">{reward.cost}</span>
                   </span>
                   {reward.redeemed ? (
-                    <span className="text-green-600 font-medium">{t('redeemed')}</span>
+                    <span className="text-green-600 font-medium">Получено</span>
                   ) : (
                     <button className="bg-app-light-blue text-app-blue font-medium text-sm py-2 px-3 rounded-full">
-                      {t('redeem')}
+                      Получить
                     </button>
                   )}
                 </div>
@@ -107,20 +105,20 @@ const Rewards: FC = () => {
           
           {selectedReward && (
             <div className="mt-8 p-4 border border-gray-200 rounded-xl">
-              <h3 className="text-xl font-bold text-app-dark mb-3">{t('redeemReward')}</h3>
-              <p className="text-app-text-light mb-4">{t('confirmRedemption', [selectedReward.name])}</p>
+              <h3 className="text-xl font-bold text-app-dark mb-3">Получить награду</h3>
+              <p className="text-app-text-light mb-4">Вы уверены, что хотите получить {selectedReward.name}?</p>
               <div className="flex justify-end space-x-3">
                 <button 
                   onClick={() => setSelectedReward(null)}
                   className="py-2 px-4 rounded-full text-app-text-light font-medium hover:bg-gray-100"
                 >
-                  {t('cancel')}
+                  Отмена
                 </button>
                 <button 
                   onClick={handleRedeem}
                   className="bg-app-blue text-white py-2 px-4 rounded-full font-medium"
                 >
-                  {t('redeem')}
+                  Получить
                 </button>
               </div>
             </div>

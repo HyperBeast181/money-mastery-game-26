@@ -7,12 +7,11 @@ import NavBar from '../components/NavBar';
 import SkillCard from '../components/SkillCard';
 import TutorialOverlay from '../components/TutorialOverlay';
 import FeatureTip from '../components/FeatureTip';
-import { useLanguage } from '../context/LanguageContext';
 import { Sparkles, TrendingUp, Award, BookOpen, ChevronRight } from 'lucide-react';
 
 const Index: FC = () => {
-  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'savings' | 'insurance' | 'education'>('savings');
+  
   const recommendedModules = modules.filter(m => 
     (activeTab === 'savings' && (m.title.includes('Money') || m.title.includes('Budget') || m.title.includes('Financial'))) ||
     (activeTab === 'insurance' && m.title.includes('Insurance')) ||
@@ -41,8 +40,8 @@ const Index: FC = () => {
       
       <FeatureTip 
         id="welcome-tip"
-        title={t('welcomeTip')}
-        description={t('welcomeDescription')}
+        title="Добро пожаловать в Zogo!"
+        description="Начните свой путь к финансовой грамотности прямо сейчас"
       />
       
       {/* Hero Section */}
@@ -50,10 +49,10 @@ const Index: FC = () => {
         <div className="bg-gradient-to-r from-app-blue to-indigo-600 rounded-2xl p-5 text-white mb-4 shadow-md animate-scale-in">
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-2xl font-bold mb-2">{t('welcomeBack')}, {currentUser.name}!</h1>
-              <p className="text-white/80 mb-3">{t('continueJourney')}</p>
+              <h1 className="text-2xl font-bold mb-2">С возвращением, {currentUser.name}!</h1>
+              <p className="text-white/80 mb-3">Продолжайте свой путь к финансовой грамотности</p>
               <Link to="/learning-path" className="inline-flex items-center bg-white text-app-blue px-4 py-2 rounded-full font-medium text-sm hover:bg-opacity-90 transition-colors">
-                {t('viewPath')} <ChevronRight size={16} className="ml-1" />
+                Посмотреть путь <ChevronRight size={16} className="ml-1" />
               </Link>
             </div>
             <div className="flex-shrink-0">
@@ -67,27 +66,27 @@ const Index: FC = () => {
       
       {/* Statistics Section */}
       <div className="px-4 mb-6">
-        <h2 className="text-lg font-bold text-app-dark mb-3">{t('yourStats')}</h2>
+        <h2 className="text-lg font-bold text-app-dark mb-3">Ваша статистика</h2>
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-100">
             <div className="w-10 h-10 bg-app-light-blue rounded-full flex items-center justify-center mb-2">
               <TrendingUp size={18} className="text-app-blue" />
             </div>
-            <div className="text-sm text-app-text-light">{t('streak')}</div>
-            <div className="text-xl font-bold text-app-dark">{currentUser.streak}{t('days')}</div>
+            <div className="text-sm text-app-text-light">Серия</div>
+            <div className="text-xl font-bold text-app-dark">{currentUser.streak} дней</div>
           </div>
           <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-100">
             <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mb-2">
               <Award size={18} className="text-yellow-600" />
             </div>
-            <div className="text-sm text-app-text-light">{t('coins')}</div>
+            <div className="text-sm text-app-text-light">Монеты</div>
             <div className="text-xl font-bold text-app-dark">{currentUser.coins}</div>
           </div>
           <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-100">
             <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mb-2">
               <BookOpen size={18} className="text-green-600" />
             </div>
-            <div className="text-sm text-app-text-light">{t('completed')}</div>
+            <div className="text-sm text-app-text-light">Завершено</div>
             <div className="text-xl font-bold text-app-dark">{completedModules.length}</div>
           </div>
         </div>
@@ -96,7 +95,7 @@ const Index: FC = () => {
       {inProgressModules.length > 0 && (
         <div className="px-4 continue-learning mb-6">
           <div className="p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
-            <h2 className="text-xl font-bold text-app-dark mb-4">{t('continue')}</h2>
+            <h2 className="text-xl font-bold text-app-dark mb-4">Продолжить обучение</h2>
             {inProgressModules.map(module => (
               <SkillCard key={module.id} module={module} />
             ))}
@@ -106,28 +105,28 @@ const Index: FC = () => {
       
       <div className="px-4 py-2">
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-xl font-bold text-app-dark">{t('moreForYou')}</h2>
+          <h2 className="text-xl font-bold text-app-dark">Больше для вас</h2>
         </div>
-        <p className="text-app-text-light mb-4">{t('basedOnInterests')}</p>
+        <p className="text-app-text-light mb-4">На основе ваших интересов</p>
         
         <div className="flex space-x-2 mb-6 overflow-x-auto pb-2">
           <button 
             className={`px-4 py-2 rounded-full font-medium ${activeTab === 'savings' ? 'bg-app-dark text-white' : 'bg-gray-200 text-app-text-light'}`}
             onClick={() => setActiveTab('savings')}
           >
-            {t('savings')}
+            Сбережения и траты
           </button>
           <button 
             className={`px-4 py-2 rounded-full font-medium ${activeTab === 'insurance' ? 'bg-app-dark text-white' : 'bg-gray-200 text-app-text-light'}`}
             onClick={() => setActiveTab('insurance')}
           >
-            {t('insurance')}
+            Страхование
           </button>
           <button 
             className={`px-4 py-2 rounded-full font-medium ${activeTab === 'education' ? 'bg-app-dark text-white' : 'bg-gray-200 text-app-text-light'}`}
             onClick={() => setActiveTab('education')}
           >
-            {t('education')}
+            Образование
           </button>
         </div>
         

@@ -8,7 +8,6 @@ import ModuleDetail from '../components/ModuleDetail';
 import AchievementNotification from '../components/AchievementNotification';
 import { Module } from '../types';
 import { useToast } from '@/hooks/use-toast';
-import { useLanguage } from '../context/LanguageContext';
 
 const ModuleView: FC = () => {
   const { moduleId } = useParams<{ moduleId: string }>();
@@ -16,7 +15,6 @@ const ModuleView: FC = () => {
   const [showAchievement, setShowAchievement] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { t } = useLanguage();
   
   useEffect(() => {
     if (moduleId) {
@@ -26,8 +24,8 @@ const ModuleView: FC = () => {
       } else {
         navigate('/learning-path');
         toast({
-          title: "Module not found",
-          description: "The module you're looking for doesn't exist.",
+          title: "Модуль не найден",
+          description: "Запрашиваемый модуль не существует.",
           variant: "destructive",
         });
       }
@@ -62,8 +60,8 @@ const ModuleView: FC = () => {
       {showAchievement && module && (
         <AchievementNotification
           id={`module-complete-${module.id}`}
-          title={`${module.title} Completed!`}
-          description="You've mastered this topic! Keep going to learn more."
+          title={`${module.title} завершен!`}
+          description="Вы освоили эту тему! Продолжайте учиться дальше."
           coins={module.coins}
           onDismiss={() => setShowAchievement(false)}
         />

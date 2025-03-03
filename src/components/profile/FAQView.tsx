@@ -1,52 +1,84 @@
 
 import React, { useState } from 'react';
-import { faqs } from '../../data/modules';
-import { FAQ } from '../../types';
-import { ChevronRight } from 'lucide-react';
-import { useLanguage } from '../../context/LanguageContext';
+import { ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface FAQViewProps {
-  onBackClick: () => void;
+  onBack: () => void;
 }
 
-const FAQView: React.FC<FAQViewProps> = ({ onBackClick }) => {
-  const [openFaqId, setOpenFaqId] = useState<string>('');
-  const { t } = useLanguage();
+// Mock FAQ data
+const faqs = [
+  {
+    id: '1',
+    question: 'Как зарабатывать монеты?',
+    answer: 'Вы можете зарабатывать монеты, завершая модули обучения, проходя тесты и участвуя в ежедневных активностях. Также монеты можно получить, пригласив друзей в приложение.',
+    category: 'general'
+  },
+  {
+    id: '2',
+    question: 'Как потратить монеты?',
+    answer: 'Монеты можно обменять на различные награды в разделе "Награды". В нём представлены подписки, скидки и другие предложения от наших партнёров.',
+    category: 'general'
+  },
+  {
+    id: '3',
+    question: 'Что такое "Серия дней"?',
+    answer: 'Серия дней показывает, сколько дней подряд вы занимались в приложении. Поддерживайте серию, чтобы получать дополнительные бонусы!',
+    category: 'general'
+  },
+  {
+    id: '4',
+    question: 'Как пригласить друзей?',
+    answer: 'Вы можете пригласить друзей через раздел "Пригласить друзей" в меню профиля. Поделитесь вашим реферальным кодом или отправьте приглашение через социальные сети.',
+    category: 'account'
+  },
+  {
+    id: '5',
+    question: 'Как изменить язык приложения?',
+    answer: 'Язык приложения можно изменить в разделе "Настройки" в меню профиля. Выберите нужный язык из списка доступных.',
+    category: 'account'
+  }
+];
+
+const FAQView: React.FC<FAQViewProps> = ({ onBack }) => {
+  const [activeId, setActiveId] = useState<string | null>(null);
+  
+  const toggleFAQ = (id: string) => {
+    setActiveId(activeId === id ? null : id);
+  };
   
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-6">
-        <button 
-          onClick={onBackClick}
-          className="text-app-blue font-medium"
-        >
-          {t('back')}
+    <div>
+      <div className="p-4 border-b border-gray-100 flex items-center">
+        <button onClick={onBack} className="mr-3">
+          <ChevronLeft size={24} />
         </button>
-        <h2 className="text-lg font-bold text-app-dark">{t('faqs')}</h2>
-        <div className="w-10"></div>
+        <h2 className="text-xl font-bold">Вопросы и ответы</h2>
       </div>
       
-      <div className="space-y-4">
-        {faqs.map((faq: FAQ) => (
-          <div key={faq.id} className="bg-white rounded-xl shadow-sm">
-            <div 
-              className="p-4 flex justify-between items-center cursor-pointer"
-              onClick={() => setOpenFaqId(prev => prev === faq.id ? '' : faq.id)}
-            >
-              <h3 className="font-semibold text-app-dark">{faq.question}</h3>
-              <ChevronRight 
-                size={18} 
-                className={`text-app-text-light transition-transform ${openFaqId === faq.id ? 'rotate-90' : ''}`} 
-              />
+      <div className="p-4">
+        <div className="divide-y divide-gray-100">
+          {faqs.map(faq => (
+            <div key={faq.id} className="py-4">
+              <button 
+                className="flex justify-between items-center w-full text-left font-medium"
+                onClick={() => toggleFAQ(faq.id)}
+              >
+                <span>{faq.question}</span>
+                {activeId === faq.id ? 
+                  <ChevronUp size={18} className="flex-shrink-0 text-gray-500" /> : 
+                  <ChevronDown size={18} className="flex-shrink-0 text-gray-500" />
+                }
+              </button>
+              
+              {activeId === faq.id && (
+                <div className="mt-2 text-gray-600 text-sm">
+                  {faq.answer}
+                </div>
+              )}
             </div>
-            
-            {openFaqId === faq.id && (
-              <div className="px-4 pb-4 text-app-text-light">
-                <p>{faq.answer}</p>
-              </div>
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

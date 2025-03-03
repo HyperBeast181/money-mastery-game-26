@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { ChevronRight } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
 
 interface TutorialStep {
   id: string;
@@ -17,40 +16,22 @@ const tutorials: {
   home: [
     {
       id: 'home-intro',
-      title: {
-        en: 'Welcome to Financial Literacy App!',
-        ru: 'Добро пожаловать в приложение по финансовой грамотности!'
-      },
-      description: {
-        en: 'This app will help you learn about financial concepts through fun interactive lessons.',
-        ru: 'Это приложение поможет вам изучить финансовые понятия через веселые интерактивные уроки.'
-      },
+      title: 'Добро пожаловать в приложение по финансовой грамотности!',
+      description: 'Это приложение поможет вам изучить финансовые понятия через веселые интерактивные уроки.',
       element: 'body',
       position: 'bottom'
     },
     {
       id: 'home-continue',
-      title: {
-        en: 'Continue Learning',
-        ru: 'Продолжить обучение'
-      },
-      description: {
-        en: 'Your in-progress lessons appear here for easy access.',
-        ru: 'Ваши незавершенные уроки появляются здесь для быстрого доступа.'
-      },
+      title: 'Продолжить обучение',
+      description: 'Ваши незавершенные уроки появляются здесь для быстрого доступа.',
       element: '.continue-learning',
       position: 'bottom'
     },
     {
       id: 'home-navigation',
-      title: {
-        en: 'Navigation',
-        ru: 'Навигация'
-      },
-      description: {
-        en: 'Use these buttons to navigate between different sections of the app.',
-        ru: 'Используйте эти кнопки для навигации между разными разделами приложения.'
-      },
+      title: 'Навигация',
+      description: 'Используйте эти кнопки для навигации между разными разделами приложения.',
       element: 'nav',
       position: 'top'
     }
@@ -58,14 +39,8 @@ const tutorials: {
   learningPath: [
     {
       id: 'learning-path-intro',
-      title: {
-        en: 'Your Learning Path',
-        ru: 'Ваш путь обучения'
-      },
-      description: {
-        en: 'Here you can see all available modules and track your progress.',
-        ru: 'Здесь вы можете увидеть все доступные модули и отслеживать свой прогресс.'
-      },
+      title: 'Ваш путь обучения',
+      description: 'Здесь вы можете увидеть все доступные модули и отслеживать свой прогресс.',
       element: 'body',
       position: 'bottom'
     }
@@ -80,7 +55,6 @@ interface TutorialOverlayProps {
 const TutorialOverlay: React.FC<TutorialOverlayProps> = ({ pageId, onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [showTutorial, setShowTutorial] = useState(false);
-  const { language } = useLanguage();
   
   const steps = tutorials[pageId] || [];
   const currentTutorial = steps[currentStep];
@@ -127,21 +101,17 @@ const TutorialOverlay: React.FC<TutorialOverlayProps> = ({ pageId, onComplete })
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
       <div className="bg-white rounded-xl p-5 max-w-xs mx-4 animate-scale-in">
         <h3 className="text-xl font-bold text-app-dark mb-2">
-          {typeof currentTutorial.title === 'string' 
-            ? currentTutorial.title 
-            : currentTutorial.title[language]}
+          {currentTutorial.title}
         </h3>
         <p className="text-app-text-light mb-4">
-          {typeof currentTutorial.description === 'string' 
-            ? currentTutorial.description 
-            : currentTutorial.description[language]}
+          {currentTutorial.description}
         </p>
         <div className="flex justify-between items-center">
           <button 
             onClick={handleSkip}
             className="text-app-text-light"
           >
-            {language === 'en' ? 'Skip' : 'Пропустить'}
+            Пропустить
           </button>
           <div className="flex items-center">
             <div className="flex space-x-1 mr-4">
@@ -156,9 +126,7 @@ const TutorialOverlay: React.FC<TutorialOverlayProps> = ({ pageId, onComplete })
               onClick={handleNext}
               className="flex items-center bg-app-blue text-white px-3 py-1 rounded-full text-sm"
             >
-              {currentStep < steps.length - 1 
-                ? (language === 'en' ? 'Next' : 'Далее')
-                : (language === 'en' ? 'Got it' : 'Понятно')}
+              {currentStep < steps.length - 1 ? 'Далее' : 'Понятно'}
               <ChevronRight size={16} className="ml-1" />
             </button>
           </div>

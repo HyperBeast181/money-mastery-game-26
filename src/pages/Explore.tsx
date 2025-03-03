@@ -3,7 +3,7 @@ import { FC, useState } from 'react';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import CategoryButton from '../components/CategoryButton';
-import { categories, modules } from '../data/modules';
+import { categories, modules, currentUser } from '../data/modules';
 import { Zap } from 'lucide-react';
 
 const Explore: FC = () => {
@@ -11,7 +11,7 @@ const Explore: FC = () => {
   
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <TopBar title="Explore" />
+      <TopBar user={currentUser} title="Обзор" />
       
       <div className="p-4">
         <div className="grid grid-cols-2 gap-3 mb-6">
@@ -30,8 +30,8 @@ const Explore: FC = () => {
               <Zap className="text-white" size={24} />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-app-dark">Happening now</h2>
-              <p className="text-app-text-light">Take the stress out of tax season!</p>
+              <h2 className="text-xl font-bold text-app-dark">Происходит сейчас</h2>
+              <p className="text-app-text-light">Избавьтесь от стресса в налоговый сезон!</p>
             </div>
           </div>
           
@@ -50,7 +50,7 @@ const Explore: FC = () => {
                           <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5"/>
                           <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                         </svg>
-                        {module.timeEstimate} min
+                        {module.timeEstimate} мин
                       </div>
                     </div>
                   </div>
