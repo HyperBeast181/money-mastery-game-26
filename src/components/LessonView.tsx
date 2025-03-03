@@ -41,7 +41,7 @@ const LessonView: FC<LessonViewProps> = ({ lesson, onComplete, onBack }) => {
       toast({
         title: "Correct!",
         description: "Good job on getting the right answer!",
-        variant: "success",
+        variant: "default",
       });
     } else {
       toast({

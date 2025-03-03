@@ -3,10 +3,13 @@ import { FC, useState } from 'react';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import LearningModule from '../components/LearningModule';
+import TutorialOverlay from '../components/TutorialOverlay';
 import { modules, currentUser } from '../data/modules';
 import { PenLine } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const LearningPath: FC = () => {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'skills' | 'completed'>('skills');
   
   const activeModules = modules.filter(module => 
@@ -17,9 +20,11 @@ const LearningPath: FC = () => {
     <div className="min-h-screen bg-gray-50 pb-20">
       <TopBar user={currentUser} />
       
+      <TutorialOverlay pageId="learningPath" />
+      
       <div className="p-4">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-3xl font-bold text-app-dark">Learning Path</h1>
+          <h1 className="text-3xl font-bold text-app-dark">{t('learningPath')}</h1>
           <button className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
             <PenLine size={16} className="text-app-dark" />
           </button>
@@ -30,13 +35,13 @@ const LearningPath: FC = () => {
             className={`tab-button flex-1 ${activeTab === 'skills' ? 'active' : ''}`}
             onClick={() => setActiveTab('skills')}
           >
-            My Skills
+            {t('mySkills')}
           </button>
           <button 
             className={`tab-button flex-1 ${activeTab === 'completed' ? 'active' : ''}`}
             onClick={() => setActiveTab('completed')}
           >
-            Completed
+            {t('completed')}
           </button>
         </div>
         

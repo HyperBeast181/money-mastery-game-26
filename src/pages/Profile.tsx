@@ -1,4 +1,3 @@
-
 import { FC, useState } from 'react';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
@@ -9,7 +8,7 @@ import { Notification, FAQ } from '../types';
 
 const Profile: FC = () => {
   const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'invite' | 'faq' | 'settings'>('profile');
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState<string>(''); // Changed from boolean to string to store FAQ ID
   
   const renderProfileContent = () => {
     return (

@@ -40,7 +40,7 @@ const ModuleDetail: FC<ModuleDetailProps> = ({ module, onBack, onUpdateProgress 
       toast({
         title: "Lesson Completed!",
         description: `You've earned ${module.coins / module.totalParts} coins for completing this lesson.`,
-        variant: "success",
+        variant: "default",
       });
     }
   };

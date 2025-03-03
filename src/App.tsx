@@ -12,27 +12,30 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import ModuleView from "./pages/ModuleView";
 import Rewards from "./pages/Rewards";
+import { LanguageProvider } from "./context/LanguageContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/learning-path" element={<LearningPath />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/module/:moduleId" element={<ModuleView />} />
-          <Route path="/rewards" element={<Rewards />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <LanguageProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/learning-path" element={<LearningPath />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/module/:moduleId" element={<ModuleView />} />
+            <Route path="/rewards" element={<Rewards />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </LanguageProvider>
   </QueryClientProvider>
 );
 

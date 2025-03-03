@@ -5,14 +5,18 @@ import { modules as allModules, currentUser } from '../data/modules';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import ModuleDetail from '../components/ModuleDetail';
+import AchievementNotification from '../components/AchievementNotification';
 import { Module } from '../types';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '../context/LanguageContext';
 
 const ModuleView: FC = () => {
   const { moduleId } = useParams<{ moduleId: string }>();
   const [module, setModule] = useState<Module | null>(null);
+  const [showAchievement, setShowAchievement] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
   
   useEffect(() => {
     if (moduleId) {
@@ -33,10 +37,18 @@ const ModuleView: FC = () => {
   const handleUpdateProgress = (moduleId: string, newProgress: number) => {
     setModule(prevModule => {
       if (prevModule) {
+        const wasCompleted = prevModule.status === 'completed';
+        const newStatus = newProgress === 100 ? 'completed' : 'in-progress';
+        
+        // Check if module was just completed
+        if (newStatus === 'completed' && !wasCompleted) {
+          setShowAchievement(true);
+        }
+        
         return {
           ...prevModule,
           progress: newProgress,
-          status: newProgress === 100 ? 'completed' : 'in-progress'
+          status: newStatus
         };
       }
       return prevModule;
@@ -46,6 +58,16 @@ const ModuleView: FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <TopBar user={currentUser} showBackButton />
+      
+      {showAchievement && module && (
+        <AchievementNotification
+          id={`module-complete-${module.id}`}
+          title={`${module.title} Completed!`}
+          description="You've mastered this topic! Keep going to learn more."
+          coins={module.coins}
+          onDismiss={() => setShowAchievement(false)}
+        />
+      )}
       
       <div className="p-4">
         {module && (
