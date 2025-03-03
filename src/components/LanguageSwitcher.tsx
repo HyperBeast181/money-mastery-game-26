@@ -17,7 +17,9 @@ const LanguageSwitcher: React.FC = () => {
       aria-label={t('language')}
     >
       <Languages size={18} className="text-white" />
-      <span className="ml-1 text-xs font-medium text-white">{language.toUpperCase()}</span>
+      <span className="ml-1 text-xs font-medium text-white uppercase">
+        {language === 'en' ? 'RU' : 'EN'}
+      </span>
     </button>
   );
 };

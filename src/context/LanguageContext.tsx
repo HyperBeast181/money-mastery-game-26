@@ -95,8 +95,32 @@ const translations: Translations = {
     ru: 'Вопрос',
   },
   correct: {
-    en: 'correct',
-    ru: 'правильно',
+    en: 'Correct!',
+    ru: 'Правильно!',
+  },
+  correctAnswer: {
+    en: 'Good job on getting the right answer!',
+    ru: 'Молодец, правильный ответ!',
+  },
+  incorrect: {
+    en: 'Incorrect',
+    ru: 'Неправильно',
+  },
+  incorrectAnswer: {
+    en: "That's not the right answer. Check the explanation!",
+    ru: 'Это неправильный ответ. Проверьте объяснение!',
+  },
+  gotCorrect: {
+    en: 'You got {0} out of {1} questions correct.',
+    ru: 'Вы ответили правильно на {0} из {1} вопросов.',
+  },
+  completeQuiz: {
+    en: 'Complete Quiz',
+    ru: 'Завершить тест',
+  },
+  nextQuestion: {
+    en: 'Next Question',
+    ru: 'Следующий вопрос',
   },
   notifications: {
     en: 'Notifications',

@@ -1,126 +1,129 @@
-
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { currentUser, rewards as allRewards } from '../data/modules';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
-import { rewards } from '../data/modules';
-import { currentUser } from '../data/modules';
 import { Reward } from '../types';
+import Confetti from 'react-confetti';
+import { useWindowSize } from '@uidotdev/usehooks';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '../context/LanguageContext';
 
 const Rewards: FC = () => {
+  const [rewards, setRewards] = useState<Reward[]>(allRewards);
   const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
-  const [userCoins, setUserCoins] = useState(currentUser.coins);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const { width, height } = useWindowSize();
   const { toast } = useToast();
+  const { t } = useLanguage();
   
-  const handleRewardSelect = (reward: Reward) => {
+  const handleRewardClick = (reward: Reward) => {
     setSelectedReward(reward);
   };
   
-  const handlePurchase = () => {
-    if (selectedReward) {
-      if (userCoins >= selectedReward.cost) {
-        setUserCoins(prev => prev - selectedReward.cost);
-        toast({
-          title: "Reward Purchased!",
-          description: `You have successfully purchased ${selectedReward.title}.`,
-          variant: "success",
-        });
-        setSelectedReward(null);
-      } else {
-        toast({
-          title: "Insufficient Coins",
-          description: "You don't have enough coins to purchase this reward.",
-          variant: "destructive",
-        });
-      }
+  const handleRedeem = () => {
+    if (selectedReward && currentUser.coins >= selectedReward.cost) {
+      // Deduct coins from user
+      currentUser.coins -= selectedReward.cost;
+      
+      // Update rewards to mark as redeemed
+      setRewards(prevRewards => 
+        prevRewards.map(r => 
+          r.id === selectedReward.id ? { ...r, redeemed: true } : r
+        )
+      );
+      
+      // Show confetti
+      setShowConfetti(true);
+      
+      // Reset selected reward
+      setSelectedReward(null);
+    } else {
+      toast({
+        title: t('notEnoughCoins'),
+        description: t('earnMoreCoins'),
+        variant: "destructive",
+      });
     }
   };
   
-  const handleCancel = () => {
-    setSelectedReward(null);
-  };
-  
+  useEffect(() => {
+    if (showConfetti) {
+      toast({
+        title: t('congratulations'),
+        description: t('redeemed', [selectedReward?.name]),
+        variant: "default", // Changed from "success" to "default"
+      });
+      
+      setTimeout(() => {
+        setShowConfetti(false);
+      }, 3000);
+    }
+  }, [showConfetti, selectedReward, toast, t]);
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <TopBar user={{...currentUser, coins: userCoins}} />
+      <TopBar user={currentUser} title={t('rewards')} showBackButton />
+      
+      {showConfetti && (
+        <Confetti width={width} height={height} recycle={false} />
+      )}
       
       <div className="p-4">
-        <h1 className="text-2xl font-bold text-app-dark mb-2">Rewards</h1>
-        <p className="text-app-text-light mb-6">Exchange your coins for these rewards</p>
-        
-        {selectedReward ? (
-          <div className="bg-white rounded-2xl p-6 shadow-sm mb-6 animate-scale-in">
-            <h2 className="text-xl font-bold text-app-dark mb-2">{selectedReward.title}</h2>
-            <p className="text-app-text-light mb-4">{selectedReward.description}</p>
-            
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center">
-                <span className="w-6 h-6 bg-app-yellow rounded-full flex items-center justify-center mr-2">
-                  <span className="text-xs text-app-dark">¢</span>
-                </span>
-                <span className="text-lg font-bold text-app-dark">{selectedReward.cost}</span>
-              </div>
-              
-              <div className="text-sm text-app-text-light">
-                Your balance: <span className="font-medium text-app-dark">{userCoins} coins</span>
-              </div>
-            </div>
-            
-            <div className="flex gap-3">
-              <button
-                onClick={handleCancel}
-                className="flex-1 py-3 rounded-full border border-gray-200 font-medium"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handlePurchase}
-                className={`flex-1 py-3 rounded-full font-medium ${
-                  userCoins >= selectedReward.cost
-                    ? 'bg-app-blue text-white'
-                    : 'bg-gray-200 text-gray-400'
-                }`}
-                disabled={userCoins < selectedReward.cost}
-              >
-                Purchase
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-4">
+        <div className="bg-white rounded-2xl p-6 shadow-sm">
+          <h2 className="text-2xl font-bold text-app-dark mb-4">{t('availableRewards')}</h2>
+          <p className="text-app-text-light mb-6">{t('redeemYourCoins')}</p>
+          
+          <div className="grid grid-cols-2 gap-4">
             {rewards.map(reward => (
               <div 
                 key={reward.id}
-                className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover-scale"
-                onClick={() => handleRewardSelect(reward)}
+                className={`rounded-xl border border-gray-200 shadow-sm p-4 ${reward.redeemed ? 'opacity-50' : 'hover:border-app-blue cursor-pointer'}`}
+                onClick={() => !reward.redeemed && handleRewardClick(reward)}
+                disabled={reward.redeemed}
               >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h3 className="font-semibold text-app-dark">{reward.title}</h3>
-                    <p className="text-sm text-app-text-light">{reward.description}</p>
-                  </div>
-                  
-                  <div className="flex items-center">
+                <img src={reward.image} alt={reward.name} className="w-full h-32 object-cover rounded-md mb-3" />
+                <h3 className="font-semibold text-app-dark">{reward.name}</h3>
+                <p className="text-sm text-app-text-light">{reward.description}</p>
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="flex items-center font-medium">
                     <span className="w-5 h-5 bg-app-yellow rounded-full flex items-center justify-center mr-1">
                       <span className="text-xs text-app-dark">¢</span>
                     </span>
-                    <span className="text-app-dark font-medium">{reward.cost}</span>
-                  </div>
+                    <span className="text-app-dark">{reward.cost}</span>
+                  </span>
+                  {reward.redeemed ? (
+                    <span className="text-green-600 font-medium">{t('redeemed')}</span>
+                  ) : (
+                    <button className="bg-app-light-blue text-app-blue font-medium text-sm py-2 px-3 rounded-full">
+                      {t('redeem')}
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
           </div>
-        )}
-        
-        <div className="mt-8 p-4 bg-app-light-blue rounded-xl">
-          <h3 className="font-semibold text-app-dark mb-2">How to earn more coins</h3>
-          <ul className="list-disc pl-5 text-app-text-light space-y-1">
-            <li>Complete learning modules</li>
-            <li>Maintain daily streaks</li>
-            <li>Take quizzes and tests</li>
-            <li>Invite friends to join</li>
-            <li>Participate in community events</li>
-          </ul>
+          
+          {selectedReward && (
+            <div className="mt-8 p-4 border border-gray-200 rounded-xl">
+              <h3 className="text-xl font-bold text-app-dark mb-3">{t('redeemReward')}</h3>
+              <p className="text-app-text-light mb-4">{t('confirmRedemption', [selectedReward.name])}</p>
+              <div className="flex justify-end space-x-3">
+                <button 
+                  onClick={() => setSelectedReward(null)}
+                  className="py-2 px-4 rounded-full text-app-text-light font-medium hover:bg-gray-100"
+                >
+                  {t('cancel')}
+                </button>
+                <button 
+                  onClick={handleRedeem}
+                  className="bg-app-blue text-white py-2 px-4 rounded-full font-medium"
+                >
+                  {t('redeem')}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       
