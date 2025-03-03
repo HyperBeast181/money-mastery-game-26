@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
 type Language = 'en' | 'ru';
@@ -150,6 +149,126 @@ const translations: Translations = {
   russian: {
     en: 'Russian',
     ru: 'Русский',
+  },
+  joined: {
+    en: 'Joined',
+    ru: 'Присоединился',
+  },
+  coins: {
+    en: 'Coins',
+    ru: 'Монеты',
+  },
+  dayStreak: {
+    en: 'Day Streak',
+    ru: 'Дней подряд',
+  },
+  hearts: {
+    en: 'Hearts',
+    ru: 'Сердца',
+  },
+  noBadges: {
+    en: 'No badges yet',
+    ru: 'Пока нет значков',
+  },
+  completeBadges: {
+    en: 'Complete skills to earn badges.',
+    ru: 'Завершите навыки, чтобы получить значки.',
+  },
+  totalEarned: {
+    en: 'Total Earned',
+    ru: 'Всего заработано',
+  },
+  totalModules: {
+    en: 'Total Modules',
+    ru: 'Всего модулей',
+  },
+  referDescription: {
+    en: 'Earn coins when your friends join Zogo.',
+    ru: 'Зарабатывайте монеты, когда ваши друзья присоединяются к Zogo.',
+  },
+  copy: {
+    en: 'Copy',
+    ru: 'Копировать',
+  },
+  shareInvitation: {
+    en: 'Share Invitation',
+    ru: 'Поделиться приглашением',
+  },
+  inviteFriends: {
+    en: 'Invite your friends',
+    ru: 'Пригласите друзей',
+  },
+  inviteDescription: {
+    en: "You'll both get 1,000 coins when they join and complete their first module.",
+    ru: 'Вы оба получите 1000 монет, когда они присоединятся и завершат свой первый модуль.',
+  },
+  howItWorks: {
+    en: 'How it works',
+    ru: 'Как это работает',
+  },
+  inviteStep1: {
+    en: 'Share your referral code with friends',
+    ru: 'Поделитесь своим реферальным кодом с друзьями',
+  },
+  inviteStep2: {
+    en: 'They enter your code when signing up',
+    ru: 'Они вводят ваш код при регистрации',
+  },
+  inviteStep3: {
+    en: 'They complete their first module',
+    ru: 'Они завершают свой первый модуль',
+  },
+  inviteStep4: {
+    en: 'You both receive 1,000 coins',
+    ru: 'Вы оба получаете 1000 монет',
+  },
+  share: {
+    en: 'Share',
+    ru: 'Поделиться',
+  },
+  email: {
+    en: 'Email',
+    ru: 'Эл. почта',
+  },
+  changePassword: {
+    en: 'Change Password',
+    ru: 'Сменить пароль',
+  },
+  editProfile: {
+    en: 'Edit Profile',
+    ru: 'Редактировать профиль',
+  },
+  pushNotifications: {
+    en: 'Push Notifications',
+    ru: 'Push-уведомления',
+  },
+  emailNotifications: {
+    en: 'Email Notifications',
+    ru: 'Уведомления по эл. почте',
+  },
+  darkMode: {
+    en: 'Dark Mode',
+    ru: 'Темный режим',
+  },
+  about: {
+    en: 'About',
+    ru: 'О приложении',
+  },
+  termsOfService: {
+    en: 'Terms of Service',
+    ru: 'Условия использования',
+  },
+  privacyPolicy: {
+    en: 'Privacy Policy',
+    ru: 'Политика конфиденциальности',
+  },
+  version: {
+    en: 'Version',
+    ru: 'Версия',
+  },
+  deleteAccount: {
+    en: 'Delete Account',
+    ru: 'Удалить аккаунт',
   },
 };
 

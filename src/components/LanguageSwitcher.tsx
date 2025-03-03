@@ -13,11 +13,11 @@ const LanguageSwitcher: React.FC = () => {
   return (
     <button 
       onClick={toggleLanguage}
-      className="flex items-center justify-center p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+      className="flex items-center justify-center p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
       aria-label={t('language')}
     >
-      <Languages size={18} className="text-app-dark" />
-      <span className="ml-1 text-xs font-medium">{language.toUpperCase()}</span>
+      <Languages size={18} className="text-white" />
+      <span className="ml-1 text-xs font-medium text-white">{language.toUpperCase()}</span>
     </button>
   );
 };
