@@ -2,13 +2,13 @@ import { Module, Category, User, LeaderboardUser, TriviaEvent, Badge, Lesson, Qu
 
 export const currentUser: User = {
   id: '1',
-  name: 'Bilbo',
+  name: 'Бильбо',
   avatar: '/lovable-uploads/37933159-2c9d-4a32-8c8b-d731a46b6ccf.png',
   coins: 404,
   xp: 14250,
   streak: 0,
   hearts: 5,
-  joinedDate: 'Jan 14, 2025',
+  joinedDate: '14 Янв, 2025',
   completedModules: 3,
   totalEarned: 404,
   badges: []
@@ -18,17 +18,17 @@ const savingLessons: Lesson[] = [
   {
     id: 'l1',
     moduleId: '1',
-    title: 'Why Saving Matters',
+    title: 'Почему важно экономить',
     content: `
-      <p>Saving money is one of the most important financial habits you can develop. When you save, you're setting aside money for future needs rather than spending it immediately.</p>
-      <h3>Benefits of saving include:</h3>
+      <p>Экономия денег — это одна из самых важных финансовых привычек, которые можно развить. Когда вы откладываете деньги, вы готовитесь к будущим нуждам, а не тратите их сразу.</p>
+      <h3>Преимущества экономии включают:</h3>
       <ul>
-        <li>Building an emergency fund for unexpected expenses</li>
-        <li>Achieving financial goals like buying a car or house</li>
-        <li>Reducing financial stress</li>
-        <li>Preparing for retirement</li>
+        <li>Создание фонда на случай непредвиденных расходов</li>
+        <li>Достижение финансовых целей, таких как покупка автомобиля или дома</li>
+        <li>Снижение финансового стресса</li>
+        <li>Подготовка к пенсионному обеспечению</li>
       </ul>
-      <p>Financial experts recommend saving at least 20% of your income. Even starting with just 5-10% can make a big difference over time.</p>
+      <p>Финансовые эксперты рекомендуют откладывать хотя бы 20% вашего дохода. Даже начав с 5-10%, можно достичь значительных результатов со временем.</p>
     `,
     order: 1,
     completed: false,
@@ -38,7 +38,7 @@ const savingLessons: Lesson[] = [
       questions: [
         {
           id: 'q1-1',
-          text: 'What percentage of your income do financial experts recommend saving?',
+          text: 'Какой процент вашего дохода рекомендуют откладывать финансовые эксперты?',
           options: [
             { id: 'o1', text: '5%' },
             { id: 'o2', text: '10%' },
@@ -46,31 +46,31 @@ const savingLessons: Lesson[] = [
             { id: 'o4', text: '50%' }
           ],
           correctOptionId: 'o3',
-          explanation: 'Financial experts typically recommend saving at least 20% of your income, although starting with any amount is better than nothing.'
+          explanation: 'Финансовые эксперты обычно рекомендуют откладывать хотя бы 20% вашего дохода, хотя начать с любого количества лучше, чем не откладывать вообще.'
         },
         {
           id: 'q1-2',
-          text: 'Which of the following is NOT a benefit of saving money?',
+          text: 'Какое из следующих не является преимуществом экономии денег?',
           options: [
-            { id: 'o1', text: 'Building an emergency fund' },
-            { id: 'o2', text: 'Increasing your current spending power' },
-            { id: 'o3', text: 'Achieving financial goals' },
-            { id: 'o4', text: 'Reducing financial stress' }
+            { id: 'o1', text: 'Создание фонда на случай непредвиденных расходов' },
+            { id: 'o2', text: 'Увеличение текущей покупательной способности' },
+            { id: 'o3', text: 'Достижение финансовых целей' },
+            { id: 'o4', text: 'Снижение финансового стресса' }
           ],
           correctOptionId: 'o2',
-          explanation: 'Saving money actually reduces your current spending power in favor of future financial security and goals.'
+          explanation: 'Экономия денег фактически снижает вашу текущую покупательную способность в пользу будущей финансовой безопасности и целей.'
         },
         {
           id: 'q1-3',
-          text: 'What is an emergency fund?',
+          text: 'Что такое фонд на случай непредвиденных расходов?',
           options: [
-            { id: 'o1', text: 'Money set aside for vacation' },
-            { id: 'o2', text: 'Money set aside for unexpected expenses' },
-            { id: 'o3', text: 'Money invested in the stock market' },
-            { id: 'o4', text: 'Money loaned to friends' }
+            { id: 'o1', text: 'Деньги, отложенные на отпуск' },
+            { id: 'o2', text: 'Деньги, отложенные на неожиданные расходы' },
+            { id: 'o3', text: 'Деньги, вложенные в фондовый рынок' },
+            { id: 'o4', text: 'Деньги, одолженные друзьям' }
           ],
           correctOptionId: 'o2',
-          explanation: 'An emergency fund is money set aside specifically for unexpected expenses or financial emergencies like medical bills or car repairs.'
+          explanation: 'Фонд на случай непредвиденных расходов — это деньги, отложенные специально для неожиданных расходов или финансовых чрезвычайных ситуаций, таких как медицинские счета или ремонт автомобиля.'
         }
       ]
     }
@@ -78,18 +78,18 @@ const savingLessons: Lesson[] = [
   {
     id: 'l2',
     moduleId: '1',
-    title: 'Setting Savings Goals',
+    title: 'Установка целей по экономии',
     content: `
-      <p>Having clear savings goals helps you stay motivated and on track with your financial plans.</p>
-      <h3>Effective savings goals are:</h3>
+      <p>Наличие четких целей по экономии помогает вам оставаться мотивированным и не сбиваться с курса в ваших финансовых планах.</p>
+      <h3>Эффективные цели по экономии:</h3>
       <ul>
-        <li><strong>Specific:</strong> Define exactly what you're saving for</li>
-        <li><strong>Measurable:</strong> Set a specific dollar amount</li>
-        <li><strong>Achievable:</strong> Be realistic about what you can save</li>
-        <li><strong>Relevant:</strong> Make sure it matters to you</li>
-        <li><strong>Time-bound:</strong> Set a deadline</li>
+        <li><strong>Конкретные:</strong> Определите, на что именно вы откладываете деньги</li>
+        <li><strong>Измеримые:</strong> Установите конкретную сумму</li>
+        <li><strong>Достижимые:</strong> Будьте реалистами относительно того, сколько вы можете откладывать</li>
+        <li><strong>Актуальные:</strong> Убедитесь, что это важно для вас</li>
+        <li><strong>Ограниченные по времени:</strong> Установите срок</li>
       </ul>
-      <p>Examples of good savings goals include saving $1,000 for an emergency fund in 6 months, or saving $5,000 for a car down payment in 2 years.</p>
+      <p>Примером хороших целей может быть накопление $1,000 для фонда на случай непредвиденных расходов за 6 месяцев или накопление $5,000 на первоначальный взнос за автомобиль за 2 года.</p>
     `,
     order: 2,
     completed: false,
@@ -99,27 +99,27 @@ const savingLessons: Lesson[] = [
       questions: [
         {
           id: 'q2-1',
-          text: 'What does the "M" in SMART goals stand for?',
+          text: 'Что означает буква "М" в SMART-целях?',
           options: [
-            { id: 'o1', text: 'Manageable' },
-            { id: 'o2', text: 'Measurable' },
-            { id: 'o3', text: 'Meaningful' },
-            { id: 'o4', text: 'Motivational' }
+            { id: 'o1', text: 'Управляемый' },
+            { id: 'o2', text: 'Измеримый' },
+            { id: 'o3', text: 'Значимый' },
+            { id: 'o4', text: 'Мотивирующий' }
           ],
           correctOptionId: 'o2',
-          explanation: 'The "M" in SMART goals stands for Measurable, meaning you should be able to track your progress with specific numbers or amounts.'
+          explanation: 'Буква "М" в SMART-целях означает Измеримый, что означает, что вы должны быть в состоянии отслеживать ваш прогресс с помощью конкретных чисел или сумм.'
         },
         {
           id: 'q2-2',
-          text: 'Which of these is an example of a specific savings goal?',
+          text: 'Какой из следующих примеров является конкретной целью по экономии?',
           options: [
-            { id: 'o1', text: 'Save more money' },
-            { id: 'o2', text: 'Save for a vacation' },
-            { id: 'o3', text: 'Save $2,000 for a vacation to Europe next summer' },
-            { id: 'o4', text: 'Start saving soon' }
+            { id: 'o1', text: 'Сэкономить больше денег' },
+            { id: 'o2', text: 'Накопить на отпуск' },
+            { id: 'o3', text: 'Сэкономить $2,000 на отпуск в Европу следующим летом' },
+            { id: 'o4', text: 'Начать экономить скоро' }
           ],
           correctOptionId: 'o3',
-          explanation: 'A specific savings goal includes details like the exact amount, purpose, and timeframe. "Save $2,000 for a vacation to Europe next summer" is specific and measurable.'
+          explanation: 'Конкретная цель по экономии включает такие детали, как точная сумма, цель и срок. "Сэкономить $2,000 на отпуск в Европу следующим летом" является конкретной и измеримой.'
         }
       ]
     }
@@ -127,18 +127,18 @@ const savingLessons: Lesson[] = [
   {
     id: 'l3',
     moduleId: '1',
-    title: 'Creating a Savings Plan',
+    title: 'Создание плана по экономии',
     content: `
-      <p>A savings plan is your roadmap to achieving your financial goals.</p>
-      <h3>Steps to create an effective savings plan:</h3>
+      <p>План по экономии — это ваш маршрут к достижению финансовых целей.</p>
+      <h3>Шаги для создания эффективного плана по экономии:</h3>
       <ol>
-        <li>Calculate your monthly income after taxes</li>
-        <li>Track your expenses for a month</li>
-        <li>Identify areas where you can reduce spending</li>
-        <li>Set up automatic transfers to your savings account</li>
-        <li>Review and adjust your plan regularly</li>
+        <li>Рассчитайте ваш ежемесячный доход после уплаты налогов</li>
+        <li>Отслеживайте свои расходы в течение месяца</li>
+        <li>Определите области, где можно снизить расходы</li>
+        <li>Настройте автоматические переводы на ваш сберегательный счет</li>
+        <li>Регулярно пересматривайте и корректируйте ваш план</li>
       </ol>
-      <p>Remember, consistency is key when it comes to saving. Even small amounts add up over time through the power of compound interest.</p>
+      <p>Помните, что постоянство важно при экономии. Даже небольшие суммы со временем могут привести к значительным результатам благодаря сложным процентам.</p>
     `,
     order: 3,
     completed: false,
@@ -148,39 +148,39 @@ const savingLessons: Lesson[] = [
       questions: [
         {
           id: 'q3-1',
-          text: 'What is an effective way to ensure consistent savings?',
+          text: 'Какой эффективный способ обеспечить постоянное откладывание денег?',
           options: [
-            { id: 'o1', text: 'Only save when you have extra money' },
-            { id: 'o2', text: 'Set up automatic transfers to your savings account' },
-            { id: 'o3', text: 'Keep all your money in a checking account' },
-            { id: 'o4', text: 'Spend first, save what\'s left' }
+            { id: 'o1', text: 'Экономить только, когда есть лишние деньги' },
+            { id: 'o2', text: 'Настроить автоматические переводы на сберегательный счет' },
+            { id: 'o3', text: 'Держать все деньги на расчетном счете' },
+            { id: 'o4', text: 'Сначала тратить, а потом экономить, что осталось' }
           ],
           correctOptionId: 'o2',
-          explanation: 'Setting up automatic transfers ensures you save consistently without having to remember or make the decision each time you get paid.'
+          explanation: 'Настройка автоматических переводов обеспечивает постоянное откладывание денег, не требуя помнить об этом или принимать решение каждый раз, когда вам выплачивают деньги.'
         },
         {
           id: 'q3-2',
-          text: 'What is compound interest?',
+          text: 'Что такое сложные проценты?',
           options: [
-            { id: 'o1', text: 'Interest earned only on your initial deposit' },
-            { id: 'o2', text: 'Interest earned on both your initial deposit and previously earned interest' },
-            { id: 'o3', text: 'A fee charged by banks' },
-            { id: 'o4', text: 'A one-time bonus when opening an account' }
+            { id: 'o1', text: 'Проценты, начисляемые только на ваш первоначальный вклад' },
+            { id: 'o2', text: 'Проценты, начисляемые как на первоначальный вклад, так и на уже полученные проценты' },
+            { id: 'o3', text: 'Комиссия, взимаемая банками' },
+            { id: 'o4', text: 'Единовременный бонус при открытии счета' }
           ],
           correctOptionId: 'o2',
-          explanation: 'Compound interest is when you earn interest not just on your initial deposit but also on the interest you\'ve already earned, helping your money grow faster over time.'
+          explanation: 'Сложные проценты — это проценты, которые начисляются не только на ваш первоначальный вклад, но и на проценты, которые вы уже заработали, что помогает вашим деньгам расти быстрее с течением времени.'
         },
         {
           id: 'q3-3',
-          text: 'What should you do if you find you can\'t stick to your savings plan?',
+          text: 'Что делать, если вы не можете придерживаться вашего плана по экономии?',
           options: [
-            { id: 'o1', text: 'Give up on saving entirely' },
-            { id: 'o2', text: 'Borrow money to reach your goals faster' },
-            { id: 'o3', text: 'Review and adjust your plan to make it more realistic' },
-            { id: 'o4', text: 'Keep the same plan but feel guilty about not following it' }
+            { id: 'o1', text: 'Полностью отказаться от экономии' },
+            { id: 'o2', text: 'Одолжить деньги для достижения целей быстрее' },
+            { id: 'o3', text: 'Пересмотреть и откорректировать ваш план, чтобы сделать его более реальным' },
+            { id: 'o4', text: 'Продолжать с тем же планом, но чувствовать вину за его невыполнение' }
           ],
           correctOptionId: 'o3',
-          explanation: 'If you\'re struggling to stick to your savings plan, it may be too ambitious. Review and adjust it to make it more realistic based on your income and expenses.'
+          explanation: 'Если вам сложно придерживаться плана, возможно, он слишком амбициозен. Пересмотрите и откорректируйте его, чтобы он стал более реальным с учетом вашего дохода и расходов.'
         }
       ]
     }
@@ -191,17 +191,17 @@ const insuranceLessons: Lesson[] = [
   {
     id: 'l4',
     moduleId: '3',
-    title: 'Insurance Basics',
+    title: 'Основы страхования',
     content: `
-      <p>Insurance is a way to protect yourself financially from unexpected events. You pay a premium (a regular payment) to an insurance company, and in return, they agree to cover certain costs if something goes wrong.</p>
-      <h3>Common types of insurance include:</h3>
+      <p>Страхование — это способ защитить себя финансово от неожиданных событий. Вы оплачиваете премию (регулярный платеж) страховой компании, а взамен она соглашается покрыть определенные расходы, если что-то пойдет не так.</p>
+      <h3>Обычные виды страхования включают:</h3>
       <ul>
-        <li><strong>Health insurance:</strong> Covers medical expenses</li>
-        <li><strong>Auto insurance:</strong> Covers damages from car accidents</li>
-        <li><strong>Home/renters insurance:</strong> Protects your home and belongings</li>
-        <li><strong>Life insurance:</strong> Provides for your dependents if you die</li>
+        <li><strong>Медицинское страхование:</strong> Покрывает медицинские расходы</li>
+        <li><strong>Автострахование:</strong> Покрывает ущерб от аварий с автомобилем</li>
+        <li><strong>Страхование жилья/арендаторов:</strong> Защищает ваше жилье и имущество</li>
+        <li><strong>Страхование жизни:</strong> Обеспечивает ваших зависимых в случае вашей смерти</li>
       </ul>
-      <p>Insurance works by pooling risk across many people. Not everyone will need to make claims, which allows the company to pay out when needed.</p>
+      <p>Страхование работает путем объединения рисков среди множества людей. Не все будут делать претензии, что позволяет компании выплачивать средства по мере необходимости.</p>
     `,
     order: 1,
     completed: false,
@@ -211,267 +211,268 @@ const insuranceLessons: Lesson[] = [
       questions: [
         {
           id: 'q4-1',
-          text: 'What is a premium?',
+          text: 'Что такое премия?',
           options: [
-            { id: 'o1', text: 'The amount an insurance company pays you' },
-            { id: 'o2', text: 'A regular payment you make to the insurance company' },
-            { id: 'o3', text: 'A one-time fee when you start an insurance policy' },
-            { id: 'o4', text: 'The maximum coverage amount' }
+            { id: 'o1', text: 'Сумма, которую страховая компания выплачивает вам' },
+            { id: 'o2', text: 'Регулярный платеж, который вы делаете страховой компании' },
+            { id: 'o3', text: 'Единовременная плата при начале страхового полиса' },
+            { id: 'o4', text: 'Максимальная сумма покрытия' }
           ],
           correctOptionId: 'o2',
-          explanation: 'A premium is the regular payment (monthly, quarterly, or annually) that you make to the insurance company to maintain your coverage.'
+          explanation: 'Премия — это регулярный платеж (ежемесячно, ежеквартально или ежегодно), который вы делаете страховой компании для поддержания своего покрытия.'
         },
         {
           id: 'q4-2',
-          text: 'How does insurance work?',
+          text: 'Как работает страхование?',
           options: [
-            { id: 'o1', text: 'It guarantees you\'ll never face financial loss' },
-            { id: 'o2', text: 'It pools risk across many people, using premiums from everyone to pay claims as needed' },
-            { id: 'o3', text: 'It\'s a savings account that you can withdraw from at any time' },
-            { id: 'o4', text: 'It\'s an investment that always grows in value' }
+            { id: 'o1', text: 'Оно гарантирует, что вы никогда не столкнетесь с финансовыми потерями' },
+            { id: 'o2', text: 'Оно объединяет риски среди множества людей, используя премии от всех для оплаты требований по мере необходимости' },
+            { id: 'o3', text: 'Это сберегательный счет, с которого можно снимать деньги в любой момент' },
+            { id: 'o4', text: 'Это инвестиция, которая всегда растет в цене' }
           ],
           correctOptionId: 'o2',
-          explanation: 'Insurance works by pooling risk across a large group of people. The premiums paid by everyone create a fund that the insurance company uses to pay claims as needed.'
+          explanation: 'Страхование работает путем объединения рисков среди большой группы людей. Премии, оплачиваемые всеми, создают фонд, который страховая компания использует для выплаты требований по мере необходимости.'
         },
         {
           id: 'q4-3',
-          text: 'Which of these is NOT a common type of insurance?',
+          text: 'Какой из этих видов страхования не является распространенным?',
           options: [
-            { id: 'o1', text: 'Health insurance' },
-            { id: 'o2', text: 'Car insurance' },
-            { id: 'o3', text: 'Pet insurance' },
-            { id: 'o4', text: 'Happiness insurance' }
+            { id: 'o1', text: 'Медицинское страхование' },
+            { id: 'o2', text: 'Страхование автомобиля' },
+            { id: 'o3', text: 'Страхование домашних животных' },
+            { id: 'o4', text: 'Страхование счастья' }
           ],
           correctOptionId: 'o4',
-          explanation: 'Happiness insurance is not a real insurance product. While you can insure your health, car, and even pets, there\'s no insurance that guarantees happiness!'
+          explanation: 'Страхование счастья не является реальным страховым продуктом. Хотя вы можете застраховать свое здоровье, машину и даже домашних животных, нет страховки, которая гарантирует счастье!'
         }
       ]
     }
   }
 ];
 
+
 export const modules: Module[] = [
   {
     id: '1',
-    title: 'Save Money',
+    title: 'Экономьте деньги',
     icon: 'dollar-sign',
-    category: 'Popular',
+    category: 'Популярные',
     coins: 700,
     progress: 20,
     totalParts: 15,
     currentPart: 3,
     timeEstimate: 5,
-    status: 'in-progress',
+    status: 'в процессе',
     lessons: savingLessons
   },
   {
     id: '2',
-    title: 'Shop Smartly',
+    title: 'Шоппинг с умом',
     icon: 'credit-card',
-    category: 'Popular',
+    category: 'Популярные',
     coins: 1000,
     progress: 0,
     totalParts: 22,
     currentPart: 0,
     timeEstimate: 5,
-    status: 'not-started'
+    status: 'не начат'
   },
   {
     id: '3',
-    title: 'Get Insured',
+    title: 'Получите страховку',
     icon: 'shield',
-    category: 'Popular',
+    category: 'Популярные',
     coins: 900,
     progress: 0,
     totalParts: 18,
     currentPart: 0,
     timeEstimate: 5,
-    status: 'not-started',
+    status: 'не начат',
     lessons: insuranceLessons
   },
   {
     id: '4',
-    title: 'Get Health Insurance',
+    title: 'Получите медицинскую страховку',
     icon: 'heart',
-    category: 'Popular',
+    category: 'Популярные',
     coins: 1000,
     progress: 0,
     totalParts: 20,
     currentPart: 0,
     timeEstimate: 5,
-    status: 'not-started'
+    status: 'не начат'
   },
   {
     id: '5',
-    title: 'Apply for Credit',
+    title: 'Подайте заявку на кредит',
     icon: 'credit-card',
-    category: 'Popular',
+    category: 'Популярные',
     coins: 1000,
     progress: 0,
     totalParts: 22,
     currentPart: 0,
     timeEstimate: 5,
     participants: 165900,
-    status: 'not-started'
+    status: 'не начат'
   },
   {
     id: '6',
-    title: 'Start Investing',
+    title: 'Начните инвестировать',
     icon: 'trending-up',
-    category: 'Popular',
+    category: 'Популярные',
     coins: 900,
     progress: 0,
     totalParts: 18,
     currentPart: 0,
     timeEstimate: 5,
     participants: 84000,
-    status: 'not-started'
+    status: 'не начат'
   },
   {
     id: '7',
-    title: 'Pay For College',
+    title: 'Оплатите учебу',
     icon: 'graduation-cap',
-    category: 'Popular',
+    category: 'Популярные',
     coins: 800,
     progress: 0,
     totalParts: 18,
     currentPart: 0,
     timeEstimate: 5,
     participants: 110800,
-    status: 'completed'
+    status: 'завершено'
   },
   {
     id: '8',
-    title: 'Spot Fraud Before It Happens',
+    title: 'Обнаружьте мошенничество до того, как оно случится',
     icon: 'search',
-    category: 'Popular',
+    category: 'Популярные',
     coins: 900,
     progress: 0,
     totalParts: 16,
     currentPart: 0,
     timeEstimate: 5,
-    status: 'not-started'
+    status: 'не начат'
   },
   {
     id: '9',
-    title: 'Choose a Financial Institution',
+    title: 'Выбор финансового учреждения',
     icon: 'building',
-    category: 'Savings and Spending',
+    category: 'Сбережения и расходы',
     coins: 600,
     progress: 0,
     totalParts: 11,
     currentPart: 0,
     timeEstimate: 5,
     participants: 167900,
-    status: 'not-started'
+    status: 'не начат'
   },
   {
     id: '10',
-    title: 'Live on a Budget',
+    title: 'Жить по бюджету',
     icon: 'piggy-bank',
-    category: 'Savings and Spending',
+    category: 'Сбережения и расходы',
     coins: 500,
     progress: 0,
     totalParts: 16,
     currentPart: 0,
     timeEstimate: 5,
     participants: 35800,
-    status: 'not-started'
+    status: 'не начат'
   },
   {
     id: '11',
-    title: 'How to Do Your Taxes',
+    title: 'Как заполнять налоги',
     icon: 'file-text',
-    category: 'Tax',
+    category: 'Налоги',
     coins: 90,
     progress: 0,
     totalParts: 1,
     currentPart: 0,
     timeEstimate: 2,
     participants: 2000,
-    status: 'not-started'
+    status: 'не начат'
   },
   {
     id: '12',
-    title: 'Marginal Tax Rates',
+    title: 'Маржинальные налоговые ставки',
     icon: 'file-text',
-    category: 'Tax',
+    category: 'Налоги',
     coins: 90,
     progress: 0,
     totalParts: 1,
     currentPart: 0,
     timeEstimate: 2,
     participants: 1700,
-    status: 'not-started'
+    status: 'не начат'
   },
   {
     id: '13',
-    title: 'Tax-Efficient Investments',
+    title: 'Налоговые эффективные инвестиции',
     icon: 'file-text',
-    category: 'Tax',
+    category: 'Налоги',
     coins: 100,
     progress: 0,
     totalParts: 1,
     currentPart: 0,
     timeEstimate: 2,
     participants: 1800,
-    status: 'not-started'
+    status: 'не начат'
   }
 ];
 
 export const categories: Category[] = [
   {
     id: '1',
-    title: 'Popular',
+    title: 'Популярные',
     icon: 'trending-up',
     totalSkills: 16,
     totalModules: 233
   },
   {
     id: '2',
-    title: 'Financial Basics',
+    title: 'Финансовые основы',
     icon: 'sun',
     totalSkills: 10,
     totalModules: 120
   },
   {
     id: '3',
-    title: 'Major Milestones',
+    title: 'Основные этапы',
     icon: 'flag',
     totalSkills: 8,
     totalModules: 95
   },
   {
     id: '4',
-    title: 'Investing',
+    title: 'Инвестирование',
     icon: 'clock',
     totalSkills: 14,
     totalModules: 185
   },
   {
     id: '5',
-    title: 'Career',
+    title: 'Карьера',
     icon: 'briefcase',
     totalSkills: 12,
     totalModules: 145
   },
   {
     id: '6',
-    title: 'College',
+    title: 'Колледж',
     icon: 'at-sign',
     totalSkills: 9,
     totalModules: 110
   },
   {
     id: '7',
-    title: 'Risk Management',
+    title: 'Управление рисками',
     icon: 'clock',
     totalSkills: 11,
     totalModules: 130
   },
   {
     id: '8',
-    title: 'Entrepreneurship',
+    title: 'Предпринимательство',
     icon: 'zap',
     totalSkills: 13,
     totalModules: 160
@@ -481,35 +482,35 @@ export const categories: Category[] = [
 export const leaderboardUsers: LeaderboardUser[] = [
   {
     id: '1',
-    name: 'Dana J',
+    name: 'Дана Дж.',
     avatar: '/lovable-uploads/952baaf1-3300-479d-bc39-0620cd3245c4.png',
     coins: 4600,
     position: 1
   },
   {
     id: '2',
-    name: 'Amanda D',
+    name: 'Аманда Д.',
     avatar: '/lovable-uploads/370b4395-13f8-44ab-af20-7d4025c1a871.png',
     coins: 2600,
     position: 2
   },
   {
     id: '3',
-    name: 'Madison M',
+    name: 'Мэдисон М.',
     avatar: '/lovable-uploads/4ab33fd4-b662-40e2-849e-b8972ae3bb31.png',
     coins: 2600,
     position: 3
   },
   {
     id: '4',
-    name: 'Zeroxyyy P',
+    name: 'Зерокс P.',
     avatar: '/lovable-uploads/ea0fa254-09b7-46aa-a906-16282dc66579.png',
     coins: 2600,
     position: 4
   },
   {
     id: '5',
-    name: 'Kendra K',
+    name: 'Кендра К.',
     avatar: '/lovable-uploads/4337a96e-fcbc-405b-b65a-c19f7eb95f9b.png',
     coins: 2600,
     position: 5
@@ -519,9 +520,9 @@ export const leaderboardUsers: LeaderboardUser[] = [
 export const triviaEvents: TriviaEvent[] = [
   {
     id: '1',
-    title: 'Trivia Party',
-    description: 'Join the daily financial trivia party and win prizes up to',
-    date: 'Feb 27, 2025',
+    title: 'Тривия-вечеринка',
+    description: 'Присоединяйтесь к ежедневной финансовой викторине и выигрывайте призы до',
+    date: '27 Фев, 2025',
     prize: 5000,
     participants: 645,
     icon: '/lovable-uploads/0c7467f7-361d-4300-9676-24e68102a1f0.png'
@@ -531,42 +532,42 @@ export const triviaEvents: TriviaEvent[] = [
 export const rewards: Reward[] = [
   {
     id: 'r1',
-    title: 'Basic Premium Subscription',
-    name: 'Basic Premium Subscription',
-    description: '1 month of premium content access',
+    title: 'Базовая премиум-подписка',
+    name: 'Базовая премиум-подписка',
+    description: '1 месяц доступа к премиум-контенту',
     cost: 500,
     image: '/lovable-uploads/37933159-2c9d-4a32-8c8b-d731a46b6ccf.png',
-    type: 'subscription',
+    type: 'подписка',
     redeemed: false
   },
   {
     id: 'r2',
-    title: 'Pro Premium Subscription',
-    name: 'Pro Premium Subscription',
-    description: '3 months of premium content access',
+    title: 'Про премиум-подписка',
+    name: 'Про премиум-подписка',
+    description: '3 месяца доступа к премиум-контенту',
     cost: 1200,
     image: '/lovable-uploads/37933159-2c9d-4a32-8c8b-d731a46b6ccf.png',
-    type: 'subscription',
+    type: 'подписка',
     redeemed: false
   },
   {
     id: 'r3',
-    title: 'Advanced Investment Course',
-    name: 'Advanced Investment Course',
-    description: 'Special course on stock market investing',
+    title: 'Курс по инвестициям для опытных',
+    name: 'Курс по инвестициям для опытных',
+    description: 'Специальный курс по инвестициям в фондовый рынок',
     cost: 800,
     image: '/lovable-uploads/37933159-2c9d-4a32-8c8b-d731a46b6ccf.png',
-    type: 'premium-content',
+    type: 'премиум-контент',
     redeemed: false
   },
   {
     id: 'r4',
-    title: 'Exclusive Webinar Access',
-    name: 'Exclusive Webinar Access',
-    description: 'Join our financial experts for live Q&A sessions',
+    title: 'Доступ к эксклюзивному вебинару',
+    name: 'Доступ к эксклюзивному вебинару',
+    description: 'Присоединяйтесь к нашим финансовым экспертам на живые сессии вопросов и ответов',
     cost: 650,
     image: '/lovable-uploads/37933159-2c9d-4a32-8c8b-d731a46b6ccf.png',
-    type: 'premium-content',
+    type: 'премиум-контент',
     redeemed: false
   }
 ];
@@ -574,25 +575,25 @@ export const rewards: Reward[] = [
 export const notifications: Notification[] = [
   {
     id: 'n1',
-    title: 'New Badge Earned!',
-    message: 'Congratulations! You earned the "Savings Master" badge.',
-    type: 'achievement',
+    title: 'Новый значок заработан!',
+    message: 'Поздравляем! Вы заработали значок "Мастер сбережений".',
+    type: 'достижение',
     read: false,
     date: '2023-04-15T10:30:00Z'
   },
   {
     id: 'n2',
-    title: 'Streak Bonus',
-    message: 'You\'ve maintained a 3-day streak! Earned 50 extra coins.',
-    type: 'reward',
+    title: 'Бонус за серию',
+    message: 'Вы сохранили серию из 3 дней! Получено 50 дополнительных монет.',
+    type: 'награда',
     read: true,
     date: '2023-04-14T09:15:00Z'
   },
   {
     id: 'n3',
-    title: 'New Module Available',
-    message: 'Check out our new "Cryptocurrency Basics" module!',
-    type: 'update',
+    title: 'Доступен новый модуль',
+    message: 'Посмотрите наш новый модуль "Основы криптовалюты"!',
+    type: 'обновление',
     read: false,
     date: '2023-04-13T14:45:00Z'
   }
@@ -601,32 +602,32 @@ export const notifications: Notification[] = [
 export const faqs: FAQ[] = [
   {
     id: 'f1',
-    question: 'How do I earn coins?',
-    answer: 'You can earn coins by completing modules, maintaining daily streaks, and participating in quizzes. Invite friends to earn bonus coins!',
-    category: 'Rewards'
+    question: 'Как я могу заработать монеты?',
+    answer: 'Вы можете зарабатывать монеты, выполняя модули, поддерживая ежедневные серии и участвуя в викторинах. Приглашайте друзей, чтобы заработать бонусные монеты!',
+    category: 'Награды'
   },
   {
     id: 'f2',
-    question: 'What can I do with my coins?',
-    answer: 'Coins can be exchanged for premium subscriptions, access to exclusive content, and other rewards in the Rewards section.',
-    category: 'Rewards'
+    question: 'Что я могу сделать с монетами?',
+    answer: 'Монеты можно обменять на премиум-подписки, доступ к эксклюзивному контенту и другие награды в разделе Награды.',
+    category: 'Награды'
   },
   {
     id: 'f3',
-    question: 'How do I reset my password?',
-    answer: 'Go to the Profile page, select Settings, and choose "Reset Password". Follow the instructions sent to your email.',
-    category: 'Account'
+    question: 'Как сбросить пароль?',
+    answer: 'Перейдите на страницу профиля, выберите Настройки и выберите "Сбросить пароль". Следуйте инструкциям, отправленным на вашу почту.',
+    category: 'Аккаунт'
   },
   {
     id: 'f4',
-    question: 'Can I use the app offline?',
-    answer: 'Yes, basic features are available offline. Your progress will sync when you reconnect to the internet.',
-    category: 'Technical'
+    question: 'Могу ли я использовать приложение в оффлайне?',
+    answer: 'Да, основные функции доступны в оффлайне. Ваш прогресс синхронизируется, когда вы снова подключитесь к интернету.',
+    category: 'Технические'
   },
   {
     id: 'f5',
-    question: 'How do I invite friends?',
-    answer: 'Go to your Profile and select "Invite Friends". You can share your referral link via email, social media, or text message.',
-    category: 'Referrals'
+    question: 'Как пригласить друзей?',
+    answer: 'Перейдите в свой профиль и выберите "Пригласить друзей". Вы можете поделиться ссылкой на приглашение по электронной почте, в социальных сетях или через текстовое сообщение.',
+    category: 'Приглашения'
   }
 ];
