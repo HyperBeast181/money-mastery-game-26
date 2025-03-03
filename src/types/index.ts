@@ -31,7 +31,7 @@ export interface Module {
   currentPart: number;
   timeEstimate: number;
   participants?: number;
-  status: 'not-started' | 'in-progress' | 'completed' | 'locked';
+  status: 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
   lessons?: Lesson[];
 }
 
@@ -97,7 +97,7 @@ export interface Reward {
   description: string;
   cost: number;
   image: string;
-  type: 'subscription' | 'premium-content' | 'other';
+  type: 'подписка' | 'премиум-контент' | 'другое';
   redeemed?: boolean;
 }
 
@@ -105,7 +105,7 @@ export interface Notification {
   id: string;
   title: string;
   message: string;
-  type: 'achievement' | 'reward' | 'update' | 'other';
+  type: 'достижение' | 'награда' | 'обновление' | 'другое';
   read: boolean;
   date: string;
 }
