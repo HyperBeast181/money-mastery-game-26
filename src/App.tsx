@@ -10,6 +10,8 @@ import Explore from "./pages/Explore";
 import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import ModuleView from "./pages/ModuleView";
+import Rewards from "./pages/Rewards";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,8 @@ const App = () => (
           <Route path="/explore" element={<Explore />} />
           <Route path="/community" element={<Community />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/module/:moduleId" element={<ModuleView />} />
+          <Route path="/rewards" element={<Rewards />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

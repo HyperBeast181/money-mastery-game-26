@@ -33,6 +33,36 @@ export interface Module {
   timeEstimate: number;
   participants?: number;
   status: 'not-started' | 'in-progress' | 'completed' | 'locked';
+  lessons?: Lesson[];
+}
+
+export interface Lesson {
+  id: string;
+  moduleId: string;
+  title: string;
+  content: string;
+  order: number;
+  completed: boolean;
+  quiz?: Quiz;
+}
+
+export interface Quiz {
+  id: string;
+  lessonId: string;
+  questions: Question[];
+}
+
+export interface Question {
+  id: string;
+  text: string;
+  options: Option[];
+  correctOptionId: string;
+  explanation: string;
+}
+
+export interface Option {
+  id: string;
+  text: string;
 }
 
 export interface Category {
@@ -59,4 +89,29 @@ export interface TriviaEvent {
   prize: number;
   participants: number;
   icon: string;
+}
+
+export interface Reward {
+  id: string;
+  title: string;
+  description: string;
+  cost: number;
+  image: string;
+  type: 'subscription' | 'premium-content' | 'other';
+}
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  type: 'achievement' | 'reward' | 'update' | 'other';
+  read: boolean;
+  date: string;
+}
+
+export interface FAQ {
+  id: string;
+  question: string;
+  answer: string;
+  category: string;
 }

@@ -1,7 +1,7 @@
 
 import { FC } from 'react';
 import { Module } from '../types';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ProgressTracker from './ProgressTracker';
 import * as LucideIcons from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
@@ -13,24 +13,40 @@ interface LearningModuleProps {
 
 const LearningModule: FC<LearningModuleProps> = ({ module, index }) => {
   const Icon = LucideIcons[module.icon as keyof typeof LucideIcons] as LucideIcon;
+  const navigate = useNavigate();
+  
+  const handleModuleClick = () => {
+    if (module.status !== 'locked') {
+      navigate(`/module/${module.id}`);
+    }
+  };
   
   const getStatusButton = () => {
     switch(module.status) {
       case 'not-started':
         return (
-          <button className="bg-app-light-blue text-app-blue font-medium text-sm py-3 rounded-full w-full">
+          <button 
+            onClick={handleModuleClick}
+            className="bg-app-light-blue text-app-blue font-medium text-sm py-3 rounded-full w-full"
+          >
             Start
           </button>
         );
       case 'in-progress':
         return (
-          <button className="bg-app-light-blue text-app-blue font-medium text-sm py-3 rounded-full w-full">
+          <button 
+            onClick={handleModuleClick}
+            className="bg-app-light-blue text-app-blue font-medium text-sm py-3 rounded-full w-full"
+          >
             Continue
           </button>
         );
       case 'completed':
         return (
-          <button className="bg-green-100 text-green-600 font-medium text-sm py-3 rounded-full w-full">
+          <button 
+            onClick={handleModuleClick}
+            className="bg-green-100 text-green-600 font-medium text-sm py-3 rounded-full w-full"
+          >
             Completed
           </button>
         );
@@ -81,7 +97,10 @@ const LearningModule: FC<LearningModuleProps> = ({ module, index }) => {
           <ProgressTracker progress={module.progress} />
           
           <div className="mt-4 flex justify-between gap-3">
-            <button className="bg-gray-100 text-app-text font-medium text-sm py-3 rounded-full w-full">
+            <button 
+              onClick={handleModuleClick}
+              className="bg-gray-100 text-app-text font-medium text-sm py-3 rounded-full w-full"
+            >
               View
             </button>
             
