@@ -294,6 +294,74 @@ const translations: Translations = {
     en: 'Delete Account',
     ru: 'Удалить аккаунт',
   },
+  availableRewards: {
+    en: 'Available Rewards',
+    ru: 'Доступные награды'
+  },
+  redeemYourCoins: {
+    en: 'Redeem your coins for these exclusive rewards',
+    ru: 'Обменяйте ваши монеты на эксклюзивные награды'
+  },
+  redeemed: {
+    en: 'Redeemed',
+    ru: 'Получено'
+  },
+  redeem: {
+    en: 'Redeem',
+    ru: 'Получить'
+  },
+  redeemReward: {
+    en: 'Redeem Reward',
+    ru: 'Получить награду'
+  },
+  confirmRedemption: {
+    en: 'Are you sure you want to redeem {0}?',
+    ru: 'Вы уверены, что хотите получить {0}?'
+  },
+  cancel: {
+    en: 'Cancel',
+    ru: 'Отмена'
+  },
+  notEnoughCoins: {
+    en: 'Not enough coins',
+    ru: 'Недостаточно монет'
+  },
+  earnMoreCoins: {
+    en: 'Complete more modules to earn coins',
+    ru: 'Завершите больше модулей, чтобы заработать монеты'
+  },
+  congratulations: {
+    en: 'Congratulations!',
+    ru: 'Поздравляем!'
+  },
+  tutorialWelcome: {
+    en: 'Welcome to Zogo!',
+    ru: 'Добро пожаловать в Zogo!'
+  },
+  tutorialModules: {
+    en: 'Here you can find financial learning modules',
+    ru: 'Здесь вы найдете модули финансового обучения'
+  },
+  tutorialCoins: {
+    en: 'Earn coins by completing modules and quizzes',
+    ru: 'Зарабатывайте монеты, выполняя модули и тесты'
+  },
+  tutorialRewards: {
+    en: 'Spend your coins on exclusive rewards',
+    ru: 'Тратьте монеты на эксклюзивные награды'
+  },
+  tutorialNext: {
+    en: 'Next',
+    ru: 'Далее'
+  },
+  tutorialGotIt: {
+    en: 'Got it!',
+    ru: 'Понятно!'
+  },
+  tutorialSkip: {
+    en: 'Skip tutorial',
+    ru: 'Пропустить обучение'
+  },
 };
 
 type LanguageContextType = {
@@ -318,7 +386,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     // Replace parameters
     if (params.length > 0) {
       params.forEach((param, index) => {
-        translation = translation.replace(`{${index}}`, param.toString());
+        translation = translation.replace(`{${index}}`, param?.toString() || '');
       });
     }
     

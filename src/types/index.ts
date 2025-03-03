@@ -1,4 +1,3 @@
-
 export interface User {
   id: string;
   name: string;
@@ -94,10 +93,12 @@ export interface TriviaEvent {
 export interface Reward {
   id: string;
   title: string;
+  name: string;
   description: string;
   cost: number;
   image: string;
   type: 'subscription' | 'premium-content' | 'other';
+  redeemed?: boolean;
 }
 
 export interface Notification {

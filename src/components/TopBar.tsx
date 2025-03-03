@@ -1,8 +1,8 @@
+
 import React, { FC } from 'react';
 import { User } from '../types';
 import { Link } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
-import Image from 'next/image';
 import LanguageSwitcher from './LanguageSwitcher';
 
 // Add title to TopBarProps interface
@@ -28,7 +28,7 @@ const TopBar: FC<TopBarProps> = ({ user, showBackButton = false, title }) => {
             <h1 className="text-xl font-bold">{title}</h1>
           ) : (
             <div className="flex items-center">
-              <Image
+              <img
                 src="/logo.png"
                 alt="Logo"
                 className="w-8 h-8 mr-2"

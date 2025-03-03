@@ -1,3 +1,4 @@
+
 import { FC, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { currentUser, rewards as allRewards } from '../data/modules';
@@ -80,7 +81,7 @@ const Rewards: FC = () => {
                 key={reward.id}
                 className={`rounded-xl border border-gray-200 shadow-sm p-4 ${reward.redeemed ? 'opacity-50' : 'hover:border-app-blue cursor-pointer'}`}
                 onClick={() => !reward.redeemed && handleRewardClick(reward)}
-                disabled={reward.redeemed}
+                aria-disabled={reward.redeemed}
               >
                 <img src={reward.image} alt={reward.name} className="w-full h-32 object-cover rounded-md mb-3" />
                 <h3 className="font-semibold text-app-dark">{reward.name}</h3>

@@ -532,34 +532,42 @@ export const rewards: Reward[] = [
   {
     id: 'r1',
     title: 'Basic Premium Subscription',
+    name: 'Basic Premium Subscription',
     description: '1 month of premium content access',
     cost: 500,
     image: '/lovable-uploads/37933159-2c9d-4a32-8c8b-d731a46b6ccf.png',
-    type: 'subscription'
+    type: 'subscription',
+    redeemed: false
   },
   {
     id: 'r2',
     title: 'Pro Premium Subscription',
+    name: 'Pro Premium Subscription',
     description: '3 months of premium content access',
     cost: 1200,
     image: '/lovable-uploads/37933159-2c9d-4a32-8c8b-d731a46b6ccf.png',
-    type: 'subscription'
+    type: 'subscription',
+    redeemed: false
   },
   {
     id: 'r3',
     title: 'Advanced Investment Course',
+    name: 'Advanced Investment Course',
     description: 'Special course on stock market investing',
     cost: 800,
     image: '/lovable-uploads/37933159-2c9d-4a32-8c8b-d731a46b6ccf.png',
-    type: 'premium-content'
+    type: 'premium-content',
+    redeemed: false
   },
   {
     id: 'r4',
     title: 'Exclusive Webinar Access',
+    name: 'Exclusive Webinar Access',
     description: 'Join our financial experts for live Q&A sessions',
     cost: 650,
     image: '/lovable-uploads/37933159-2c9d-4a32-8c8b-d731a46b6ccf.png',
-    type: 'premium-content'
+    type: 'premium-content',
+    redeemed: false
   }
 ];
 
