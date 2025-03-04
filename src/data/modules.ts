@@ -175,7 +175,7 @@ const savingLessons: Lesson[] = [
           text: 'Что делать, если вы не можете придерживаться вашего плана по экономии?',
           options: [
             { id: 'o1', text: 'Полностью отказаться от экономии' },
-            { id: 'o2', text: 'Одолжить деньги для достижения целей быстрее' },
+            { id: 'o2', text: 'Одолжить день��и для достижения целей быстрее' },
             { id: 'o3', text: 'Пересмотреть и откорректировать ваш план, чтобы сделать его более реальным' },
             { id: 'o4', text: 'Продолжать с тем же планом, но чувствовать вину за его невыполнение' }
           ],
@@ -226,7 +226,7 @@ const insuranceLessons: Lesson[] = [
           text: 'Как работает страхование?',
           options: [
             { id: 'o1', text: 'Оно гарантирует, что вы никогда не столкнетесь с финансовыми потерями' },
-            { id: 'o2', text: 'Оно объединяет риски среди множества людей, используя премии от всех для оплаты требований по мере необходимости' },
+            { id: 'o2', text: 'Оно объединяет риски среди множе��тва людей, используя премии от всех для оплаты требований по мере необходимости' },
             { id: 'o3', text: 'Это сберегательный счет, с которого можно снимать деньги в любой момент' },
             { id: 'o4', text: 'Это инвестиция, которая всегда растет в цене' }
           ],
@@ -425,57 +425,57 @@ export const categories: Category[] = [
     id: '1',
     title: 'Популярные',
     icon: 'trending-up',
-    totalSkills: 16,
-    totalModules: 233
+    total_skills: 16,
+    total_modules: 233
   },
   {
     id: '2',
     title: 'Финансовые основы',
     icon: 'sun',
-    totalSkills: 10,
-    totalModules: 120
+    total_skills: 10,
+    total_modules: 120
   },
   {
     id: '3',
     title: 'Основные этапы',
     icon: 'flag',
-    totalSkills: 8,
-    totalModules: 95
+    total_skills: 8,
+    total_modules: 95
   },
   {
     id: '4',
     title: 'Инвестирование',
     icon: 'clock',
-    totalSkills: 14,
-    totalModules: 185
+    total_skills: 14,
+    total_modules: 185
   },
   {
     id: '5',
     title: 'Карьера',
     icon: 'briefcase',
-    totalSkills: 12,
-    totalModules: 145
+    total_skills: 12,
+    total_modules: 145
   },
   {
     id: '6',
     title: 'Колледж',
     icon: 'at-sign',
-    totalSkills: 9,
-    totalModules: 110
+    total_skills: 9,
+    total_modules: 110
   },
   {
     id: '7',
     title: 'Управление рисками',
     icon: 'clock',
-    totalSkills: 11,
-    totalModules: 130
+    total_skills: 11,
+    total_modules: 130
   },
   {
     id: '8',
     title: 'Предпринимательство',
     icon: 'zap',
-    totalSkills: 13,
-    totalModules: 160
+    total_skills: 13,
+    total_modules: 160
   }
 ];
 

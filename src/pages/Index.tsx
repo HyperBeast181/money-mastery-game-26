@@ -1,5 +1,5 @@
 
-import { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
@@ -19,14 +19,15 @@ interface ModuleCardProps {
 }
 
 const ModuleCard: FC<ModuleCardProps> = ({ module, onClick }) => {
-  const Icon = LucideIcons[module.icon as keyof typeof LucideIcons] as LucideIcon;
+  // Get the icon component from lucide-react if it exists
+  const IconComponent = module.icon && (LucideIcons as any)[module.icon as string] as LucideIcon;
   
   return (
     <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:border-app-blue transition-all" onClick={onClick}>
       <div className="flex items-center mb-2">
-        {Icon && (
+        {IconComponent && (
           <div className="w-8 h-8 rounded-full bg-app-light-blue flex items-center justify-center mr-2">
-            <Icon size={16} className="text-app-blue" />
+            <IconComponent size={16} className="text-app-blue" />
           </div>
         )}
         <h3 className="font-semibold text-app-dark">{module.title}</h3>
@@ -121,9 +122,9 @@ const Index: FC = () => {
                 
                 <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
                   <div className="flex items-center mb-3">
-                    {LucideIcons[currentModule.icon as keyof typeof LucideIcons] && (
+                    {currentModule.icon && (LucideIcons as any)[currentModule.icon as string] && (
                       <div className="w-10 h-10 rounded-full bg-app-light-blue flex items-center justify-center mr-3">
-                        {React.createElement(LucideIcons[currentModule.icon as keyof typeof LucideIcons], { 
+                        {React.createElement((LucideIcons as any)[currentModule.icon as string], { 
                           size: 20, 
                           className: 'text-app-blue' 
                         })}
@@ -137,7 +138,7 @@ const Index: FC = () => {
                     </div>
                   </div>
                   
-                  <ProgressTracker progress={currentModule.progress} colorClass="bg-app-blue" />
+                  <ProgressTracker progress={currentModule.progress} />
                   
                   <div className="mt-4">
                     <button 
