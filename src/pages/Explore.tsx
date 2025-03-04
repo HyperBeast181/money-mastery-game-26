@@ -7,15 +7,17 @@ import CategoryButton from '../components/CategoryButton';
 import FeatureTip from '../components/FeatureTip';
 import LearningModule from '../components/LearningModule';
 import { supabase } from '../integrations/supabase/client';
-import { Category, Module, ModuleStatus } from '../types';
+import { Module, ModuleStatus } from '../types';
 import { currentUser } from '../data/modules';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '../hooks/use-toast';
 
 interface SimplifiedCategory {
   id: string;
   title: string;
   icon: string;
-  color: string;
+  color?: string;
+  total_skills?: number;
+  total_modules?: number;
 }
 
 const Explore: React.FC = () => {
@@ -50,22 +52,29 @@ const Explore: React.FC = () => {
           id: category.id,
           title: category.title,
           icon: category.icon,
-          color: category.color
+          color: 'bg-app-light-blue', // Добавляем цвет по умолчанию
+          total_skills: category.total_skills,
+          total_modules: category.total_modules
         })) || [];
 
         // Transform module data to match the expected format
-        const formattedModules = modulesData.map(module => ({
+        const formattedModules = modulesData?.map(module => ({
           ...module,
+          id: module.id,
+          title: module.title,
+          icon: module.icon,
+          category: module.category,
+          coins: module.coins || 0,
           status: (module.status || 'не начат') as ModuleStatus,
           progress: module.progress || 0,
           currentPart: module.current_part || 0,
           totalParts: module.total_parts || 1,
           timeEstimate: module.time_estimate || 5,
           participants: module.participants || 0
-        }));
+        })) || [];
         
         setCategories(simplifiedCategories);
-        setFeaturedModules(formattedModules);
+        setFeaturedModules(formattedModules as Module[]);
         setLoading(false);
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
@@ -108,9 +117,9 @@ const Explore: React.FC = () => {
         <h2 className="text-lg font-semibold text-app-dark mb-3">Происходит сейчас</h2>
         <div className="bg-white rounded-2xl p-4 shadow-sm mb-6">
           <FeatureTip 
+            id="daily-quiz"
             title="Ежедневная викторина"
             description="Проверьте свои знания и заработайте монеты!"
-            icon="🎯"
             onClick={() => navigate('/community')}
           />
         </div>

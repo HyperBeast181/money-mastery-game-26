@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider } from './components/ui/theme-provider';
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from './components/ui/toaster';
 import Index from './pages/Index';
 import LearningPath from './pages/LearningPath';
 import Profile from './pages/Profile';

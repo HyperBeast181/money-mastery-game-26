@@ -5,9 +5,9 @@ import { supabase } from '../integrations/supabase/client';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import LearningModule from '../components/LearningModule';
-import { Module, Category } from '../types';
+import { Module, Category, ModuleStatus } from '../types';
 import { currentUser } from '../data/modules';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '../hooks/use-toast';
 
 const CategoryView: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -36,24 +36,29 @@ const CategoryView: React.FC = () => {
           .from('modules')
           .select('*')
           .eq('category_id', categoryId)
-          .order('order');
+          .order('order_index');
 
         if (modulesError) throw modulesError;
 
-        setCategory(categoryData);
+        setCategory(categoryData as Category);
         
         // Приводим данные о модулях к нужному формату
         const formattedModules = modulesData.map(module => ({
           ...module,
-          status: module.status || 'не начат',
+          id: module.id,
+          title: module.title,
+          icon: module.icon,
+          category: module.category,
+          coins: module.coins || 0,
           progress: module.progress || 0,
           currentPart: module.current_part || 0,
           totalParts: module.total_parts || 1,
           timeEstimate: module.time_estimate || 5,
-          participants: module.participants || 0
+          participants: module.participants || 0,
+          status: (module.status || 'не начат') as ModuleStatus
         }));
         
-        setModules(formattedModules);
+        setModules(formattedModules as Module[]);
         setLoading(false);
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
@@ -78,6 +83,7 @@ const CategoryView: React.FC = () => {
         user={currentUser} 
         showBackButton={true} 
         onBackClick={handleBack}
+        title={category?.title}
       />
       
       <div className="p-4">
@@ -89,7 +95,9 @@ const CategoryView: React.FC = () => {
           <>
             <div className="mb-6">
               <h1 className="text-2xl font-bold text-app-dark">{category?.title}</h1>
-              <p className="text-gray-600">{category?.description}</p>
+              {category && 'description' in category && (
+                <p className="text-gray-600">{(category as any).description}</p>
+              )}
             </div>
             
             <div className="mb-4">

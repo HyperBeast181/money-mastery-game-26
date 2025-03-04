@@ -3,19 +3,23 @@ import React, { useState, useEffect } from 'react';
 import { X, ThumbsUp, Lightbulb } from 'lucide-react';
 
 interface FeatureTipProps {
-  id: string;
+  id?: string;
   title: string;
   description: string;
+  icon?: string;
   daysToWait?: number;
+  onClick?: () => void;
 }
 
 const FeatureTip: React.FC<FeatureTipProps> = ({ 
-  id, 
+  id = 'tip-1', 
   title, 
   description, 
-  daysToWait = 0 
+  icon,
+  daysToWait = 0,
+  onClick 
 }) => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   
   useEffect(() => {
     // Check if this tip has been dismissed before
@@ -23,6 +27,7 @@ const FeatureTip: React.FC<FeatureTipProps> = ({
     const dismissedTipsObj = JSON.parse(dismissedTips);
     
     if (dismissedTipsObj[id]) {
+      setVisible(false);
       return;
     }
     
@@ -35,13 +40,13 @@ const FeatureTip: React.FC<FeatureTipProps> = ({
         (new Date(now).getTime() - new Date(lastVisited).getTime()) / (1000 * 60 * 60 * 24)
       );
       
-      if (daysSinceLastVisit >= daysToWait) {
-        setVisible(true);
+      if (daysSinceLastVisit < daysToWait) {
+        setVisible(false);
       }
     } else {
       // First time visit
-      if (daysToWait === 0) {
-        setVisible(true);
+      if (daysToWait > 0) {
+        setVisible(false);
       }
     }
     
@@ -58,13 +63,22 @@ const FeatureTip: React.FC<FeatureTipProps> = ({
     dismissedTipsObj[id] = true;
     localStorage.setItem('dismissedTips', JSON.stringify(dismissedTipsObj));
   };
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
+  };
   
   if (!visible) return null;
   
   return (
-    <div className="fixed bottom-20 inset-x-4 bg-white rounded-xl shadow-lg p-4 border border-gray-200 animate-fade-in z-40">
+    <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-200 animate-fade-in" onClick={handleClick}>
       <button 
-        onClick={handleDismiss}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleDismiss();
+        }}
         className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
       >
         <X size={18} />
@@ -80,11 +94,14 @@ const FeatureTip: React.FC<FeatureTipProps> = ({
           <p className="text-sm text-app-text-light mb-3">{description}</p>
           
           <button 
-            onClick={handleDismiss}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDismiss();
+            }}
             className="text-sm text-app-blue font-medium flex items-center"
           >
             <ThumbsUp size={14} className="mr-1" />
-            Got it!
+            Понятно!
           </button>
         </div>
       </div>
