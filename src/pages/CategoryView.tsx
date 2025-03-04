@@ -5,7 +5,7 @@ import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import LearningModule from '../components/LearningModule';
 import { supabase } from '../integrations/supabase/client';
-import { Module, Category } from '../types';
+import { Module, Category, ModuleStatus } from '../types';
 import { currentUser } from '../data/modules';
 import { ChevronLeft, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -51,13 +51,13 @@ const CategoryView: FC = () => {
         setCategory(categoryData);
         setModules(modulesData.map(module => ({
           ...module,
-          status: module.status || 'не начат',
+          status: (module.status || 'не начат') as ModuleStatus,
           progress: module.progress || 0,
           currentPart: module.current_part || 0,
           totalParts: module.total_parts || 1,
           timeEstimate: module.time_estimate || 5,
           participants: module.participants || 0
-        })) || []);
+        })));
         
         setLoading(false);
       } catch (error) {
@@ -73,13 +73,15 @@ const CategoryView: FC = () => {
     
     fetchData();
   }, [categoryId, navigate, toast]);
+
+  const handleBack = () => navigate('/explore');
   
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <TopBar 
         user={currentUser} 
-        showBackButton 
-        onBackClick={() => navigate('/explore')}
+        showBackButton
+        onBack={handleBack}
       />
       
       <div className="p-4">
@@ -90,7 +92,7 @@ const CategoryView: FC = () => {
         ) : (
           <>
             <div className="flex items-center mb-4">
-              <button onClick={() => navigate('/explore')} className="mr-2">
+              <button onClick={handleBack} className="mr-2">
                 <ChevronLeft size={24} className="text-app-dark" />
               </button>
               <h1 className="text-2xl font-bold text-app-dark">{category?.title}</h1>
