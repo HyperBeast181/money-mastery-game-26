@@ -7,7 +7,7 @@ import CategoryButton from '../components/CategoryButton';
 import FeatureTip from '../components/FeatureTip';
 import LearningModule from '../components/LearningModule';
 import { supabase } from '../integrations/supabase/client';
-import { Module, ModuleStatus } from '../types';
+import { ModuleStatus } from '../types';
 import { currentUser } from '../data/modules';
 import { useToast } from '../hooks/use-toast';
 
@@ -20,7 +20,7 @@ interface SimplifiedCategory {
   total_modules?: number;
 }
 
-// Create a non-recursive module type to avoid deep type instantiation
+// Define a completely standalone type without any references to recursive types
 interface SimplifiedModule {
   id: string;
   title: string;
@@ -75,7 +75,8 @@ const Explore: React.FC = () => {
         })) || [];
 
         // Transform module data to match the expected format
-        const formattedModules = modulesData?.map(module => ({
+        // Explicitly type as SimplifiedModule[] to avoid recursive typing issues
+        const formattedModules: SimplifiedModule[] = modulesData?.map(module => ({
           id: module.id,
           title: module.title,
           icon: module.icon,
