@@ -58,7 +58,7 @@ const ProfileContent: React.FC<ProfileContentProps> = ({
   };
   
   return (
-    <div className="p-4 -mt-16">
+    <div className="pb-4">
       <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
         {renderView()}
       </div>

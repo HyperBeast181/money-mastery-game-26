@@ -81,8 +81,8 @@ const Profile: FC = () => {
             </button>
           </div>
           
-          {/* Tab content */}
-          <div className="p-5">
+          {/* Tab content with proper spacing */}
+          <div>
             {activeTab === 'profile' && <ProfileContent user={currentUser} />}
             {activeTab === 'notifications' && <NotificationsView onBack={handleBack} />}
             {activeTab === 'invite' && <InviteView user={currentUser} onBack={handleBack} />}

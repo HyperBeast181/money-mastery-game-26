@@ -1,10 +1,26 @@
 
 import { FC } from 'react';
-import { Module } from '../types';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ProgressTracker from './ProgressTracker';
 import * as LucideIcons from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
+
+// Define module type directly here to avoid type issues
+interface Module {
+  id: string;
+  title: string;
+  icon: string;
+  category: string;
+  category_id?: string;
+  coins: number;
+  progress: number;
+  totalParts: number;
+  currentPart: number;
+  timeEstimate: number;
+  participants?: number;
+  status: 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
+  description?: string;
+}
 
 interface LearningModuleProps {
   module: Module;
@@ -99,7 +115,7 @@ const LearningModule: FC<LearningModuleProps> = ({ module, index }) => {
           <div className="mt-4 flex justify-between gap-3">
             <button 
               onClick={handleModuleClick}
-              className="bg-gray-100 text-app-text font-medium text-sm py-3 rounded-full w-full"
+              className="bg-gray-100 text-gray-700 font-medium text-sm py-3 rounded-full w-full"
             >
               Просмотр
             </button>

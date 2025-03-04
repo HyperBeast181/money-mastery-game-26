@@ -7,7 +7,6 @@ import CategoryButton from '../components/CategoryButton';
 import FeatureTip from '../components/FeatureTip';
 import LearningModule from '../components/LearningModule';
 import { supabase } from '../integrations/supabase/client';
-import { ModuleStatus } from '../types';
 import { currentUser } from '../data/modules';
 import { useToast } from '../hooks/use-toast';
 
@@ -20,7 +19,7 @@ interface SimplifiedCategory {
   total_modules?: number;
 }
 
-// Define a completely standalone type without any references to other types
+// Define a completely standalone type without any external references
 interface SimplifiedModule {
   id: string;
   title: string;
@@ -69,32 +68,33 @@ const Explore: React.FC = () => {
           id: category.id,
           title: category.title,
           icon: category.icon,
-          color: 'bg-app-light-blue', // Добавляем цвет по умолчанию
+          color: category.color || 'bg-app-light-blue', // Ensure color is always defined
           total_skills: category.total_skills,
           total_modules: category.total_modules
         })) || [];
 
-        // Transform module data to match the expected format
-        // Explicitly type as SimplifiedModule[] to avoid recursive typing issues
-        const formattedModules = modulesData?.map(module => {
-          const simplifiedModule: SimplifiedModule = {
+        // Transform module data to match the expected format with explicit typing
+        const simplifiedModules: SimplifiedModule[] = modulesData?.map(module => {
+          // Create a status value with literal type
+          const status = (module.status || 'не начат') as 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
+          
+          return {
             id: module.id,
             title: module.title,
             icon: module.icon,
             category: module.category,
             coins: module.coins || 0,
-            status: (module.status || 'не начат') as ModuleStatus,
+            status: status,
             progress: module.progress || 0,
             currentPart: module.current_part || 0,
             totalParts: module.total_parts || 1,
             timeEstimate: module.time_estimate || 5,
             participants: module.participants || 0
           };
-          return simplifiedModule;
         }) || [];
         
         setCategories(simplifiedCategories);
-        setFeaturedModules(formattedModules);
+        setFeaturedModules(simplifiedModules);
         setLoading(false);
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);

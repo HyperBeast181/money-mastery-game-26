@@ -3,6 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Add global CSS variables for app colors */
+:root {
+  --app-blue: #377DFF;
+  --app-light-blue: #EDF3FF;
+  --app-dark: #1A1F2C;
+  --app-text-light: #6E7889;
+  --app-yellow: #FFCC00;
+  --app-red: #FF4545;
+}
+
 /* Add this to your existing CSS file */
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
@@ -13,4 +23,34 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+}
+
+/* Fix for hover scale animation */
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* Animation classes */
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Fix layout issues */
+.profile-content {
+  margin-top: -2rem;
 }
