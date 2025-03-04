@@ -36,6 +36,11 @@ const Profile: FC = () => {
     });
   };
   
+  // Function to return to the profile tab
+  const handleBack = () => {
+    setActiveTab('profile');
+  };
+  
   return (
     <div className="min-h-screen bg-gray-50">
       <ProfileHeader user={currentUser} />
@@ -79,10 +84,10 @@ const Profile: FC = () => {
           {/* Tab content */}
           <div className="p-5">
             {activeTab === 'profile' && <ProfileContent user={currentUser} />}
-            {activeTab === 'notifications' && <NotificationsView />}
-            {activeTab === 'invite' && <InviteView />}
-            {activeTab === 'faq' && <FAQView />}
-            {activeTab === 'settings' && <SettingsView />}
+            {activeTab === 'notifications' && <NotificationsView onBack={handleBack} />}
+            {activeTab === 'invite' && <InviteView user={currentUser} onBack={handleBack} />}
+            {activeTab === 'faq' && <FAQView onBack={handleBack} />}
+            {activeTab === 'settings' && <SettingsView onBack={handleBack} />}
           </div>
         </div>
       </div>
