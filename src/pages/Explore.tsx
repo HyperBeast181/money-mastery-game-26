@@ -20,9 +20,14 @@ interface SimplifiedCategory {
   total_modules?: number;
 }
 
+// Create a simpler module type to avoid deep type instantiation
+interface SimplifiedModule extends Omit<Module, 'lessons'> {
+  lessons?: any[]; // Use a simpler type instead of the recursive definition
+}
+
 const Explore: React.FC = () => {
   const [categories, setCategories] = useState<SimplifiedCategory[]>([]);
-  const [featuredModules, setFeaturedModules] = useState<Module[]>([]);
+  const [featuredModules, setFeaturedModules] = useState<SimplifiedModule[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -59,7 +64,6 @@ const Explore: React.FC = () => {
 
         // Transform module data to match the expected format
         const formattedModules = modulesData?.map(module => ({
-          ...module,
           id: module.id,
           title: module.title,
           icon: module.icon,
@@ -74,7 +78,7 @@ const Explore: React.FC = () => {
         })) || [];
         
         setCategories(simplifiedCategories);
-        setFeaturedModules(formattedModules as Module[]);
+        setFeaturedModules(formattedModules as SimplifiedModule[]);
         setLoading(false);
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
@@ -105,7 +109,6 @@ const Explore: React.FC = () => {
           {categories.map((category) => (
             <CategoryButton 
               key={category.id}
-              id={category.id}
               title={category.title}
               icon={category.icon}
               color={category.color}
