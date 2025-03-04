@@ -20,7 +20,7 @@ interface SimplifiedCategory {
   total_modules?: number;
 }
 
-// Define a completely standalone type without any references to recursive types
+// Define a completely standalone type without any references to other types
 interface SimplifiedModule {
   id: string;
   title: string;
@@ -33,7 +33,7 @@ interface SimplifiedModule {
   currentPart: number;
   timeEstimate: number;
   participants?: number;
-  status: ModuleStatus;
+  status: 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
   description?: string;
 }
 
@@ -76,19 +76,22 @@ const Explore: React.FC = () => {
 
         // Transform module data to match the expected format
         // Explicitly type as SimplifiedModule[] to avoid recursive typing issues
-        const formattedModules: SimplifiedModule[] = modulesData?.map(module => ({
-          id: module.id,
-          title: module.title,
-          icon: module.icon,
-          category: module.category,
-          coins: module.coins || 0,
-          status: (module.status || 'не начат') as ModuleStatus,
-          progress: module.progress || 0,
-          currentPart: module.current_part || 0,
-          totalParts: module.total_parts || 1,
-          timeEstimate: module.time_estimate || 5,
-          participants: module.participants || 0
-        })) || [];
+        const formattedModules = modulesData?.map(module => {
+          const simplifiedModule: SimplifiedModule = {
+            id: module.id,
+            title: module.title,
+            icon: module.icon,
+            category: module.category,
+            coins: module.coins || 0,
+            status: (module.status || 'не начат') as ModuleStatus,
+            progress: module.progress || 0,
+            currentPart: module.current_part || 0,
+            totalParts: module.total_parts || 1,
+            timeEstimate: module.time_estimate || 5,
+            participants: module.participants || 0
+          };
+          return simplifiedModule;
+        }) || [];
         
         setCategories(simplifiedCategories);
         setFeaturedModules(formattedModules);
