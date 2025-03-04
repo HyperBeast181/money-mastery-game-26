@@ -11,8 +11,15 @@ import { Category, Module, ModuleStatus } from '../types';
 import { currentUser } from '../data/modules';
 import { useToast } from '@/hooks/use-toast';
 
+interface SimplifiedCategory {
+  id: string;
+  title: string;
+  icon: string;
+  color: string;
+}
+
 const Explore: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<SimplifiedCategory[]>([]);
   const [featuredModules, setFeaturedModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -38,8 +45,16 @@ const Explore: React.FC = () => {
 
         if (modulesError) throw modulesError;
 
-        setCategories(categoriesData || []);
-        setFeaturedModules(modulesData.map(module => ({
+        // Transform category data to match the expected format
+        const simplifiedCategories = categoriesData?.map(category => ({
+          id: category.id,
+          title: category.title,
+          icon: category.icon,
+          color: category.color
+        })) || [];
+
+        // Transform module data to match the expected format
+        const formattedModules = modulesData.map(module => ({
           ...module,
           status: (module.status || 'не начат') as ModuleStatus,
           progress: module.progress || 0,
@@ -47,8 +62,10 @@ const Explore: React.FC = () => {
           totalParts: module.total_parts || 1,
           timeEstimate: module.time_estimate || 5,
           participants: module.participants || 0
-        })));
+        }));
         
+        setCategories(simplifiedCategories);
+        setFeaturedModules(formattedModules);
         setLoading(false);
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
@@ -79,7 +96,10 @@ const Explore: React.FC = () => {
           {categories.map((category) => (
             <CategoryButton 
               key={category.id}
-              category={category}
+              id={category.id}
+              title={category.title}
+              icon={category.icon}
+              color={category.color}
               onClick={() => handleCategoryClick(category.id)}
             />
           ))}
@@ -90,9 +110,8 @@ const Explore: React.FC = () => {
           <FeatureTip 
             title="Ежедневная викторина"
             description="Проверьте свои знания и заработайте монеты!"
-            buttonText="Участвовать"
-            onClick={() => navigate('/community')}
             icon="🎯"
+            onClick={() => navigate('/community')}
           />
         </div>
         
