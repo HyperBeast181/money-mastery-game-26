@@ -20,9 +20,21 @@ interface SimplifiedCategory {
   total_modules?: number;
 }
 
-// Create a simpler module type to avoid deep type instantiation
-interface SimplifiedModule extends Omit<Module, 'lessons'> {
-  lessons?: any[]; // Use a simpler type instead of the recursive definition
+// Create a non-recursive module type to avoid deep type instantiation
+interface SimplifiedModule {
+  id: string;
+  title: string;
+  icon: string;
+  category: string;
+  category_id?: string;
+  coins: number;
+  progress: number;
+  totalParts: number;
+  currentPart: number;
+  timeEstimate: number;
+  participants?: number;
+  status: ModuleStatus;
+  description?: string;
 }
 
 const Explore: React.FC = () => {
@@ -78,7 +90,7 @@ const Explore: React.FC = () => {
         })) || [];
         
         setCategories(simplifiedCategories);
-        setFeaturedModules(formattedModules as SimplifiedModule[]);
+        setFeaturedModules(formattedModules);
         setLoading(false);
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
