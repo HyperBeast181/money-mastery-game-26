@@ -11,7 +11,7 @@ const LearningPath: FC = () => {
   const [activeTab, setActiveTab] = useState<'skills' | 'completed'>('skills');
   
   const activeModules = modules.filter(module => 
-    activeTab === 'skills' || (activeTab === 'completed' && module.status === 'completed')
+    activeTab === 'skills' || (activeTab === 'completed' && module.status === 'завершено')
   );
 
   return (

@@ -12,11 +12,21 @@ import InviteView from './InviteView';
 
 interface ProfileContentProps {
   user: User;
+  onNotificationsClick?: () => void;
+  onSettingsClick?: () => void;
+  onFaqClick?: () => void;
+  onInviteClick?: () => void;
 }
 
 type View = 'main' | 'notifications' | 'settings' | 'faqs' | 'invite';
 
-const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
+const ProfileContent: React.FC<ProfileContentProps> = ({ 
+  user,
+  onNotificationsClick,
+  onSettingsClick,
+  onFaqClick,
+  onInviteClick
+}) => {
   const [activeView, setActiveView] = useState<View>('main');
   
   const handleBack = () => {

@@ -1,5 +1,6 @@
 
 import { FC, useState } from 'react';
+import { currentUser } from '../data/modules';
 import NavBar from '../components/NavBar';
 import ProfileContent from '../components/profile/ProfileContent';
 import NotificationsView from '../components/profile/NotificationsView';
@@ -17,6 +18,7 @@ const Profile: FC = () => {
       case 'profile':
         return (
           <ProfileContent 
+            user={currentUser}
             onNotificationsClick={() => setActiveTab('notifications')}
             onSettingsClick={() => setActiveTab('settings')}
             onFaqClick={() => setActiveTab('faq')}
@@ -24,13 +26,13 @@ const Profile: FC = () => {
           />
         );
       case 'notifications':
-        return <NotificationsView onBackClick={() => setActiveTab('profile')} />;
+        return <NotificationsView onBack={() => setActiveTab('profile')} />;
       case 'invite':
-        return <InviteView onBackClick={() => setActiveTab('profile')} />;
+        return <InviteView user={currentUser} onBack={() => setActiveTab('profile')} />;
       case 'faq':
-        return <FAQView onBackClick={() => setActiveTab('profile')} />;
+        return <FAQView onBack={() => setActiveTab('profile')} />;
       case 'settings':
-        return <SettingsView onBackClick={() => setActiveTab('profile')} />;
+        return <SettingsView onBack={() => setActiveTab('profile')} />;
       default:
         return null;
     }

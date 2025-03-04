@@ -16,44 +16,44 @@ const LearningModule: FC<LearningModuleProps> = ({ module, index }) => {
   const navigate = useNavigate();
   
   const handleModuleClick = () => {
-    if (module.status !== 'locked') {
+    if (module.status !== 'заблокировано') {
       navigate(`/module/${module.id}`);
     }
   };
   
   const getStatusButton = () => {
     switch(module.status) {
-      case 'not-started':
+      case 'не начат':
         return (
           <button 
             onClick={handleModuleClick}
             className="bg-app-light-blue text-app-blue font-medium text-sm py-3 rounded-full w-full"
           >
-            Start
+            Начать
           </button>
         );
-      case 'in-progress':
+      case 'в процессе':
         return (
           <button 
             onClick={handleModuleClick}
             className="bg-app-light-blue text-app-blue font-medium text-sm py-3 rounded-full w-full"
           >
-            Continue
+            Продолжить
           </button>
         );
-      case 'completed':
+      case 'завершено':
         return (
           <button 
             onClick={handleModuleClick}
             className="bg-green-100 text-green-600 font-medium text-sm py-3 rounded-full w-full"
           >
-            Completed
+            Завершено
           </button>
         );
-      case 'locked':
+      case 'заблокировано':
         return (
           <button className="bg-gray-100 text-gray-400 font-medium text-sm py-3 rounded-full w-full" disabled>
-            Locked
+            Заблокировано
           </button>
         );
     }
@@ -90,7 +90,7 @@ const LearningModule: FC<LearningModuleProps> = ({ module, index }) => {
           </div>
           
           <div className="flex justify-between items-center text-sm text-app-text-light mb-3">
-            <span>Module {module.currentPart} of {module.totalParts}</span>
+            <span>Модуль {module.currentPart} из {module.totalParts}</span>
             <span>{module.progress}%</span>
           </div>
           
@@ -101,7 +101,7 @@ const LearningModule: FC<LearningModuleProps> = ({ module, index }) => {
               onClick={handleModuleClick}
               className="bg-gray-100 text-app-text font-medium text-sm py-3 rounded-full w-full"
             >
-              View
+              Просмотр
             </button>
             
             {getStatusButton()}

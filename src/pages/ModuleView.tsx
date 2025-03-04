@@ -6,7 +6,7 @@ import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import ModuleDetail from '../components/ModuleDetail';
 import AchievementNotification from '../components/AchievementNotification';
-import { Module } from '../types';
+import { Module, ModuleStatus } from '../types';
 import { useToast } from '@/hooks/use-toast';
 
 const ModuleView: FC = () => {
@@ -35,11 +35,11 @@ const ModuleView: FC = () => {
   const handleUpdateProgress = (moduleId: string, newProgress: number) => {
     setModule(prevModule => {
       if (prevModule) {
-        const wasCompleted = prevModule.status === 'completed';
-        const newStatus = newProgress === 100 ? 'completed' : 'in-progress';
+        const wasCompleted = prevModule.status === 'завершено';
+        const newStatus: ModuleStatus = newProgress === 100 ? 'завершено' : 'в процессе';
         
         // Check if module was just completed
-        if (newStatus === 'completed' && !wasCompleted) {
+        if (newStatus === 'завершено' && !wasCompleted) {
           setShowAchievement(true);
         }
         

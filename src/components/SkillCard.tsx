@@ -25,31 +25,31 @@ const SkillCard: FC<SkillCardProps> = ({
     if (!showButtons) return null;
     
     switch(moduleStatus) {
-      case 'not-started':
+      case 'не начат':
         return (
           <button className="bg-app-light-blue text-app-blue font-medium text-sm px-8 py-2 rounded-full">
-            Start
+            Начать
           </button>
         );
-      case 'in-progress':
+      case 'в процессе':
         return (
           <button className="bg-app-light-blue text-app-blue font-medium text-sm px-8 py-2 rounded-full">
-            Continue
+            Продолжить
           </button>
         );
-      case 'completed':
+      case 'завершено':
         return (
           <button className="bg-app-light-blue text-green-600 font-medium text-sm px-8 py-2 rounded-full flex items-center">
             <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            Added
+            Добавлено
           </button>
         );
       default:
         return (
           <button className="bg-app-light-blue text-app-blue font-medium text-sm px-8 py-2 rounded-full flex items-center">
-            <span className="mr-1">Add</span>
+            <span className="mr-1">Добавить</span>
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
@@ -68,7 +68,7 @@ const SkillCard: FC<SkillCardProps> = ({
           <div>
             <h3 className="font-semibold text-app-dark">{module.title}</h3>
             <div className="text-sm text-app-text-light">
-              Module {module.currentPart} of {module.totalParts}
+              Модуль {module.currentPart} из {module.totalParts}
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@ const SkillCard: FC<SkillCardProps> = ({
       
       <div className="mt-4 flex justify-between items-center">
         <button className="bg-gray-100 text-app-text font-medium text-sm px-6 py-2 rounded-full">
-          View Skill
+          Посмотреть навык
         </button>
         
         {getActionButton()}

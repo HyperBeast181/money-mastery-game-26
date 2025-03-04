@@ -1,3 +1,4 @@
+
 export interface User {
   id: string;
   name: string;
@@ -20,6 +21,8 @@ export interface Badge {
   unlocked: boolean;
 }
 
+export type ModuleStatus = 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
+
 export interface Module {
   id: string;
   title: string;
@@ -31,7 +34,7 @@ export interface Module {
   currentPart: number;
   timeEstimate: number;
   participants?: number;
-  status: 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
+  status: ModuleStatus;
   lessons?: Lesson[];
 }
 

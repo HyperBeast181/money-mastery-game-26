@@ -18,8 +18,8 @@ const Index: FC = () => {
     (activeTab === 'education' && m.title.includes('College'))
   );
   
-  const inProgressModules = modules.filter(m => m.status === 'in-progress');
-  const completedModules = modules.filter(m => m.status === 'completed');
+  const inProgressModules = modules.filter(m => m.status === 'в процессе');
+  const completedModules = modules.filter(m => m.status === 'завершено');
   
   // Wave animation effect for dots
   const [wave, setWave] = useState<boolean>(false);

@@ -6,79 +6,76 @@ interface FAQViewProps {
   onBack: () => void;
 }
 
-// Mock FAQ data
-const faqs = [
+interface FAQ {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+const faqs: FAQ[] = [
   {
     id: '1',
-    question: 'Как зарабатывать монеты?',
-    answer: 'Вы можете зарабатывать монеты, завершая модули обучения, проходя тесты и участвуя в ежедневных активностях. Также монеты можно получить, пригласив друзей в приложение.',
-    category: 'general'
+    question: 'Что такое Zogo?',
+    answer: 'Zogo — это образовательное приложение, которое помогает вам изучать финансовую грамотность в интерактивной и увлекательной форме. Вы зарабатываете монеты, когда изучаете новые темы и проходите модули.'
   },
   {
     id: '2',
-    question: 'Как потратить монеты?',
-    answer: 'Монеты можно обменять на различные награды в разделе "Награды". В нём представлены подписки, скидки и другие предложения от наших партнёров.',
-    category: 'general'
+    question: 'Как зарабатывать монеты?',
+    answer: 'Вы можете зарабатывать монеты, завершая уроки, проходя тесты, поддерживая серию обучения, и приглашая друзей присоединиться к Zogo.'
   },
   {
     id: '3',
-    question: 'Что такое "Серия дней"?',
-    answer: 'Серия дней показывает, сколько дней подряд вы занимались в приложении. Поддерживайте серию, чтобы получать дополнительные бонусы!',
-    category: 'general'
+    question: 'Что можно делать с монетами?',
+    answer: 'Монеты можно обменивать на различные вознаграждения, включая подарочные карты, подписки и эксклюзивный контент.'
   },
   {
     id: '4',
     question: 'Как пригласить друзей?',
-    answer: 'Вы можете пригласить друзей через раздел "Пригласить друзей" в меню профиля. Поделитесь вашим реферальным кодом или отправьте приглашение через социальные сети.',
-    category: 'account'
+    answer: 'Вы можете пригласить друзей, поделившись своим уникальным реферальным кодом. Когда ваши друзья регистрируются с вашим кодом, вы оба получаете бонусные монеты.'
   },
   {
     id: '5',
-    question: 'Как изменить язык приложения?',
-    answer: 'Язык приложения можно изменить в разделе "Настройки" в меню профиля. Выберите нужный язык из списка доступных.',
-    category: 'account'
-  }
+    question: 'Как сбросить пароль?',
+    answer: 'Вы можете сбросить пароль, нажав на "Забыли пароль" на экране входа. Следуйте инструкциям в электронном письме, которое вы получите, чтобы создать новый пароль.'
+  },
 ];
 
 const FAQView: React.FC<FAQViewProps> = ({ onBack }) => {
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   
-  const toggleFAQ = (id: string) => {
-    setActiveId(activeId === id ? null : id);
+  const toggleExpanded = (id: string) => {
+    setExpandedId(expandedId === id ? null : id);
   };
   
   return (
-    <div>
-      <div className="p-4 border-b border-gray-100 flex items-center">
+    <div className="p-6">
+      <div className="flex items-center mb-6">
         <button onClick={onBack} className="mr-3">
-          <ChevronLeft size={24} />
+          <ChevronLeft size={24} className="text-app-dark" />
         </button>
-        <h2 className="text-xl font-bold">Вопросы и ответы</h2>
+        <h2 className="text-2xl font-bold text-app-dark">Часто задаваемые вопросы</h2>
       </div>
       
-      <div className="p-4">
-        <div className="divide-y divide-gray-100">
-          {faqs.map(faq => (
-            <div key={faq.id} className="py-4">
-              <button 
-                className="flex justify-between items-center w-full text-left font-medium"
-                onClick={() => toggleFAQ(faq.id)}
-              >
-                <span>{faq.question}</span>
-                {activeId === faq.id ? 
-                  <ChevronUp size={18} className="flex-shrink-0 text-gray-500" /> : 
-                  <ChevronDown size={18} className="flex-shrink-0 text-gray-500" />
-                }
-              </button>
-              
-              {activeId === faq.id && (
-                <div className="mt-2 text-gray-600 text-sm">
-                  {faq.answer}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+      <div className="space-y-4">
+        {faqs.map(faq => (
+          <div key={faq.id} className="border border-gray-200 rounded-xl overflow-hidden">
+            <button
+              className="w-full flex justify-between items-center p-4 text-left font-medium bg-white"
+              onClick={() => toggleExpanded(faq.id)}
+            >
+              {faq.question}
+              {expandedId === faq.id ? 
+                <ChevronUp size={20} className="text-app-text-light" /> : 
+                <ChevronDown size={20} className="text-app-text-light" />
+              }
+            </button>
+            {expandedId === faq.id && (
+              <div className="p-4 bg-gray-50 text-app-text-light">
+                {faq.answer}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
