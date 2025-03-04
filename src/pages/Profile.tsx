@@ -46,9 +46,9 @@ const Profile: FC = () => {
       <ProfileHeader user={currentUser} />
       
       <div className="px-4 pb-20">
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden -mt-16 mb-4">
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden -mt-16">
           {/* Tabs menu */}
-          <div className="flex overflow-x-auto p-2 gap-2 border-b">
+          <div className="flex overflow-x-auto p-2 gap-2 border-b no-scrollbar">
             <button 
               onClick={() => handleTabChange('profile')} 
               className={`px-4 py-2 rounded-lg whitespace-nowrap text-sm font-medium ${activeTab === 'profile' ? 'bg-app-blue text-white' : 'text-app-text-light'}`}

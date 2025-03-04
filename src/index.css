@@ -1,79 +1,12 @@
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  /* App colors */
-  --app-blue: #3b82f6;
-  --app-light-blue: #dbeafe;
-  --app-dark: #1f2937;
-  --app-text-light: #6b7280;
-  --app-yellow: #fcd34d;
-  --app-red: #ef4444;
-}
-
-@layer base {
-  body {
-    @apply text-app-dark antialiased overflow-x-hidden;
-  }
-}
-
-@layer components {
-  .tab-button {
-    @apply py-2 px-4 text-sm font-medium rounded-full text-app-text-light transition-colors;
+/* Add this to your existing CSS file */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
   
-  .tab-button.active {
-    @apply bg-white text-app-dark shadow-sm;
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
-}
-
-@keyframes wave {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-3px);
-  }
-}
-
-@keyframes falling {
-  from {
-    top: -5%;
-    opacity: 1;
-  }
-  to {
-    top: 100%;
-    opacity: 0;
-  }
-}
-
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-wave {
-  animation: wave 1s ease infinite;
-}
-
-.animate-falling {
-  animation: falling 3s linear forwards;
-}
-
-.animate-rotation {
-  animation: rotation 1s linear infinite;
-}
-
-.hover-scale {
-  transition: transform 0.2s ease;
-}
-
-.hover-scale:hover {
-  transform: scale(1.03);
 }

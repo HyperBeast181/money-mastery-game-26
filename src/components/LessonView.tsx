@@ -41,14 +41,14 @@ const LessonView: FC<LessonViewProps> = ({ lesson, onComplete, onBack }) => {
     if (currentQuestion && optionId === currentQuestion.correctOptionId) {
       setCorrectAnswers(prev => prev + 1);
       toast({
-        title: t('correct'),
-        description: t('correctAnswer'),
+        title: "Правильно!",
+        description: "Отличная работа! Продолжайте в том же духе!",
         variant: "default",
       });
     } else {
       toast({
-        title: t('incorrect'),
-        description: t('incorrectAnswer'),
+        title: "Неправильно",
+        description: "К сожалению, ответ неверный. Попробуйте еще раз!",
         variant: "destructive",
       });
     }
@@ -81,7 +81,7 @@ const LessonView: FC<LessonViewProps> = ({ lesson, onComplete, onBack }) => {
         onClick={onBack}
         className="flex items-center text-app-blue mb-4 font-medium"
       >
-        <ChevronLeft size={20} /> {t('back')}
+        <ChevronLeft size={20} /> Назад
       </button>
 
       {!showQuiz ? (
@@ -92,7 +92,7 @@ const LessonView: FC<LessonViewProps> = ({ lesson, onComplete, onBack }) => {
             onClick={handleStartQuiz}
             className="w-full bg-app-blue text-white font-medium py-3 rounded-full"
           >
-            {t('startQuiz')}
+            Начать тест
           </button>
         </div>
       ) : completedQuiz ? (
@@ -100,22 +100,22 @@ const LessonView: FC<LessonViewProps> = ({ lesson, onComplete, onBack }) => {
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle size={40} className="text-green-600" />
           </div>
-          <h2 className="text-2xl font-bold text-app-dark mb-2">{t('quizCompleted')}</h2>
+          <h2 className="text-2xl font-bold text-app-dark mb-2">Тест завершен!</h2>
           <p className="text-app-text-light mb-4">
-            {t('gotCorrect', [correctAnswers, quiz?.questions.length])}
+            Вы ответили правильно на {correctAnswers} из {quiz?.questions.length} вопросов
           </p>
           <button 
             onClick={onBack}
             className="w-full bg-app-blue text-white font-medium py-3 rounded-full"
           >
-            {t('continueLearning')}
+            Продолжить обучение
           </button>
         </div>
       ) : (
         <div>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-app-dark">{t('question')} {currentQuestionIndex + 1}/{quiz?.questions.length}</h3>
-            <span className="text-sm text-app-text-light">{correctAnswers} {t('correct')}</span>
+            <h3 className="text-lg font-semibold text-app-dark">Вопрос {currentQuestionIndex + 1}/{quiz?.questions.length}</h3>
+            <span className="text-sm text-app-text-light">{correctAnswers} правильно</span>
           </div>
           
           <div className="bg-gray-50 p-4 rounded-xl mb-4">
@@ -158,7 +158,7 @@ const LessonView: FC<LessonViewProps> = ({ lesson, onComplete, onBack }) => {
               onClick={handleNextQuestion}
               className="w-full bg-app-blue text-white font-medium py-3 rounded-full flex items-center justify-center"
             >
-              {isLastQuestion ? t('completeQuiz') : t('nextQuestion')} <ChevronRight size={20} />
+              {isLastQuestion ? "Завершить тест" : "Следующий вопрос"} <ChevronRight size={20} />
             </button>
           )}
         </div>
