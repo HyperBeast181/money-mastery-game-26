@@ -19,11 +19,14 @@ interface ModuleCardProps {
 }
 
 const ModuleCard: FC<ModuleCardProps> = ({ module, onClick }) => {
-  // Get the icon component from lucide-react if it exists
+  // Получаем компонент иконки из lucide-react если он существует
   const IconComponent = module.icon && (LucideIcons as any)[module.icon as string] as LucideIcon;
   
   return (
-    <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:border-app-blue transition-all" onClick={onClick}>
+    <div 
+      className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:border-app-blue transition-all hover-scale"
+      onClick={onClick}
+    >
       <div className="flex items-center mb-2">
         {IconComponent && (
           <div className="w-8 h-8 rounded-full bg-app-light-blue flex items-center justify-center mr-2">
@@ -120,7 +123,7 @@ const Index: FC = () => {
                   </Link>
                 </div>
                 
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover-scale">
                   <div className="flex items-center mb-3">
                     {currentModule.icon && (LucideIcons as any)[currentModule.icon as string] && (
                       <div className="w-10 h-10 rounded-full bg-app-light-blue flex items-center justify-center mr-3">
@@ -193,6 +196,26 @@ const Index: FC = () => {
               </div>
             )}
             
+            {moreForYouModules.length > 0 && (
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-3">
+                  <h2 className="text-xl font-bold text-app-dark">Больше для вас</h2>
+                  <Link to="/explore" className="text-app-blue flex items-center text-sm font-medium">
+                    Все <ChevronRight size={16} />
+                  </Link>
+                </div>
+                
+                <div className="space-y-3">
+                  {moreForYouModules.map(module => (
+                    <SkillCard 
+                      key={module.id}
+                      module={module}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+            
             {completedModules.length > 0 && (
               <div className="mb-6">
                 <div className="flex justify-between items-center mb-3">
@@ -213,26 +236,6 @@ const Index: FC = () => {
                   >
                     Посмотреть завершенные
                   </button>
-                </div>
-              </div>
-            )}
-            
-            {moreForYouModules.length > 0 && (
-              <div className="mb-6">
-                <div className="flex justify-between items-center mb-3">
-                  <h2 className="text-xl font-bold text-app-dark">Больше для вас</h2>
-                  <Link to="/explore" className="text-app-blue flex items-center text-sm font-medium">
-                    Все <ChevronRight size={16} />
-                  </Link>
-                </div>
-                
-                <div className="space-y-3">
-                  {moreForYouModules.map(module => (
-                    <SkillCard 
-                      key={module.id}
-                      module={module}
-                    />
-                  ))}
                 </div>
               </div>
             )}

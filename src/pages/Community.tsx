@@ -1,17 +1,40 @@
 
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import { leaderboardUsers, triviaEvents, currentUser } from '../data/modules';
 import { Plus } from 'lucide-react';
+import TriviaQuiz from '../components/community/TriviaQuiz';
+import CommunityRules from '../components/community/CommunityRules';
+import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '../context/LanguageContext';
 
 const Community: FC = () => {
   const [activeTab, setActiveTab] = useState<'party' | 'fairwin' | 'friends'>('party');
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [showRules, setShowRules] = useState(false);
+  const [userCoins, setUserCoins] = useState(currentUser.coins);
+  const { toast } = useToast();
+  const { language } = useLanguage();
+  
+  const handleQuizComplete = (score: number) => {
+    const coinsEarned = Math.floor(score / 10);
+    setUserCoins(prev => prev + coinsEarned);
+    
+    // В реальном приложении здесь будет запрос к API для обновления монет пользователя
+    toast({
+      title: language === 'en' ? 'Coins Added!' : 'Монеты добавлены!',
+      description: language === 'en' ? `${coinsEarned} coins have been added to your account.` : `${coinsEarned} монет добавлено на ваш счёт.`,
+      variant: 'default',
+    });
+    
+    setShowQuiz(false);
+  };
   
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <div className="bg-app-blue text-white">
-        <TopBar user={currentUser} title="Сообщество" />
+        <TopBar user={{...currentUser, coins: userCoins}} title="Сообщество" />
         
         <div className="p-4 flex items-center justify-between">
           <div className="flex space-x-2 overflow-x-auto pb-2 w-full">
@@ -38,7 +61,10 @@ const Community: FC = () => {
             </button>
           </div>
           
-          <button className="ml-2 px-4 py-1 rounded-full bg-white/10 font-medium text-sm whitespace-nowrap">
+          <button 
+            className="ml-2 px-4 py-1 rounded-full bg-white/10 font-medium text-sm whitespace-nowrap"
+            onClick={() => setShowRules(true)}
+          >
             Правила
           </button>
         </div>
@@ -116,7 +142,10 @@ const Community: FC = () => {
               </div>
             </div>
             
-            <button className="w-full bg-app-blue text-white font-semibold py-4 rounded-xl shadow-md hover:bg-app-blue/90 transition-colors">
+            <button 
+              className="w-full bg-app-blue text-white font-semibold py-4 rounded-xl shadow-md hover:bg-app-blue/90 transition-colors"
+              onClick={() => setShowQuiz(true)}
+            >
               Присоединиться к Викторине
             </button>
             
@@ -143,6 +172,9 @@ const Community: FC = () => {
           </div>
         )}
       </div>
+      
+      {showQuiz && <TriviaQuiz onClose={() => setShowQuiz(false)} onComplete={handleQuizComplete} />}
+      {showRules && <CommunityRules onClose={() => setShowRules(false)} />}
       
       <NavBar />
     </div>

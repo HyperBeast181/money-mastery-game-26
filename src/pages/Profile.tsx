@@ -1,48 +1,31 @@
-
 import { FC, useState } from 'react';
 import { currentUser } from '../data/modules';
 import NavBar from '../components/NavBar';
-import ProfileContent from '../components/profile/ProfileContent';
-import NotificationsView from '../components/profile/NotificationsView';
-import InviteView from '../components/profile/InviteView';
-import FAQView from '../components/profile/FAQView';
-import SettingsView from '../components/profile/SettingsView';
+import ProfileHeader from '../components/profile/ProfileHeader';
 
 type ActiveTab = 'profile' | 'notifications' | 'invite' | 'faq' | 'settings';
 
 const Profile: FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('profile');
   
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'profile':
-        return (
-          <ProfileContent 
-            user={currentUser}
-            onNotificationsClick={() => setActiveTab('notifications')}
-            onSettingsClick={() => setActiveTab('settings')}
-            onFaqClick={() => setActiveTab('faq')}
-            onInviteClick={() => setActiveTab('invite')}
-          />
-        );
-      case 'notifications':
-        return <NotificationsView onBack={() => setActiveTab('profile')} />;
-      case 'invite':
-        return <InviteView user={currentUser} onBack={() => setActiveTab('profile')} />;
-      case 'faq':
-        return <FAQView onBack={() => setActiveTab('profile')} />;
-      case 'settings':
-        return <SettingsView onBack={() => setActiveTab('profile')} />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {renderContent()}
+      <ProfileHeader user={currentUser} />
       
-      {activeTab === 'profile' && <NavBar />}
+      <div className="p-4 -mt-16">
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div className="p-5">
+            {activeTab === 'profile' && (
+              <>
+                <h2 className="text-2xl font-bold text-app-dark mb-4">Профиль</h2>
+                <p className="text-app-text-light">Здесь будет содержимое профиля</p>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      <NavBar />
     </div>
   );
 };
