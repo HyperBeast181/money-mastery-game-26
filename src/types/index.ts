@@ -28,6 +28,7 @@ export interface Module {
   title: string;
   icon: string;
   category: string;
+  category_id?: string;
   coins: number;
   progress: number;
   totalParts: number;
@@ -36,6 +37,7 @@ export interface Module {
   participants?: number;
   status: ModuleStatus;
   lessons?: Lesson[];
+  description?: string;
 }
 
 export interface Lesson {
@@ -71,8 +73,8 @@ export interface Category {
   id: string;
   title: string;
   icon: string;
-  totalSkills: number;
-  totalModules: number;
+  total_skills: number;
+  total_modules: number;
 }
 
 export interface LeaderboardUser {

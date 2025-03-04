@@ -1,5 +1,6 @@
 
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Module } from '../types';
 import ProgressTracker from './ProgressTracker';
 import { LucideIcon } from 'lucide-react';
@@ -20,6 +21,11 @@ const SkillCard: FC<SkillCardProps> = ({
 }) => {
   const Icon = LucideIcons[module.icon as keyof typeof LucideIcons] as LucideIcon;
   const moduleStatus = module.status;
+  const navigate = useNavigate();
+  
+  const handleClick = () => {
+    navigate(`/module/${module.id}`);
+  };
   
   const getActionButton = () => {
     if (!showButtons) return null;
@@ -27,19 +33,28 @@ const SkillCard: FC<SkillCardProps> = ({
     switch(moduleStatus) {
       case 'не начат':
         return (
-          <button className="bg-app-light-blue text-app-blue font-medium text-sm px-8 py-2 rounded-full">
+          <button 
+            onClick={handleClick}
+            className="bg-app-light-blue text-app-blue font-medium text-sm px-8 py-2 rounded-full"
+          >
             Начать
           </button>
         );
       case 'в процессе':
         return (
-          <button className="bg-app-light-blue text-app-blue font-medium text-sm px-8 py-2 rounded-full">
+          <button 
+            onClick={handleClick}
+            className="bg-app-light-blue text-app-blue font-medium text-sm px-8 py-2 rounded-full"
+          >
             Продолжить
           </button>
         );
       case 'завершено':
         return (
-          <button className="bg-app-light-blue text-green-600 font-medium text-sm px-8 py-2 rounded-full flex items-center">
+          <button 
+            onClick={handleClick}
+            className="bg-app-light-blue text-green-600 font-medium text-sm px-8 py-2 rounded-full flex items-center"
+          >
             <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
@@ -48,7 +63,10 @@ const SkillCard: FC<SkillCardProps> = ({
         );
       default:
         return (
-          <button className="bg-app-light-blue text-app-blue font-medium text-sm px-8 py-2 rounded-full flex items-center">
+          <button 
+            onClick={handleClick}
+            className="bg-app-light-blue text-app-blue font-medium text-sm px-8 py-2 rounded-full flex items-center"
+          >
             <span className="mr-1">Добавить</span>
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -59,7 +77,10 @@ const SkillCard: FC<SkillCardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4 animate-scale-in hover-scale">
+    <div 
+      className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4 animate-scale-in hover-scale cursor-pointer"
+      onClick={handleClick}
+    >
       <div className="flex justify-between items-start">
         <div className="flex items-center">
           <div className="w-10 h-10 rounded-full bg-app-light-blue flex items-center justify-center text-app-blue mr-3">

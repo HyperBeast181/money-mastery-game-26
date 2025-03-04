@@ -9,7 +9,355 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      categories: {
+        Row: {
+          icon: string
+          id: string
+          title: string
+          total_modules: number | null
+          total_skills: number | null
+        }
+        Insert: {
+          icon: string
+          id?: string
+          title: string
+          total_modules?: number | null
+          total_skills?: number | null
+        }
+        Update: {
+          icon?: string
+          id?: string
+          title?: string
+          total_modules?: number | null
+          total_skills?: number | null
+        }
+        Relationships: []
+      }
+      leaderboard_users: {
+        Row: {
+          avatar: string
+          coins: number | null
+          id: string
+          name: string
+          position: number
+        }
+        Insert: {
+          avatar: string
+          coins?: number | null
+          id?: string
+          name: string
+          position: number
+        }
+        Update: {
+          avatar?: string
+          coins?: number | null
+          id?: string
+          name?: string
+          position?: number
+        }
+        Relationships: []
+      }
+      lessons: {
+        Row: {
+          completed: boolean | null
+          content: string
+          id: string
+          module_id: string | null
+          order_index: number | null
+          title: string
+        }
+        Insert: {
+          completed?: boolean | null
+          content: string
+          id?: string
+          module_id?: string | null
+          order_index?: number | null
+          title: string
+        }
+        Update: {
+          completed?: boolean | null
+          content?: string
+          id?: string
+          module_id?: string | null
+          order_index?: number | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lessons_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      modules: {
+        Row: {
+          category: string
+          category_id: string | null
+          coins: number | null
+          current_part: number | null
+          description: string | null
+          icon: string
+          id: string
+          order_index: number | null
+          participants: number | null
+          progress: number | null
+          status: string | null
+          time_estimate: number | null
+          title: string
+          total_parts: number | null
+        }
+        Insert: {
+          category: string
+          category_id?: string | null
+          coins?: number | null
+          current_part?: number | null
+          description?: string | null
+          icon: string
+          id?: string
+          order_index?: number | null
+          participants?: number | null
+          progress?: number | null
+          status?: string | null
+          time_estimate?: number | null
+          title: string
+          total_parts?: number | null
+        }
+        Update: {
+          category?: string
+          category_id?: string | null
+          coins?: number | null
+          current_part?: number | null
+          description?: string | null
+          icon?: string
+          id?: string
+          order_index?: number | null
+          participants?: number | null
+          progress?: number | null
+          status?: string | null
+          time_estimate?: number | null
+          title?: string
+          total_parts?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "modules_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      options: {
+        Row: {
+          id: string
+          question_id: string | null
+          text: string
+        }
+        Insert: {
+          id?: string
+          question_id?: string | null
+          text: string
+        }
+        Update: {
+          id?: string
+          question_id?: string | null
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "options_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar: string | null
+          coins: number | null
+          completed_modules: number | null
+          hearts: number | null
+          id: string
+          joined_date: string | null
+          name: string
+          referral_code: string | null
+          streak: number | null
+          total_earned: number | null
+          user_id: string | null
+          xp: number | null
+        }
+        Insert: {
+          avatar?: string | null
+          coins?: number | null
+          completed_modules?: number | null
+          hearts?: number | null
+          id?: string
+          joined_date?: string | null
+          name: string
+          referral_code?: string | null
+          streak?: number | null
+          total_earned?: number | null
+          user_id?: string | null
+          xp?: number | null
+        }
+        Update: {
+          avatar?: string | null
+          coins?: number | null
+          completed_modules?: number | null
+          hearts?: number | null
+          id?: string
+          joined_date?: string | null
+          name?: string
+          referral_code?: string | null
+          streak?: number | null
+          total_earned?: number | null
+          user_id?: string | null
+          xp?: number | null
+        }
+        Relationships: []
+      }
+      questions: {
+        Row: {
+          correct_option_id: string | null
+          explanation: string | null
+          id: string
+          quiz_id: string | null
+          text: string
+        }
+        Insert: {
+          correct_option_id?: string | null
+          explanation?: string | null
+          id?: string
+          quiz_id?: string | null
+          text: string
+        }
+        Update: {
+          correct_option_id?: string | null
+          explanation?: string | null
+          id?: string
+          quiz_id?: string | null
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_correct_option"
+            columns: ["correct_option_id"]
+            isOneToOne: false
+            referencedRelation: "options"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "questions_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quizzes: {
+        Row: {
+          id: string
+          lesson_id: string | null
+          time_limit: number | null
+        }
+        Insert: {
+          id?: string
+          lesson_id?: string | null
+          time_limit?: number | null
+        }
+        Update: {
+          id?: string
+          lesson_id?: string | null
+          time_limit?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quizzes_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trivia_events: {
+        Row: {
+          date: string
+          description: string
+          icon: string
+          id: string
+          participants: number | null
+          prize: number | null
+          title: string
+        }
+        Insert: {
+          date: string
+          description: string
+          icon: string
+          id?: string
+          participants?: number | null
+          prize?: number | null
+          title: string
+        }
+        Update: {
+          date?: string
+          description?: string
+          icon?: string
+          id?: string
+          participants?: number | null
+          prize?: number | null
+          title?: string
+        }
+        Relationships: []
+      }
+      user_modules: {
+        Row: {
+          completed_lessons: string[] | null
+          id: string
+          last_access: string | null
+          module_id: string | null
+          progress: number | null
+          started_at: string | null
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          completed_lessons?: string[] | null
+          id?: string
+          last_access?: string | null
+          module_id?: string | null
+          progress?: number | null
+          started_at?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          completed_lessons?: string[] | null
+          id?: string
+          last_access?: string | null
+          module_id?: string | null
+          progress?: number | null
+          started_at?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_modules_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
