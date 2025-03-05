@@ -13,6 +13,43 @@
   --app-red: #FF4545;
 }
 
+/* Add utility classes for app colors */
+.bg-app-blue {
+  background-color: var(--app-blue);
+}
+
+.bg-app-light-blue {
+  background-color: var(--app-light-blue);
+}
+
+.text-app-blue {
+  color: var(--app-blue);
+}
+
+.text-app-dark {
+  color: var(--app-dark);
+}
+
+.text-app-text-light {
+  color: var(--app-text-light);
+}
+
+.bg-app-yellow {
+  background-color: var(--app-yellow);
+}
+
+.text-app-yellow {
+  color: var(--app-yellow);
+}
+
+.bg-app-red {
+  background-color: var(--app-red);
+}
+
+.text-app-red {
+  color: var(--app-red);
+}
+
 /* Add this to your existing CSS file */
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
@@ -53,4 +90,36 @@
 /* Fix layout issues */
 .profile-content {
   margin-top: -2rem;
+}
+
+/* Hapening now section styling */
+.happening-now-section {
+  border-radius: 20px;
+  background-color: #FFFAF0;
+  border: 1px solid #FFE4B5;
+}
+
+.happening-now-icon {
+  color: #FFA500;
+  background-color: #FFE4B5;
+}
+
+/* Quiz styling */
+.quiz-option {
+  transition: all 0.2s ease;
+}
+
+.quiz-option:hover:not([disabled]) {
+  background-color: #F0F7FF;
+  border-color: #377DFF;
+}
+
+.quiz-option-correct {
+  background-color: #F0FFF4;
+  border-color: #48BB78;
+}
+
+.quiz-option-incorrect {
+  background-color: #FFF5F5;
+  border-color: #F56565;
 }

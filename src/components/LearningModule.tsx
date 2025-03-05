@@ -28,7 +28,7 @@ interface LearningModuleProps {
 }
 
 const LearningModule: FC<LearningModuleProps> = ({ module, index }) => {
-  const Icon = LucideIcons[module.icon as keyof typeof LucideIcons] as LucideIcon;
+  const IconComponent = LucideIcons[module.icon as keyof typeof LucideIcons] as LucideIcon || LucideIcons.BookOpen;
   const navigate = useNavigate();
   
   const handleModuleClick = () => {
@@ -87,11 +87,9 @@ const LearningModule: FC<LearningModuleProps> = ({ module, index }) => {
         <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 w-full animate-scale-in">
           <div className="flex justify-between items-center mb-3">
             <div className="flex items-center">
-              {Icon && (
-                <div className="w-8 h-8 rounded-full bg-app-light-blue text-app-blue flex items-center justify-center mr-2">
-                  <Icon size={16} />
-                </div>
-              )}
+              <div className="w-8 h-8 rounded-full bg-app-light-blue text-app-blue flex items-center justify-center mr-2">
+                {IconComponent ? <IconComponent size={16} /> : <LucideIcons.BookOpen size={16} />}
+              </div>
               <h3 className="font-semibold text-app-dark">{module.title}</h3>
             </div>
             
@@ -104,6 +102,10 @@ const LearningModule: FC<LearningModuleProps> = ({ module, index }) => {
               </span>
             </div>
           </div>
+          
+          {module.description && (
+            <p className="text-sm text-app-text-light mb-3">{module.description}</p>
+          )}
           
           <div className="flex justify-between items-center text-sm text-app-text-light mb-3">
             <span>Модуль {module.currentPart} из {module.totalParts}</span>

@@ -9,6 +9,7 @@ import LearningModule from '../components/LearningModule';
 import { supabase } from '../integrations/supabase/client';
 import { currentUser } from '../data/modules';
 import { useToast } from '../hooks/use-toast';
+import { Loader2 } from 'lucide-react';
 
 // Define simplified types to avoid circular references
 interface SimplifiedCategory {
@@ -40,6 +41,7 @@ interface SimplifiedModule {
 const Explore: React.FC = () => {
   const [categories, setCategories] = useState<SimplifiedCategory[]>([]);
   const [featuredModules, setFeaturedModules] = useState<SimplifiedModule[]>([]);
+  const [currentModules, setCurrentModules] = useState<SimplifiedModule[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -55,13 +57,22 @@ const Explore: React.FC = () => {
 
         if (categoriesError) throw categoriesError;
 
-        // Получаем модули - не используем featured, так как этого поля нет
+        // Получаем популярные модули
         const { data: modulesData, error: modulesError } = await supabase
           .from('modules')
           .select('*')
-          .limit(5);
+          .limit(3);
 
         if (modulesError) throw modulesError;
+        
+        // Получаем текущие активные модули для блока "Происходит сейчас"
+        const { data: currentModulesData, error: currentModulesError } = await supabase
+          .from('modules')
+          .select('*')
+          .order('participants', { ascending: false })
+          .limit(3);
+          
+        if (currentModulesError) throw currentModulesError;
 
         // Transform category data to match the expected format
         const simplifiedCategories: SimplifiedCategory[] = categoriesData?.map(category => ({
@@ -98,8 +109,32 @@ const Explore: React.FC = () => {
           return simplifiedModule;
         }) || [];
         
+        // Transform current modules data
+        const currentModulesList: SimplifiedModule[] = currentModulesData?.map(module => {
+          const statusValue = (module.status || 'не начат') as 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
+          
+          const simplifiedModule: SimplifiedModule = {
+            id: module.id,
+            title: module.title,
+            icon: module.icon,
+            category: module.category,
+            category_id: module.category_id,
+            coins: module.coins || 0,
+            status: statusValue,
+            progress: module.progress || 0,
+            currentPart: module.current_part || 0,
+            totalParts: module.total_parts || 1,
+            timeEstimate: module.time_estimate || 5,
+            participants: module.participants || 0,
+            description: module.description
+          };
+          
+          return simplifiedModule;
+        }) || [];
+        
         setCategories(simplifiedCategories);
         setFeaturedModules(simplifiedModules);
+        setCurrentModules(currentModulesList);
         setLoading(false);
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
@@ -116,6 +151,10 @@ const Explore: React.FC = () => {
 
   const handleCategoryClick = (categoryId: string) => {
     navigate(`/category/${categoryId}`);
+  };
+
+  const handleModuleClick = (moduleId: string) => {
+    navigate(`/module/${moduleId}`);
   };
 
   return (
@@ -138,25 +177,75 @@ const Explore: React.FC = () => {
           ))}
         </div>
         
-        <h2 className="text-lg font-semibold text-app-dark mb-3">Происходит сейчас</h2>
-        <div className="bg-white rounded-2xl p-4 shadow-sm mb-6">
-          <FeatureTip 
-            id="daily-quiz"
-            title="Ежедневная викторина"
-            description="Проверьте свои знания и заработайте монеты!"
-            onClick={() => navigate('/community')}
-          />
-        </div>
+        {currentModules.length > 0 && (
+          <>
+            <h2 className="text-lg font-semibold text-app-dark mb-3">Происходит сейчас</h2>
+            <div className="bg-yellow-50 border border-yellow-100 rounded-2xl p-4 shadow-sm mb-6">
+              <div className="flex mb-3">
+                <div className="w-12 h-12 bg-yellow-200 rounded-full flex items-center justify-center mr-3">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-800">Происходит сейчас</h3>
+                  <p className="text-sm text-gray-600">Актуальные модули с наибольшим количеством участников</p>
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                {currentModules.map((module) => (
+                  <div 
+                    key={module.id}
+                    className="bg-white rounded-xl p-3 border border-gray-100 hover:shadow-md hover-scale cursor-pointer"
+                    onClick={() => handleModuleClick(module.id)}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-2">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-800">{module.title}</h4>
+                          <div className="flex items-center text-xs text-gray-500">
+                            <span className="mr-2">{module.progress > 0 ? 'В процессе' : 'Не начат'}</span>
+                            <span>{module.participants}+ участников</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="flex items-center font-medium text-yellow-600 bg-yellow-50 rounded-full px-2 py-1 text-sm">
+                          <span className="w-4 h-4 bg-yellow-400 rounded-full flex items-center justify-center mr-1">
+                            <span className="text-xs text-yellow-800">¢</span>
+                          </span>
+                          {module.coins}+
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
         
         <h2 className="text-lg font-semibold text-app-dark mb-3">Популярные модули</h2>
         <div>
-          {featuredModules.map((module, index) => (
-            <LearningModule 
-              key={module.id}
-              module={module}
-              index={index + 1}
-            />
-          ))}
+          {loading ? (
+            <div className="flex justify-center p-8">
+              <Loader2 size={24} className="text-app-blue animate-spin" />
+            </div>
+          ) : (
+            featuredModules.map((module, index) => (
+              <LearningModule 
+                key={module.id}
+                module={module}
+                index={index + 1}
+              />
+            ))
+          )}
         </div>
       </div>
       
