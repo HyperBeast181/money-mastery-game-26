@@ -1,8 +1,9 @@
+
 import { FC, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Module, Lesson } from '../types';
 import LessonView from './LessonView';
-import { getLessonsForModule, completeLesson, updateModuleProgress } from '../services/supabaseService';
+import { getLessonsForModule, completeLesson, updateModuleProgress } from '../services';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 

@@ -9,7 +9,7 @@ import { ChevronRight, LucideIcon } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { currentUser } from '../data/modules';
 import { Module, Category } from '../types';
-import { getModules, getCategories } from '../services/supabaseService';
+import { getModules, getCategories } from '../services';
 import SkillCard from '../components/SkillCard';
 import { useToast } from '@/hooks/use-toast';
 

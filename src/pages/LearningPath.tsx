@@ -6,7 +6,7 @@ import LearningModule from '../components/LearningModule';
 import TutorialOverlay from '../components/TutorialOverlay';
 import { currentUser } from '../data/modules';
 import { PenLine, Filter } from 'lucide-react';
-import { getModules, getCategories } from '../services/supabaseService';
+import { getModules, getCategories } from '../services';
 import { Module, Category } from '../types';
 import CategoryFilter from '../components/CategoryFilter';
 import { useToast } from '@/hooks/use-toast';
