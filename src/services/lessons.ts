@@ -1,6 +1,6 @@
-
 import { supabase } from "../integrations/supabase/client";
 import { Lesson, Quiz, ModuleStatus } from "../types";
+import { getQuizForLesson } from "./quizzes";
 
 // Получение уроков для модуля
 export const getLessonsForModule = async (moduleId: string): Promise<Lesson[]> => {
