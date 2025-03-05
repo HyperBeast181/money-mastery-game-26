@@ -10,16 +10,17 @@ import { supabase } from '../integrations/supabase/client';
 import { currentUser } from '../data/modules';
 import { useToast } from '../hooks/use-toast';
 
+// Define simplified types to avoid circular references
 interface SimplifiedCategory {
   id: string;
   title: string;
   icon: string;
-  color?: string;
+  color: string;
   total_skills?: number;
   total_modules?: number;
 }
 
-// Define a completely standalone type without any external references
+// Define a completely standalone type without referencing ModuleStatus
 interface SimplifiedModule {
   id: string;
   title: string;
@@ -54,21 +55,20 @@ const Explore: React.FC = () => {
 
         if (categoriesError) throw categoriesError;
 
-        // Получаем избранные модули
+        // Получаем модули - не используем featured, так как этого поля нет
         const { data: modulesData, error: modulesError } = await supabase
           .from('modules')
           .select('*')
-          .eq('featured', true)
           .limit(5);
 
         if (modulesError) throw modulesError;
 
         // Transform category data to match the expected format
-        const simplifiedCategories = categoriesData?.map(category => ({
+        const simplifiedCategories: SimplifiedCategory[] = categoriesData?.map(category => ({
           id: category.id,
           title: category.title,
           icon: category.icon,
-          color: category.color || 'bg-app-light-blue', // Ensure color is always defined
+          color: 'bg-app-light-blue', // Add default color since it doesn't exist in database
           total_skills: category.total_skills,
           total_modules: category.total_modules
         })) || [];
@@ -76,21 +76,26 @@ const Explore: React.FC = () => {
         // Transform module data to match the expected format with explicit typing
         const simplifiedModules: SimplifiedModule[] = modulesData?.map(module => {
           // Create a status value with literal type
-          const status = (module.status || 'не начат') as 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
+          const statusValue = (module.status || 'не начат') as 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
           
-          return {
+          // Create a simplified module with explicit typing
+          const simplifiedModule: SimplifiedModule = {
             id: module.id,
             title: module.title,
             icon: module.icon,
             category: module.category,
+            category_id: module.category_id,
             coins: module.coins || 0,
-            status: status,
+            status: statusValue,
             progress: module.progress || 0,
             currentPart: module.current_part || 0,
             totalParts: module.total_parts || 1,
             timeEstimate: module.time_estimate || 5,
-            participants: module.participants || 0
+            participants: module.participants || 0,
+            description: module.description
           };
+          
+          return simplifiedModule;
         }) || [];
         
         setCategories(simplifiedCategories);
