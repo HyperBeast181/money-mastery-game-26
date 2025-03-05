@@ -1,110 +1,121 @@
 
-import { supabase } from "../integrations/supabase/client";
-import { Module, ModuleStatus } from "../types";
+import { supabase } from '../integrations/supabase/client';
+import { Module, ModuleStatus } from '../types';
 
-// Получение модулей
 export const getModules = async (): Promise<Module[]> => {
-  const { data, error } = await supabase
-    .from('modules')
-    .select('*')
-    .order('order_index');
-  
-  if (error) {
-    console.error('Ошибка при получении модулей:', error);
+  try {
+    const { data, error } = await supabase
+      .from('modules')
+      .select('*')
+      .order('order_index');
+    
+    if (error) throw error;
+    
+    // Transform the data to match the Module type
+    return data.map(module => ({
+      id: module.id,
+      title: module.title,
+      icon: module.icon,
+      category: module.category,
+      category_id: module.category_id,
+      coins: module.coins || 0,
+      progress: module.progress || 0,
+      currentPart: module.current_part || 0,
+      totalParts: module.total_parts || 1,
+      timeEstimate: module.time_estimate || 5,
+      participants: module.participants || 0,
+      status: (module.status || 'не начат') as ModuleStatus,
+      description: module.description || ''
+    }));
+  } catch (error) {
+    console.error('Error fetching modules:', error);
     return [];
   }
-  
-  return data.map(module => ({
-    ...module,
-    status: module.status as ModuleStatus,
-    progress: module.progress || 0,
-    currentPart: module.current_part || 0,
-    totalParts: module.total_parts || 1,
-    timeEstimate: module.time_estimate || 5,
-    participants: module.participants || 0
-  })) || [];
 };
 
-// Получение модулей по категории
 export const getModulesByCategory = async (categoryId: string): Promise<Module[]> => {
-  const { data, error } = await supabase
-    .from('modules')
-    .select('*')
-    .eq('category_id', categoryId)
-    .order('order_index');
-  
-  if (error) {
-    console.error('Ошибка при получении модулей по категории:', error);
+  try {
+    const { data, error } = await supabase
+      .from('modules')
+      .select('*')
+      .eq('category_id', categoryId)
+      .order('order_index');
+    
+    if (error) throw error;
+    
+    // Transform the data to match the Module type
+    return data.map(module => ({
+      id: module.id,
+      title: module.title,
+      icon: module.icon,
+      category: module.category,
+      category_id: module.category_id,
+      coins: module.coins || 0,
+      progress: module.progress || 0,
+      currentPart: module.current_part || 0,
+      totalParts: module.total_parts || 1,
+      timeEstimate: module.time_estimate || 5,
+      participants: module.participants || 0,
+      status: (module.status || 'не начат') as ModuleStatus,
+      description: module.description || ''
+    }));
+  } catch (error) {
+    console.error('Error fetching modules by category:', error);
     return [];
   }
-  
-  return data.map(module => ({
-    ...module,
-    status: module.status as ModuleStatus,
-    progress: module.progress || 0,
-    currentPart: module.current_part || 0,
-    totalParts: module.total_parts || 1,
-    timeEstimate: module.time_estimate || 5,
-    participants: module.participants || 0
-  })) || [];
 };
 
-// Обновление прогресса модуля
-export const updateModuleProgress = async (moduleId: string, progress: number, status: ModuleStatus): Promise<boolean> => {
-  // Проверяем, авторизован ли пользователь
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  if (!user) {
-    console.error('Пользователь не авторизован');
-    return false;
-  }
-  
-  // Проверяем, есть ли запись в user_modules
-  const { data: existingData, error: checkError } = await supabase
-    .from('user_modules')
-    .select('*')
-    .eq('user_id', user.id)
-    .eq('module_id', moduleId)
-    .single();
-  
-  if (checkError && checkError.code !== 'PGRST116') { // PGRST116 - запись не найдена, это нормально
-    console.error('Ошибка при проверке прогресса модуля:', checkError);
-    return false;
-  }
-  
-  if (!existingData) {
-    // Создаем новую запись
-    const { error: insertError } = await supabase
-      .from('user_modules')
-      .insert({
-        user_id: user.id,
-        module_id: moduleId,
-        progress,
-        status,
-        last_access: new Date().toISOString()
-      });
+export const updateModuleProgress = async (
+  moduleId: string, 
+  progress: number, 
+  status: ModuleStatus
+): Promise<boolean> => {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
     
-    if (insertError) {
-      console.error('Ошибка при создании записи прогресса:', insertError);
-      return false;
-    }
-  } else {
-    // Обновляем существующую запись
-    const { error: updateError } = await supabase
+    if (!user) return false;
+    
+    // Проверяем, существует ли запись о прогрессе пользователя для данного модуля
+    const { data: existingRecord, error: checkError } = await supabase
       .from('user_modules')
-      .update({
-        progress,
-        status,
-        last_access: new Date().toISOString()
-      })
+      .select('*')
       .eq('user_id', user.id)
-      .eq('module_id', moduleId);
+      .eq('module_id', moduleId)
+      .maybeSingle();
     
-    if (updateError) {
-      console.error('Ошибка при обновлении прогресса:', updateError);
-      return false;
+    if (checkError) throw checkError;
+    
+    let updateResult;
+    
+    if (existingRecord) {
+      // Обновляем существующую запись
+      updateResult = await supabase
+        .from('user_modules')
+        .update({
+          progress,
+          status,
+          last_access: new Date().toISOString()
+        })
+        .eq('id', existingRecord.id);
+    } else {
+      // Создаем новую запись
+      updateResult = await supabase
+        .from('user_modules')
+        .insert({
+          user_id: user.id,
+          module_id: moduleId,
+          progress,
+          status,
+          started_at: new Date().toISOString(),
+          last_access: new Date().toISOString()
+        });
     }
+    
+    if (updateResult.error) throw updateResult.error;
+    
+    return true;
+  } catch (error) {
+    console.error('Error updating module progress:', error);
+    return false;
   }
-  
-  return true;
 };

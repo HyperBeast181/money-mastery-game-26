@@ -1,123 +1,124 @@
-import { supabase } from "../integrations/supabase/client";
-import { Lesson, Quiz, ModuleStatus } from "../types";
-import { getQuizForLesson } from "./quizzes";
 
-// Получение уроков для модуля
+import { supabase } from '../integrations/supabase/client';
+import { Lesson } from '../types';
+import { moduleContentData } from '../data/categoryModules';
+import { getQuizForLesson } from './quizzes';
+
 export const getLessonsForModule = async (moduleId: string): Promise<Lesson[]> => {
-  const { data, error } = await supabase
-    .from('lessons')
-    .select('*')
-    .eq('module_id', moduleId)
-    .order('order_index');
-  
-  if (error) {
-    console.error('Ошибка при получении уроков:', error);
+  try {
+    // Сначала попробуем получить уроки из Supabase
+    const { data, error } = await supabase
+      .from('lessons')
+      .select('*')
+      .eq('module_id', moduleId)
+      .order('order_index');
+    
+    if (error) throw error;
+    
+    // Если в Supabase есть уроки для этого модуля, используем их
+    if (data && data.length > 0) {
+      const lessons: Lesson[] = await Promise.all(
+        data.map(async lesson => {
+          // Получаем тест для урока, если он есть
+          const quiz = await getQuizForLesson(lesson.id);
+          
+          return {
+            id: lesson.id,
+            title: lesson.title,
+            content: lesson.content,
+            completed: lesson.completed || false,
+            quiz: quiz
+          };
+        })
+      );
+      
+      return lessons;
+    } else {
+      // Если в Supabase нет уроков, проверяем в наших локальных данных
+      const moduleContent = moduleContentData[moduleId as keyof typeof moduleContentData];
+      
+      if (moduleContent && moduleContent.lessons) {
+        return moduleContent.lessons as Lesson[];
+      }
+      
+      // Если нет ни в базе данных, ни в локальных данных, возвращаем пустой массив
+      return [];
+    }
+  } catch (error) {
+    console.error('Error fetching lessons:', error);
+    
+    // В случае ошибки, попробуем использовать локальные данные
+    const moduleContent = moduleContentData[moduleId as keyof typeof moduleContentData];
+    
+    if (moduleContent && moduleContent.lessons) {
+      return moduleContent.lessons as Lesson[];
+    }
+    
     return [];
   }
-  
-  // Для каждого урока получим викторину, если она есть
-  const lessonsWithQuizzes = await Promise.all(
-    data.map(async (lesson) => {
-      const quiz = await getQuizForLesson(lesson.id);
-      return {
-        ...lesson,
-        id: lesson.id,
-        moduleId: lesson.module_id,
-        title: lesson.title,
-        content: lesson.content,
-        order: lesson.order_index,
-        completed: lesson.completed,
-        quiz: quiz || undefined
-      };
-    })
-  );
-  
-  return lessonsWithQuizzes;
 };
 
-// Отметка урока как выполненного
 export const completeLesson = async (moduleId: string, lessonId: string): Promise<boolean> => {
-  // Проверяем, авторизован ли пользователь
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  if (!user) {
-    console.error('Пользователь не авторизован');
-    return false;
-  }
-  
-  // Получаем запись user_modules
-  const { data: userModule, error: userModuleError } = await supabase
-    .from('user_modules')
-    .select('*')
-    .eq('user_id', user.id)
-    .eq('module_id', moduleId)
-    .single();
-  
-  if (userModuleError && userModuleError.code !== 'PGRST116') {
-    console.error('Ошибка при получении прогресса модуля:', userModuleError);
-    return false;
-  }
-  
-  let completedLessons: string[] = [];
-  
-  if (userModule) {
-    completedLessons = userModule.completed_lessons || [];
-    if (!completedLessons.includes(lessonId)) {
-      completedLessons.push(lessonId);
-    }
-  } else {
-    completedLessons = [lessonId];
-  }
-  
-  // Получаем общее количество уроков в модуле
-  const { data: lessons, error: lessonsError } = await supabase
-    .from('lessons')
-    .select('id')
-    .eq('module_id', moduleId);
-  
-  if (lessonsError) {
-    console.error('Ошибка при получении уроков модуля:', lessonsError);
-    return false;
-  }
-  
-  const totalLessons = lessons.length;
-  const progress = Math.round((completedLessons.length / totalLessons) * 100);
-  const status: ModuleStatus = progress === 100 ? 'завершено' : progress > 0 ? 'в процессе' : 'не начат';
-  
-  // Обновляем или создаем запись в user_modules
-  if (userModule) {
-    const { error: updateError } = await supabase
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) return false;
+    
+    // Проверяем, существует ли запись о прогрессе пользователя для данного модуля
+    const { data: userModule, error: checkError } = await supabase
       .from('user_modules')
-      .update({
-        completed_lessons: completedLessons,
-        progress,
-        status,
-        last_access: new Date().toISOString()
-      })
+      .select('*')
       .eq('user_id', user.id)
-      .eq('module_id', moduleId);
+      .eq('module_id', moduleId)
+      .maybeSingle();
     
-    if (updateError) {
-      console.error('Ошибка при обновлении прогресса:', updateError);
-      return false;
-    }
-  } else {
-    const { error: insertError } = await supabase
-      .from('user_modules')
-      .insert({
-        user_id: user.id,
-        module_id: moduleId,
-        completed_lessons: completedLessons,
-        progress,
-        status,
-        last_access: new Date().toISOString()
-      });
+    if (checkError) throw checkError;
     
-    if (insertError) {
-      console.error('Ошибка при создании записи прогресса:', insertError);
-      return false;
+    let updateResult;
+    
+    if (userModule) {
+      // Добавляем lessonId в массив completed_lessons, если его там еще нет
+      const completedLessons = userModule.completed_lessons || [];
+      if (!completedLessons.includes(lessonId)) {
+        completedLessons.push(lessonId);
+      }
+      
+      // Обновляем запись
+      updateResult = await supabase
+        .from('user_modules')
+        .update({
+          completed_lessons: completedLessons,
+          last_access: new Date().toISOString()
+        })
+        .eq('id', userModule.id);
+    } else {
+      // Создаем новую запись
+      updateResult = await supabase
+        .from('user_modules')
+        .insert({
+          user_id: user.id,
+          module_id: moduleId,
+          completed_lessons: [lessonId],
+          progress: 0, // начальный прогресс
+          status: 'в процессе',
+          started_at: new Date().toISOString(),
+          last_access: new Date().toISOString()
+        });
     }
+    
+    if (updateResult.error) throw updateResult.error;
+    
+    // Обновляем статус урока в базе данных
+    const lessonUpdateResult = await supabase
+      .from('lessons')
+      .update({ completed: true })
+      .eq('id', lessonId);
+    
+    if (lessonUpdateResult.error) throw lessonUpdateResult.error;
+    
+    return true;
+  } catch (error) {
+    console.error('Error completing lesson:', error);
+    return false;
   }
-  
-  return true;
 };

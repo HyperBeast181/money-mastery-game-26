@@ -10,6 +10,7 @@ import { Module, ModuleStatus } from '../types';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '../integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
+import { moduleContentData } from '../data/categoryModules';
 
 const ModuleView: FC = () => {
   const { moduleId } = useParams<{ moduleId: string }>();
@@ -35,12 +36,29 @@ const ModuleView: FC = () => {
           .single();
         
         if (moduleError || !moduleData) {
-          navigate('/learning-path');
-          toast({
-            title: "Модуль не найден",
-            description: "Запрашиваемый модуль не существует.",
-            variant: "destructive",
-          });
+          // Проверяем, есть ли модуль в локальных данных
+          let foundInLocal = false;
+          for (const categoryId in moduleContentData) {
+            const moduleList = moduleContentData[categoryId];
+            if (moduleList && moduleList.lessons) {
+              const foundModule = moduleList.find((m: any) => m.id === moduleId);
+              if (foundModule) {
+                setModule(foundModule as Module);
+                setLoading(false);
+                foundInLocal = true;
+                break;
+              }
+            }
+          }
+          
+          if (!foundInLocal) {
+            navigate('/learning-path');
+            toast({
+              title: "Модуль не найден",
+              description: "Запрашиваемый модуль не существует.",
+              variant: "destructive",
+            });
+          }
           return;
         }
         
@@ -53,7 +71,7 @@ const ModuleView: FC = () => {
             .select('*')
             .eq('user_id', user.id)
             .eq('module_id', moduleId)
-            .single();
+            .maybeSingle();
           
           if (!userModuleError && userModule) {
             // У пользователя есть запись прогресса для этого модуля

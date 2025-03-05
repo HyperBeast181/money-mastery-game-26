@@ -8,6 +8,7 @@ import LearningModule from '../components/LearningModule';
 import { Module, Category, ModuleStatus } from '../types';
 import { currentUser } from '../data/modules';
 import { useToast } from '../hooks/use-toast';
+import { getModulesByCategory } from '../services';
 
 const CategoryView: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -30,35 +31,12 @@ const CategoryView: React.FC = () => {
           .single();
 
         if (categoryError) throw categoryError;
-
-        // Запрашиваем модули этой категории
-        const { data: modulesData, error: modulesError } = await supabase
-          .from('modules')
-          .select('*')
-          .eq('category_id', categoryId)
-          .order('order_index');
-
-        if (modulesError) throw modulesError;
-
+        
+        // Получаем модули этой категории используя новую функцию
+        const modulesData = await getModulesByCategory(categoryId);
+        
         setCategory(categoryData as Category);
-        
-        // Приводим данные о модулях к нужному формату
-        const formattedModules = modulesData.map(module => ({
-          ...module,
-          id: module.id,
-          title: module.title,
-          icon: module.icon,
-          category: module.category,
-          coins: module.coins || 0,
-          progress: module.progress || 0,
-          currentPart: module.current_part || 0,
-          totalParts: module.total_parts || 1,
-          timeEstimate: module.time_estimate || 5,
-          participants: module.participants || 0,
-          status: (module.status || 'не начат') as ModuleStatus
-        }));
-        
-        setModules(formattedModules as Module[]);
+        setModules(modulesData);
         setLoading(false);
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
@@ -67,6 +45,7 @@ const CategoryView: React.FC = () => {
           description: 'Не удалось загрузить данные категории',
           variant: 'destructive'
         });
+        setLoading(false);
       }
     };
 
