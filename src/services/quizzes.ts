@@ -45,8 +45,8 @@ export const getQuizForLesson = async (lessonId: string): Promise<Quiz | null> =
       
       return {
         id: quizData.id,
-        questions: questions,
-        timeLimit: quizData.time_limit || 0
+        lessonId,
+        questions: questions
       };
     } else {
       // Если в базе данных нет теста, проверяем локальные данные
@@ -58,7 +58,10 @@ export const getQuizForLesson = async (lessonId: string): Promise<Quiz | null> =
           const lesson = moduleContent.lessons.find(l => l.id === lessonId);
           
           if (lesson && lesson.quiz) {
-            return lesson.quiz;
+            return {
+              ...lesson.quiz,
+              lessonId // Add the required lessonId property
+            };
           }
         }
       }
@@ -76,7 +79,10 @@ export const getQuizForLesson = async (lessonId: string): Promise<Quiz | null> =
         const lesson = moduleContent.lessons.find(l => l.id === lessonId);
         
         if (lesson && lesson.quiz) {
-          return lesson.quiz;
+          return {
+            ...lesson.quiz,
+            lessonId // Add the required lessonId property
+          };
         }
       }
     }
