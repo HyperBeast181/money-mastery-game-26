@@ -1,3 +1,4 @@
+
 import { supabase } from '../integrations/supabase/client';
 import { Module, ModuleStatus } from '../types';
 
@@ -34,6 +35,8 @@ export const getModules = async (): Promise<Module[]> => {
 
 export const getModulesByCategory = async (categoryId: string): Promise<Module[]> => {
   try {
+    console.log('Fetching modules for category ID:', categoryId);
+    
     const { data, error } = await supabase
       .from('modules')
       .select('*')
@@ -41,6 +44,8 @@ export const getModulesByCategory = async (categoryId: string): Promise<Module[]
       .order('order_index');
     
     if (error) throw error;
+    
+    console.log('Fetched modules:', data ? data.length : 0);
     
     // Transform the data to match the Module type
     return data.map(module => ({
