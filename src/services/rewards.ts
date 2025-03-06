@@ -17,42 +17,78 @@ const iconMap: Record<string, any> = {
 
 export const getRewards = async (): Promise<Reward[]> => {
   try {
-    // Попытка получить награды из Supabase
-    const { data, error } = await supabase
+    // Get a list of rewards
+    const { data: rewardsData, error: rewardsError } = await supabase
       .from('rewards')
       .select('*');
     
-    if (error) {
-      console.error('Ошибка при получении наград из Supabase:', error);
-      return getMockRewards(); // Используем моковые данные в случае ошибки
+    if (rewardsError) {
+      console.error('Error fetching rewards:', rewardsError);
+      return getMockRewards();
     }
     
-    if (data && data.length > 0) {
-      // Преобразуем данные из базы в нужный формат
-      return data.map(reward => ({
+    // Get currently logged in user
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+      // If user is not logged in, return rewards without redeemed status
+      return rewardsData.map(reward => ({
         id: reward.id,
         name: reward.name,
         description: reward.description,
         image: reward.image,
         cost: reward.cost,
-        redeemed: reward.redeemed || false,
-        type: reward.type,
-        icon: iconMap[reward.icon] || Award // Используем Award как запасной вариант
+        redeemed: false,
+        type: reward.type as 'premium' | 'feature' | 'badge' | 'benefit',
+        icon: iconMap[reward.icon] || Award
       }));
-    } else {
-      // Если в базе нет данных, используем моковые
-      return getMockRewards();
     }
+    
+    // Get user's redeemed rewards
+    const { data: userRewardsData, error: userRewardsError } = await supabase
+      .from('user_rewards')
+      .select('reward_id')
+      .eq('user_id', user.id);
+    
+    if (userRewardsError) {
+      console.error('Error fetching user rewards:', userRewardsError);
+      // Return rewards without redeemed status if there's an error
+      return rewardsData.map(reward => ({
+        id: reward.id,
+        name: reward.name,
+        description: reward.description,
+        image: reward.image,
+        cost: reward.cost,
+        redeemed: false,
+        type: reward.type as 'premium' | 'feature' | 'badge' | 'benefit',
+        icon: iconMap[reward.icon] || Award
+      }));
+    }
+    
+    // Create a Set of redeemed reward IDs for faster lookups
+    const redeemedRewardIds = new Set(userRewardsData.map(userReward => userReward.reward_id));
+    
+    // Return rewards with redeemed status
+    return rewardsData.map(reward => ({
+      id: reward.id,
+      name: reward.name,
+      description: reward.description,
+      image: reward.image,
+      cost: reward.cost,
+      redeemed: redeemedRewardIds.has(reward.id),
+      type: reward.type as 'premium' | 'feature' | 'badge' | 'benefit',
+      icon: iconMap[reward.icon] || Award
+    }));
   } catch (error) {
-    console.error('Ошибка при получении наград:', error);
+    console.error('Error in getRewards:', error);
     return getMockRewards();
   }
 };
 
 export const redeemReward = async (userId: string, rewardId: string): Promise<boolean> => {
   try {
-    // Проверяем, существует ли таблица user_rewards
-    const { data: existingData, error: checkError } = await supabase
+    // Check if user has already redeemed this reward
+    const { data: existingReward, error: checkError } = await supabase
       .from('user_rewards')
       .select('*')
       .eq('user_id', userId)
@@ -60,30 +96,16 @@ export const redeemReward = async (userId: string, rewardId: string): Promise<bo
       .maybeSingle();
     
     if (checkError) {
-      console.error('Ошибка при проверке наличия награды у пользователя:', checkError);
+      console.error('Error checking if reward is already redeemed:', checkError);
       return false;
     }
     
-    if (existingData) {
-      console.log(`Пользователь ${userId} уже получил награду ${rewardId}`);
+    if (existingReward) {
+      console.log(`User ${userId} has already redeemed reward ${rewardId}`);
       return false;
     }
     
-    // Добавляем запись о получении награды
-    const { error: insertError } = await supabase
-      .from('user_rewards')
-      .insert({
-        user_id: userId,
-        reward_id: rewardId,
-        redeemed_at: new Date().toISOString()
-      });
-    
-    if (insertError) {
-      console.error('Ошибка при добавлении записи о полученной награде:', insertError);
-      return false;
-    }
-    
-    // Обновляем профиль пользователя, уменьшая количество монет
+    // Get reward cost
     const { data: rewardData, error: rewardError } = await supabase
       .from('rewards')
       .select('cost')
@@ -91,10 +113,11 @@ export const redeemReward = async (userId: string, rewardId: string): Promise<bo
       .single();
     
     if (rewardError || !rewardData) {
-      console.error('Ошибка при получении стоимости награды:', rewardError);
+      console.error('Error getting reward cost:', rewardError);
       return false;
     }
     
+    // Get user's current coins
     const { data: profileData, error: profileError } = await supabase
       .from('profiles')
       .select('coins')
@@ -102,51 +125,63 @@ export const redeemReward = async (userId: string, rewardId: string): Promise<bo
       .single();
     
     if (profileError || !profileData) {
-      console.error('Ошибка при получении профиля пользователя:', profileError);
+      console.error('Error getting user profile:', profileError);
       return false;
     }
     
+    // Check if user has enough coins
     const newCoins = profileData.coins - rewardData.cost;
-    
     if (newCoins < 0) {
-      console.error('Недостаточно монет для получения награды');
+      console.error('Not enough coins to redeem reward');
       return false;
     }
     
+    // Update user's coins
     const { error: updateError } = await supabase
       .from('profiles')
       .update({ coins: newCoins })
       .eq('user_id', userId);
     
     if (updateError) {
-      console.error('Ошибка при обновлении количества монет пользователя:', updateError);
+      console.error('Error updating user coins:', updateError);
+      return false;
+    }
+    
+    // Record the redemption
+    const { error: insertError } = await supabase
+      .from('user_rewards')
+      .insert({
+        user_id: userId,
+        reward_id: rewardId
+      });
+    
+    if (insertError) {
+      console.error('Error recording reward redemption:', insertError);
       return false;
     }
     
     return true;
   } catch (error) {
-    console.error('Ошибка при получении награды:', error);
+    console.error('Error in redeemReward:', error);
     return false;
   }
 };
 
 export const getUserRewards = async (userId: string): Promise<string[]> => {
   try {
-    // Получаем из базы данных список наград пользователя
     const { data, error } = await supabase
       .from('user_rewards')
       .select('reward_id')
       .eq('user_id', userId);
     
     if (error) {
-      console.error('Ошибка при получении наград пользователя:', error);
+      console.error('Error getting user rewards:', error);
       return [];
     }
     
-    // Преобразуем результат в массив ID наград
     return data?.map(item => item.reward_id) || [];
   } catch (error) {
-    console.error('Ошибка при получении наград пользователя:', error);
+    console.error('Error in getUserRewards:', error);
     return [];
   }
 };

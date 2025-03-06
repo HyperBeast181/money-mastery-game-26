@@ -287,6 +287,39 @@ export type Database = {
           },
         ]
       }
+      rewards: {
+        Row: {
+          cost: number
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          image: string
+          name: string
+          type: string
+        }
+        Insert: {
+          cost: number
+          created_at?: string
+          description: string
+          icon: string
+          id?: string
+          image: string
+          name: string
+          type: string
+        }
+        Update: {
+          cost?: number
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          image?: string
+          name?: string
+          type?: string
+        }
+        Relationships: []
+      }
       trivia_events: {
         Row: {
           date: string
@@ -354,6 +387,35 @@ export type Database = {
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_rewards: {
+        Row: {
+          id: string
+          redeemed_at: string
+          reward_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          redeemed_at?: string
+          reward_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          redeemed_at?: string
+          reward_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_rewards_reward_id_fkey"
+            columns: ["reward_id"]
+            isOneToOne: false
+            referencedRelation: "rewards"
             referencedColumns: ["id"]
           },
         ]
