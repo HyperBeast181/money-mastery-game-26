@@ -27,7 +27,7 @@ export const getLessonsForModule = async (moduleId: string): Promise<Lesson[]> =
             title: lesson.title,
             content: lesson.content,
             completed: lesson.completed || false,
-            moduleId: lesson.module_id || moduleId,
+            moduleId: lesson.module_id,
             order: lesson.order_index || 0,
             quiz: quiz
           };
