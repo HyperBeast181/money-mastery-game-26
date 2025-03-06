@@ -16,9 +16,9 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   onSelectCategory 
 }) => {
   return (
-    <div className="flex space-x-2 pb-2">
+    <div className="flex space-x-2 pb-2 overflow-x-auto">
       {categories.map(category => {
-        const Icon = LucideIcons[category.icon as keyof typeof LucideIcons] as LucideIcon;
+        const IconComponent = LucideIcons[category.icon as keyof typeof LucideIcons] as LucideIcon || LucideIcons.BookOpen;
         const isSelected = selectedCategory === category.id;
         
         return (
@@ -29,8 +29,11 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
             }`}
             onClick={() => onSelectCategory(category.id)}
           >
-            {Icon && <Icon size={20} className="mb-1" />}
+            {IconComponent && <IconComponent size={20} className="mb-1" />}
             <span className="text-sm font-medium">{category.title}</span>
+            {category.total_modules !== null && category.total_modules > 0 && (
+              <span className="text-xs opacity-75">{category.total_modules} модулей</span>
+            )}
           </button>
         );
       })}

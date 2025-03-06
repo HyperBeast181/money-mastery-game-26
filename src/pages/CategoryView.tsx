@@ -32,7 +32,7 @@ const CategoryView: React.FC = () => {
 
         if (categoryError) throw categoryError;
         
-        // Получаем модули этой категории используя новую функцию
+        // Получаем модули этой категории используя функцию getModulesByCategory
         const modulesData = await getModulesByCategory(categoryId);
         
         setCategory(categoryData as Category);

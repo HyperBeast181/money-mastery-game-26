@@ -1,4 +1,3 @@
-
 import { supabase } from '../integrations/supabase/client';
 import { Module, ModuleStatus } from '../types';
 
@@ -116,6 +115,51 @@ export const updateModuleProgress = async (
     return true;
   } catch (error) {
     console.error('Error updating module progress:', error);
+    return false;
+  }
+};
+
+export const updateCategory = async (categoryId: string, newValues: Partial<{
+  title: string,
+  icon: string,
+  total_modules: number
+}>): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('categories')
+      .update(newValues)
+      .eq('id', categoryId);
+    
+    if (error) throw error;
+    
+    return true;
+  } catch (error) {
+    console.error('Error updating category:', error);
+    return false;
+  }
+};
+
+export const updateCategoryModuleCount = async (categoryId: string): Promise<boolean> => {
+  try {
+    // Получаем количество модулей в категории
+    const { count, error } = await supabase
+      .from('modules')
+      .select('id', { count: 'exact' })
+      .eq('category_id', categoryId);
+    
+    if (error) throw error;
+    
+    // Обновляем счетчик модулей в категории
+    const { error: updateError } = await supabase
+      .from('categories')
+      .update({ total_modules: count })
+      .eq('id', categoryId);
+    
+    if (updateError) throw updateError;
+    
+    return true;
+  } catch (error) {
+    console.error('Error updating category module count:', error);
     return false;
   }
 };

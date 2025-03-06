@@ -44,6 +44,7 @@ const LearningPath: FC = () => {
     fetchData();
   }, [toast]);
 
+  // Фильтруем модули по выбранной категории и статусу (завершено/не завершено)
   const filteredModules = modules.filter(module => 
     (activeTab === 'skills' || (activeTab === 'completed' && module.status === 'завершено')) &&
     (selectedCategory === null || module.category_id === selectedCategory)
