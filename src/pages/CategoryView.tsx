@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../integrations/supabase/client';
@@ -6,7 +5,7 @@ import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import LearningModule from '../components/LearningModule';
 import { Module, Category, ModuleStatus } from '../types';
-import { currentUser } from '../data/modules';
+import { currentUser } from '../data/users';
 import { useToast } from '../hooks/use-toast';
 import { getModulesByCategory } from '../services';
 
