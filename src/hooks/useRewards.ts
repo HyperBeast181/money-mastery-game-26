@@ -4,6 +4,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '../context/LanguageContext';
 import { Reward, RewardFilter } from '../types/rewards';
 import { Crown, Unlock, Award, Zap, Users, ShieldCheck, BookOpen, Trophy } from 'lucide-react';
+import { getRewards, redeemReward } from '../services/rewards';
 
 export const useRewards = (initialCoins: number) => {
   const { language } = useLanguage();

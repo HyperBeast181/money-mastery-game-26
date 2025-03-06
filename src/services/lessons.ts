@@ -27,6 +27,8 @@ export const getLessonsForModule = async (moduleId: string): Promise<Lesson[]> =
             title: lesson.title,
             content: lesson.content,
             completed: lesson.completed || false,
+            moduleId: lesson.module_id || moduleId,
+            order: lesson.order_index || 0,
             quiz: quiz
           };
         })
@@ -38,7 +40,11 @@ export const getLessonsForModule = async (moduleId: string): Promise<Lesson[]> =
       const moduleContent = moduleContentData[moduleId as keyof typeof moduleContentData];
       
       if (moduleContent && moduleContent.lessons) {
-        return moduleContent.lessons as Lesson[];
+        return moduleContent.lessons.map((lesson, index) => ({
+          ...lesson,
+          moduleId: moduleId,
+          order: index
+        })) as Lesson[];
       }
       
       // Если нет ни в базе данных, ни в локальных данных, возвращаем пустой массив
@@ -51,7 +57,11 @@ export const getLessonsForModule = async (moduleId: string): Promise<Lesson[]> =
     const moduleContent = moduleContentData[moduleId as keyof typeof moduleContentData];
     
     if (moduleContent && moduleContent.lessons) {
-      return moduleContent.lessons as Lesson[];
+      return moduleContent.lessons.map((lesson, index) => ({
+        ...lesson,
+        moduleId: moduleId,
+        order: index
+      })) as Lesson[];
     }
     
     return [];

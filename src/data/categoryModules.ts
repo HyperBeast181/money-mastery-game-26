@@ -7,49 +7,57 @@ export const financialCategories: Category[] = [
     id: 'cat-1',
     title: 'Экономия денег',
     icon: 'PiggyBank',
-    total_modules: 4
+    total_modules: 4,
+    total_skills: 0
   },
   {
     id: 'cat-2',
     title: 'Делайте покупки с умом',
     icon: 'ShoppingCart',
-    total_modules: 3
+    total_modules: 3,
+    total_skills: 0
   },
   {
     id: 'cat-3',
     title: 'Страхование',
     icon: 'Shield',
-    total_modules: 4
+    total_modules: 4,
+    total_skills: 0
   },
   {
     id: 'cat-4',
     title: 'Медицинская страховка',
     icon: 'Heart',
-    total_modules: 3
+    total_modules: 3,
+    total_skills: 0
   },
   {
     id: 'cat-5',
     title: 'Оплата обучения',
     icon: 'GraduationCap',
-    total_modules: 4
+    total_modules: 4,
+    total_skills: 0
   },
   {
     id: 'cat-6',
     title: 'Начало инвестирования',
     icon: 'TrendingUp',
-    total_modules: 4
+    total_modules: 4,
+    total_skills: 0
   },
   {
     id: 'cat-7',
     title: 'Жизнь по бюджету',
     icon: 'LineChart',
-    total_modules: 3
+    total_modules: 3,
+    total_skills: 0
   },
   {
     id: 'cat-8',
     title: 'Выбор финансового учреждения',
     icon: 'Building',
-    total_modules: 3
+    total_modules: 3,
+    total_skills: 0
   }
 ];
 
