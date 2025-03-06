@@ -25,7 +25,7 @@ export const useRewards = (initialCoins: number) => {
         cost: 2000,
         redeemed: false,
         type: 'premium',
-        icon: <Crown size={20} className="text-yellow-600" />
+        icon: Crown
       },
       {
         id: '2',
@@ -35,7 +35,7 @@ export const useRewards = (initialCoins: number) => {
         cost: 500,
         redeemed: false,
         type: 'feature',
-        icon: <Unlock size={20} className="text-app-blue" />
+        icon: Unlock
       },
       {
         id: '3',
@@ -45,7 +45,7 @@ export const useRewards = (initialCoins: number) => {
         cost: 1000,
         redeemed: false,
         type: 'badge',
-        icon: <Award size={20} className="text-purple-600" />
+        icon: Award
       },
       {
         id: '4',
@@ -55,7 +55,7 @@ export const useRewards = (initialCoins: number) => {
         cost: 1500,
         redeemed: false,
         type: 'benefit',
-        icon: <Zap size={20} className="text-yellow-500" />
+        icon: Zap
       },
       {
         id: '5',
@@ -65,7 +65,7 @@ export const useRewards = (initialCoins: number) => {
         cost: 3000,
         redeemed: false,
         type: 'premium',
-        icon: <Users size={20} className="text-green-600" />
+        icon: Users
       },
       {
         id: '6',
@@ -75,7 +75,7 @@ export const useRewards = (initialCoins: number) => {
         cost: 800,
         redeemed: false,
         type: 'feature',
-        icon: <ShieldCheck size={20} className="text-blue-600" />
+        icon: ShieldCheck
       },
       {
         id: '7',
@@ -85,7 +85,7 @@ export const useRewards = (initialCoins: number) => {
         cost: 1200,
         redeemed: false,
         type: 'feature',
-        icon: <BookOpen size={20} className="text-teal-600" />
+        icon: BookOpen
       },
       {
         id: '8',
@@ -95,7 +95,7 @@ export const useRewards = (initialCoins: number) => {
         cost: 1800,
         redeemed: false,
         type: 'badge',
-        icon: <Trophy size={20} className="text-yellow-600" />
+        icon: Trophy
       }
     ];
     

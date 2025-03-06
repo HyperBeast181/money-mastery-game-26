@@ -1,5 +1,6 @@
 
-import { ReactNode } from 'react';
+import { FC } from 'react';
+import { LucideIcon } from 'lucide-react';
 
 export interface Reward {
   id: string;
@@ -9,7 +10,7 @@ export interface Reward {
   cost: number;
   redeemed: boolean;
   type: 'premium' | 'feature' | 'badge' | 'benefit';
-  icon: ReactNode;
+  icon: LucideIcon;
 }
 
 export type RewardFilter = 'all' | 'premium' | 'feature' | 'badge' | 'benefit';
