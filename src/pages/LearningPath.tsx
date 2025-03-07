@@ -4,7 +4,7 @@ import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import LearningModule from '../components/LearningModule';
 import TutorialOverlay from '../components/TutorialOverlay';
-import { currentUser } from '../data/modules';
+import { currentUser } from '../data'; // Updated import path
 import { PenLine, Filter } from 'lucide-react';
 import { getModules, getCategories } from '../services';
 import { Module, Category } from '../types';

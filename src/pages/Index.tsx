@@ -4,7 +4,7 @@ import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import { Module, Category } from '../types';
 import { getModules, getCategories } from '../services';
-import { currentUser } from '../data/modules';
+import { currentUser } from '../data'; // Updated import path
 import { useToast } from '@/hooks/use-toast';
 import ContinueLearning from '../components/home/ContinueLearning';
 import CategoriesSection from '../components/home/CategoriesSection';

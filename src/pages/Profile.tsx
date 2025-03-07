@@ -1,6 +1,6 @@
 
 import { FC, useState } from 'react';
-import { currentUser } from '../data/modules';
+import { currentUser } from '../data'; // Updated import path
 import NavBar from '../components/NavBar';
 import ProfileHeader from '../components/profile/ProfileHeader';
 import ProfileContent from '../components/profile/ProfileContent';

@@ -7,7 +7,7 @@ import CategoryButton from '../components/CategoryButton';
 import FeatureTip from '../components/FeatureTip';
 import LearningModule from '../components/LearningModule';
 import { supabase } from '../integrations/supabase/client';
-import { currentUser } from '../data/modules';
+import { currentUser } from '../data'; // Updated import path
 import { useToast } from '../hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 

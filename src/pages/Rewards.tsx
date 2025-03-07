@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import { useWindowSize } from '@uidotdev/usehooks';
 import Confetti from 'react-confetti';
-import { currentUser } from '../data/modules';
+import { currentUser } from '../data'; // Updated import path
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import RewardFilter from '../components/rewards/RewardFilter';

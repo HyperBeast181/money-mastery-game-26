@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, Clock, Trophy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/LanguageContext';
-import { currentUser } from '@/data/modules'; // В реальном приложении это должно быть из контекста пользователя
+import { currentUser } from '@/data'; // Updated import path
 
 interface TriviaQuestion {
   id: string;

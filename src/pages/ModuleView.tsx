@@ -1,7 +1,7 @@
 
 import { FC, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { currentUser } from '../data/modules';
+import { currentUser } from '../data'; // Updated import path
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import ModuleDetail from '../components/ModuleDetail';

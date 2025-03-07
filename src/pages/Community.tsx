@@ -2,7 +2,7 @@
 import { FC, useState, useEffect } from 'react';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
-import { leaderboardUsers, triviaEvents, currentUser } from '../data/modules';
+import { leaderboardUsers, triviaEvents, currentUser } from '../data'; // Updated import path
 import { Plus } from 'lucide-react';
 import TriviaQuiz from '../components/community/TriviaQuiz';
 import CommunityRules from '../components/community/CommunityRules';
