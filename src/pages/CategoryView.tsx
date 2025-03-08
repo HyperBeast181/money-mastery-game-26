@@ -4,11 +4,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../integrations/supabase/client';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
-import LearningModule from '../components/LearningModule';
 import { Module, Category } from '../types';
 import { currentUser } from '../data';
 import { useToast } from '../hooks/use-toast';
-import { Loader2 } from 'lucide-react';
+import CategoryHeader from '../components/category/CategoryHeader';
+import ModuleList from '../components/category/ModuleList';
 
 const CategoryView: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -89,37 +89,8 @@ const CategoryView: React.FC = () => {
       />
       
       <div className="p-4">
-        {loading ? (
-          <div className="flex justify-center items-center h-40">
-            <Loader2 size={24} className="text-app-blue animate-spin" />
-          </div>
-        ) : (
-          <>
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-app-dark">{category?.title}</h1>
-              {category && 'description' in category && (
-                <p className="text-gray-600">{(category as any).description}</p>
-              )}
-            </div>
-            
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold text-app-dark mb-3">Модули ({modules.length})</h2>
-              {modules.length > 0 ? (
-                modules.map((module, index) => (
-                  <LearningModule 
-                    key={module.id}
-                    module={module}
-                    index={index + 1}
-                  />
-                ))
-              ) : (
-                <div className="bg-white rounded-lg p-4 text-center text-gray-500">
-                  В этой категории пока нет модулей
-                </div>
-              )}
-            </div>
-          </>
-        )}
+        <CategoryHeader category={category} loading={loading} />
+        <ModuleList modules={modules} loading={loading} />
       </div>
       
       <NavBar />

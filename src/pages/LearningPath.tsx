@@ -6,6 +6,7 @@ import TutorialOverlay from '../components/TutorialOverlay';
 import { supabase } from '../integrations/supabase/client';
 import { currentUser } from '../data';
 import { useToast } from '../hooks/use-toast';
+import { Module, Category as CategoryType } from '../types';
 
 // Import new refactored components
 import Header from '../components/learning-path/Header';
@@ -14,34 +15,8 @@ import CategoryList from '../components/learning-path/CategoryList';
 import CurrentModules from '../components/learning-path/CurrentModules';
 import PopularModules from '../components/learning-path/PopularModules';
 
-// Define simplified types to avoid circular references
-interface Category {
-  id: string;
-  title: string;
-  icon: string;
-  color?: string;
-  total_skills?: number;
-  total_modules?: number;
-}
-
-interface Module {
-  id: string;
-  title: string;
-  icon: string;
-  category: string;
-  category_id?: string;
-  coins: number;
-  progress: number;
-  totalParts: number;
-  currentPart: number;
-  timeEstimate: number;
-  participants?: number;
-  status: 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
-  description?: string;
-}
-
 const LearningPath: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const [popularModules, setPopularModules] = useState<Module[]>([]);
   const [currentModules, setCurrentModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
@@ -79,13 +54,12 @@ const LearningPath: React.FC = () => {
         if (currentModulesError) throw currentModulesError;
 
         // Transform category data to match the expected format
-        const simplifiedCategories: Category[] = categoriesData?.map(category => ({
+        const simplifiedCategories: CategoryType[] = categoriesData?.map(category => ({
           id: category.id,
           title: category.title,
           icon: category.icon,
-          color: 'bg-app-light-blue',
-          total_skills: category.total_skills,
-          total_modules: category.total_modules
+          total_skills: category.total_skills || 0,
+          total_modules: category.total_modules || 0
         })) || [];
 
         // Transform module data to match the expected format with explicit typing

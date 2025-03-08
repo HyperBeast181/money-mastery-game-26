@@ -25,7 +25,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories }) => {
             id={category.id}
             title={category.title}
             icon={category.icon}
-            color={category.color}
+            color="bg-app-light-blue"
             onClick={() => handleCategoryClick(category.id)}
           />
         ))}
