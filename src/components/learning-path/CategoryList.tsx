@@ -6,9 +6,15 @@ import { Category } from '../../types';
 
 interface CategoryListProps {
   categories: Category[];
+  title?: string;
+  showHeader?: boolean;
 }
 
-const CategoryList: React.FC<CategoryListProps> = ({ categories }) => {
+const CategoryList: React.FC<CategoryListProps> = ({ 
+  categories, 
+  title = "Категории", 
+  showHeader = true 
+}) => {
   const navigate = useNavigate();
 
   const handleCategoryClick = (categoryId: string) => {
@@ -17,7 +23,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories }) => {
 
   return (
     <div className="mb-6">
-      <h2 className="text-xl font-bold text-app-dark mb-3">Категории</h2>
+      {showHeader && <h2 className="text-xl font-bold text-app-dark mb-3">{title}</h2>}
       <div className="grid grid-cols-2 gap-3">
         {categories.map((category) => (
           <CategoryButton 
