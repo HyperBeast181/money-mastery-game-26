@@ -1,81 +1,159 @@
 
-import { FC, useState, useEffect } from 'react';
-import TopBar from '../components/TopBar';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
+import TopBar from '../components/TopBar';
 import CategoryButton from '../components/CategoryButton';
 import LearningModule from '../components/LearningModule';
 import TutorialOverlay from '../components/TutorialOverlay';
-import { currentUser } from '../data';
-import { Filter, PenLine } from 'lucide-react';
-import { getModules, getCategories, getModulesByCategory } from '../services';
-import { Module, Category } from '../types';
-import { useToast } from '@/hooks/use-toast';
+import { supabase } from '../integrations/supabase/client';
+import { currentUser } from '../data'; 
+import { useToast } from '../hooks/use-toast';
+import { Loader2, Filter, PenLine } from 'lucide-react';
 
-const LearningPath: FC = () => {
-  const [activeTab, setActiveTab] = useState<'skills' | 'completed'>('skills');
+// Define simplified types to avoid circular references
+interface Category {
+  id: string;
+  title: string;
+  icon: string;
+  color?: string;
+  total_skills?: number;
+  total_modules?: number;
+}
+
+interface Module {
+  id: string;
+  title: string;
+  icon: string;
+  category: string;
+  category_id?: string;
+  coins: number;
+  progress: number;
+  totalParts: number;
+  currentPart: number;
+  timeEstimate: number;
+  participants?: number;
+  status: 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
+  description?: string;
+}
+
+const LearningPath: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [categoryModules, setCategoryModules] = useState<Module[]>([]);
   const [popularModules, setPopularModules] = useState<Module[]>([]);
   const [currentModules, setCurrentModules] = useState<Module[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'skills' | 'completed'>('skills');
+  const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [modulesData, categoriesData] = await Promise.all([
-          getModules(),
-          getCategories()
-        ]);
+        // Получаем категории
+        const { data: categoriesData, error: categoriesError } = await supabase
+          .from('categories')
+          .select('*')
+          .order('title');
+
+        if (categoriesError) throw categoriesError;
+
+        // Получаем популярные модули
+        const { data: modulesData, error: modulesError } = await supabase
+          .from('modules')
+          .select('*')
+          .order('participants', { ascending: false })
+          .limit(3);
+
+        if (modulesError) throw modulesError;
         
-        setCategories(categoriesData);
+        // Получаем текущие активные модули для блока "Происходит сейчас"
+        const { data: currentModulesData, error: currentModulesError } = await supabase
+          .from('modules')
+          .select('*')
+          .eq('status', 'в процессе')
+          .order('participants', { ascending: false })
+          .limit(3);
+          
+        if (currentModulesError) throw currentModulesError;
+
+        // Transform category data to match the expected format
+        const simplifiedCategories: Category[] = categoriesData?.map(category => ({
+          id: category.id,
+          title: category.title,
+          icon: category.icon,
+          color: 'bg-app-light-blue',
+          total_skills: category.total_skills,
+          total_modules: category.total_modules
+        })) || [];
+
+        // Transform module data to match the expected format with explicit typing
+        const simplifiedModules: Module[] = modulesData?.map(module => {
+          const statusValue = (module.status || 'не начат') as 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
+          
+          return {
+            id: module.id,
+            title: module.title,
+            icon: module.icon,
+            category: module.category,
+            category_id: module.category_id,
+            coins: module.coins || 0,
+            status: statusValue,
+            progress: module.progress || 0,
+            currentPart: module.current_part || 0,
+            totalParts: module.total_parts || 1,
+            timeEstimate: module.time_estimate || 5,
+            participants: module.participants || 0,
+            description: module.description
+          };
+        }) || [];
         
-        // Get popular modules (sort by participants)
-        const popular = [...modulesData].sort((a, b) => 
-          (b.participants || 0) - (a.participants || 0)
-        ).slice(0, 3);
-        setPopularModules(popular);
+        // Transform current modules data
+        const currentModulesList: Module[] = currentModulesData?.map(module => {
+          const statusValue = (module.status || 'не начат') as 'не начат' | 'в процессе' | 'завершено' | 'заблокировано';
+          
+          return {
+            id: module.id,
+            title: module.title,
+            icon: module.icon,
+            category: module.category,
+            category_id: module.category_id,
+            coins: module.coins || 0,
+            status: statusValue,
+            progress: module.progress || 0,
+            currentPart: module.current_part || 0,
+            totalParts: module.total_parts || 1,
+            timeEstimate: module.time_estimate || 5,
+            participants: module.participants || 0,
+            description: module.description
+          };
+        }) || [];
         
-        // Get "happening now" modules (could be modules with most recent activity)
-        const happening = [...modulesData].filter(m => m.status === 'в процессе' || m.participants && m.participants > 100).slice(0, 3);
-        setCurrentModules(happening);
-        
-        // If a category is selected, load its modules
-        if (selectedCategory) {
-          const modulesForCategory = await getModulesByCategory(selectedCategory);
-          setCategoryModules(modulesForCategory);
-        } else {
-          // No category selected yet, show all modules
-          setCategoryModules(modulesData);
-        }
-        
+        setCategories(simplifiedCategories);
+        setPopularModules(simplifiedModules);
+        setCurrentModules(currentModulesList);
         setLoading(false);
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
         toast({
           title: 'Ошибка',
-          description: 'Не удалось загрузить данные. Пожалуйста, попробуйте позже.',
+          description: 'Не удалось загрузить данные',
           variant: 'destructive'
         });
-        setLoading(false);
       }
     };
 
     fetchData();
-  }, [toast, selectedCategory]);
+  }, [toast]);
 
-  const handleCategorySelect = (categoryId: string) => {
-    // If already selected, deselect it
-    if (selectedCategory === categoryId) {
-      setSelectedCategory(null);
-    } else {
-      setSelectedCategory(categoryId);
-      setLoading(true);
-    }
+  const handleCategoryClick = (categoryId: string) => {
+    navigate(`/category/${categoryId}`);
   };
 
-  const filterModulesByStatus = (modules: Module[]) => {
+  const handleModuleClick = (moduleId: string) => {
+    navigate(`/module/${moduleId}`);
+  };
+
+  const filterModulesByTab = (modules: Module[]) => {
     return modules.filter(module => 
       activeTab === 'skills' || (activeTab === 'completed' && module.status === 'завершено')
     );
@@ -84,7 +162,6 @@ const LearningPath: FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <TopBar user={currentUser} />
-      
       <TutorialOverlay pageId="learningPath" />
       
       <div className="p-4">
@@ -124,22 +201,22 @@ const LearningPath: FC = () => {
               id={category.id}
               title={category.title}
               icon={category.icon}
-              onClick={() => handleCategorySelect(category.id)}
-              isActive={selectedCategory === category.id}
+              color={category.color}
+              onClick={() => handleCategoryClick(category.id)}
             />
           ))}
         </div>
         
-        {currentModules.length > 0 && (
+        {currentModules.length > 0 && filterModulesByTab(currentModules).length > 0 && (
           <>
             <h2 className="text-xl font-bold text-app-dark mb-3">Происходит сейчас</h2>
             <div className="bg-yellow-50 border border-yellow-100 rounded-2xl p-4 shadow-sm mb-6">
               <div className="space-y-3">
-                {currentModules.map((module) => (
+                {filterModulesByTab(currentModules).map((module) => (
                   <div 
                     key={module.id}
                     className="bg-white rounded-xl p-3 border border-gray-100 hover:shadow-md hover-scale cursor-pointer"
-                    onClick={() => window.location.href = `/module/${module.id}`}
+                    onClick={() => handleModuleClick(module.id)}
                   >
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
@@ -172,43 +249,27 @@ const LearningPath: FC = () => {
           </>
         )}
         
-        <h2 className="text-xl font-bold text-app-dark mb-3">
-          {selectedCategory 
-            ? categories.find(c => c.id === selectedCategory)?.title || 'Выбранная категория' 
-            : 'Все модули'}
-        </h2>
-        
+        <h2 className="text-xl font-bold text-app-dark mb-3">Популярные модули</h2>
         {loading ? (
           <div className="flex justify-center p-8">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-app-blue"></div>
+            <Loader2 size={24} className="text-app-blue animate-spin" />
           </div>
-        ) : filterModulesByStatus(categoryModules).length === 0 ? (
+        ) : filterModulesByTab(popularModules).length === 0 ? (
           <div className="text-center p-8">
             <p className="text-app-text-light">
-              {selectedCategory 
-                ? 'В этой категории пока нет доступных модулей' 
-                : activeTab === 'completed' 
-                  ? 'У вас пока нет завершенных модулей'
-                  : 'Модулей не найдено'}
+              {activeTab === 'completed' 
+                ? 'У вас пока нет завершенных модулей'
+                : 'Модулей не найдено'}
             </p>
           </div>
         ) : (
-          <div className="space-y-2">
-            {filterModulesByStatus(categoryModules).map((module, index) => (
-              <LearningModule key={module.id} module={module} index={index + 1} />
-            ))}
-          </div>
-        )}
-        
-        {popularModules.length > 0 && !selectedCategory && (
-          <>
-            <h2 className="text-xl font-bold text-app-dark mt-6 mb-3">Популярные модули</h2>
-            <div className="space-y-2">
-              {popularModules.map((module, index) => (
-                <LearningModule key={module.id} module={module} index={index + 1} />
-              ))}
-            </div>
-          </>
+          filterModulesByTab(popularModules).map((module, index) => (
+            <LearningModule 
+              key={module.id}
+              module={module}
+              index={index + 1}
+            />
+          ))
         )}
       </div>
       

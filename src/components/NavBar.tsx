@@ -7,6 +7,11 @@ const NavBar: React.FC = () => {
   const location = useLocation();
   const path = location.pathname;
   
+  // Check if the current path is related to learning (learning-path, module, category)
+  const isLearningRelated = path === '/learning-path' || 
+                           path.includes('/module/') || 
+                           path.includes('/category/');
+  
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 z-10">
       <div className="flex justify-between items-center">
@@ -20,7 +25,7 @@ const NavBar: React.FC = () => {
         
         <Link 
           to="/learning-path" 
-          className={`flex flex-col items-center ${path.includes('/learning-path') || path.includes('/module/') ? 'text-app-blue' : 'text-gray-500'}`}
+          className={`flex flex-col items-center ${isLearningRelated ? 'text-app-blue' : 'text-gray-500'}`}
         >
           <BookOpen size={20} className="mb-1" />
           <span className="text-xs font-medium">Обучение</span>

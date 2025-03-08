@@ -1,13 +1,14 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../integrations/supabase/client';
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import LearningModule from '../components/LearningModule';
-import { Module, Category, ModuleStatus } from '../types';
-import { currentUser } from '../data/users';
+import { Module, Category } from '../types';
+import { currentUser } from '../data';
 import { useToast } from '../hooks/use-toast';
-import { getModulesByCategory } from '../services';
+import { Loader2 } from 'lucide-react';
 
 const CategoryView: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -32,10 +33,33 @@ const CategoryView: React.FC = () => {
         if (categoryError) throw categoryError;
         
         // Получаем модули этой категории
-        const modulesData = await getModulesByCategory(categoryId);
+        const { data: modulesData, error: modulesError } = await supabase
+          .from('modules')
+          .select('*')
+          .eq('category_id', categoryId)
+          .order('order_index');
+        
+        if (modulesError) throw modulesError;
+        
+        // Transform module data to match the expected format
+        const transformedModules: Module[] = modulesData?.map(module => ({
+          id: module.id,
+          title: module.title,
+          icon: module.icon,
+          category: module.category,
+          category_id: module.category_id,
+          coins: module.coins || 0,
+          progress: module.progress || 0,
+          currentPart: module.current_part || 0,
+          totalParts: module.total_parts || 1,
+          timeEstimate: module.time_estimate || 5,
+          participants: module.participants || 0,
+          status: (module.status || 'не начат') as 'не начат' | 'в процессе' | 'завершено' | 'заблокировано',
+          description: module.description || ''
+        })) || [];
         
         setCategory(categoryData as Category);
-        setModules(modulesData);
+        setModules(transformedModules);
         setLoading(false);
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
@@ -67,7 +91,7 @@ const CategoryView: React.FC = () => {
       <div className="p-4">
         {loading ? (
           <div className="flex justify-center items-center h-40">
-            <div className="text-gray-400">Загрузка...</div>
+            <Loader2 size={24} className="text-app-blue animate-spin" />
           </div>
         ) : (
           <>
@@ -79,7 +103,7 @@ const CategoryView: React.FC = () => {
             </div>
             
             <div className="mb-4">
-              <h2 className="text-lg font-semibold text-app-dark mb-3">Модули</h2>
+              <h2 className="text-lg font-semibold text-app-dark mb-3">Модули ({modules.length})</h2>
               {modules.length > 0 ? (
                 modules.map((module, index) => (
                   <LearningModule 
