@@ -20,8 +20,8 @@ const Community: FC = () => {
     
     // В реальном приложении здесь будет запрос к API для обновления монет пользователя
     toast({
-      title: language === 'en' ? 'Coins Added!' : 'Монеты добавлены!',
-      description: language === 'en' ? `${coinsEarned} coins have been added to your account.` : `${coinsEarned} монет добавлено на ваш счёт.`,
+      title: 'Монеты добавлены!',
+      description: `${coinsEarned} монет добавлено на ваш счёт.`,
       variant: 'default',
     });
     
@@ -35,10 +35,10 @@ const Community: FC = () => {
       <div className="px-4 py-6">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-app-dark mb-3">
-            {language === 'en' ? 'Financial Trivia' : 'Финансовая викторина'}
+            Финансовая викторина
           </h2>
           <p className="text-app-text-light mb-5">
-            {language === 'en' ? 'Test your knowledge and earn coins!' : 'Проверьте свои знания и заработайте монеты!'}
+            Проверьте свои знания и заработайте монеты!
           </p>
           
           <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
@@ -48,10 +48,10 @@ const Community: FC = () => {
               </div>
               <div>
                 <h3 className="font-bold text-app-dark text-lg">
-                  {language === 'en' ? 'Daily Financial Quiz' : 'Ежедневная финансовая викторина'}
+                  Ежедневная финансовая викторина
                 </h3>
                 <p className="text-app-text-light">
-                  {language === 'en' ? 'Answer questions correctly to earn coins' : 'Отвечайте правильно на вопросы, чтобы заработать монеты'}
+                  Отвечайте правильно на вопросы, чтобы заработать монеты
                 </p>
               </div>
             </div>
@@ -60,7 +60,7 @@ const Community: FC = () => {
               className="w-full bg-app-blue text-white font-semibold py-3 rounded-xl hover:bg-app-blue/90 transition-colors"
               onClick={() => setShowQuiz(true)}
             >
-              {language === 'en' ? 'Start Quiz' : 'Начать викторину'}
+              Начать викторину
             </button>
           </div>
           
@@ -68,7 +68,7 @@ const Community: FC = () => {
             <div className="flex items-center mb-4">
               <Users size={20} className="text-app-blue mr-2" />
               <h3 className="font-bold text-app-dark">
-                {language === 'en' ? 'Leaderboard' : 'Таблица лидеров'}
+                Таблица лидеров
               </h3>
             </div>
             
@@ -107,7 +107,7 @@ const Community: FC = () => {
               <div className="w-6 h-6 rounded-full bg-blue-400 border-2 border-gray-50"></div>
               <div className="w-6 h-6 rounded-full bg-green-400 border-2 border-gray-50"></div>
             </div>
-            {language === 'en' ? '645 Players' : '645 Игроков'}
+            645 Игроков
           </div>
         </div>
       </div>

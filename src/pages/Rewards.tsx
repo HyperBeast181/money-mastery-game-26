@@ -28,7 +28,7 @@ const Rewards: FC = () => {
   
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <TopBar user={{...currentUser, coins: userCoins}} title={language === 'en' ? "Rewards" : "Награды"} />
+      <TopBar user={{...currentUser, coins: userCoins}} title="Награды" />
       
       {showConfetti && (
         <Confetti width={width} height={height} recycle={false} />
@@ -38,10 +38,10 @@ const Rewards: FC = () => {
         <div className="bg-white rounded-2xl p-6 shadow-sm">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-app-dark mb-2">
-              {language === 'en' ? "Available Rewards" : "Доступные награды"}
+              Доступные награды
             </h2>
             <p className="text-app-text-light mb-4">
-              {language === 'en' ? "Exchange your coins for exclusive rewards" : "Обменяйте ваши монеты на эксклюзивные награды"}
+              Обменяйте ваши монеты на эксклюзивные награды
             </p>
             
             <RewardFilter currentFilter={filter} onFilterChange={setFilter} />

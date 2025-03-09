@@ -17,31 +17,31 @@ const RewardFilterComponent: FC<RewardFilterProps> = ({ currentFilter, onFilterC
         className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap ${currentFilter === 'all' ? 'bg-app-blue text-white' : 'bg-gray-100 text-app-text-light'}`}
         onClick={() => onFilterChange('all')}
       >
-        {language === 'en' ? "All" : "Все"}
+        Все
       </button>
       <button 
         className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap ${currentFilter === 'premium' ? 'bg-app-blue text-white' : 'bg-gray-100 text-app-text-light'}`}
         onClick={() => onFilterChange('premium')}
       >
-        {language === 'en' ? "Premium" : "Премиум"}
+        Премиум
       </button>
       <button 
         className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap ${currentFilter === 'feature' ? 'bg-app-blue text-white' : 'bg-gray-100 text-app-text-light'}`}
         onClick={() => onFilterChange('feature')}
       >
-        {language === 'en' ? "Features" : "Функции"}
+        Функции
       </button>
       <button 
         className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap ${currentFilter === 'badge' ? 'bg-app-blue text-white' : 'bg-gray-100 text-app-text-light'}`}
         onClick={() => onFilterChange('badge')}
       >
-        {language === 'en' ? "Badges" : "Значки"}
+        Значки
       </button>
       <button 
         className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap ${currentFilter === 'benefit' ? 'bg-app-blue text-white' : 'bg-gray-100 text-app-text-light'}`}
         onClick={() => onFilterChange('benefit')}
       >
-        {language === 'en' ? "Benefits" : "Выгоды"}
+        Выгоды
       </button>
     </div>
   );

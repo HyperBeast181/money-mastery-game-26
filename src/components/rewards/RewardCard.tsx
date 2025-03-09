@@ -49,7 +49,7 @@ const RewardCard: FC<RewardCardProps> = ({ reward, onClick }) => {
           }`}
           disabled={reward.redeemed}
         >
-          {reward.redeemed ? 'Redeemed' : 'Redeem'}
+          {reward.redeemed ? 'Получено' : 'Получить'}
         </button>
       </div>
     </div>
