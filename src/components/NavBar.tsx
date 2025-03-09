@@ -7,8 +7,8 @@ const NavBar: React.FC = () => {
   const location = useLocation();
   const path = location.pathname;
   
-  // Check if the current path is related to learning (learning-path, module, category)
-  const isLearningRelated = path === '/learning-path' || 
+  // Check if the current path is related to learning (explore, module, category)
+  const isLearningRelated = path === '/explore' || 
                            path.includes('/module/') || 
                            path.includes('/category/');
   
@@ -24,7 +24,7 @@ const NavBar: React.FC = () => {
         </Link>
         
         <Link 
-          to="/learning-path" 
+          to="/explore" 
           className={`flex flex-col items-center ${isLearningRelated ? 'text-app-blue' : 'text-gray-500'}`}
         >
           <BookOpen size={20} className="mb-1" />

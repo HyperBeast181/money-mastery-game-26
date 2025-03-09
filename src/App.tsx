@@ -4,9 +4,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { ThemeProvider } from './components/ui/theme-provider';
 import { Toaster } from './components/ui/toaster';
 import Index from './pages/Index';
-import LearningPath from './pages/LearningPath';
-import Profile from './pages/Profile';
 import Explore from './pages/Explore';
+import Profile from './pages/Profile';
 import Community from './pages/Community';
 import Rewards from './pages/Rewards';
 import ModuleView from './pages/ModuleView';
@@ -32,7 +31,7 @@ function App() {
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/learning-path" element={<LearningPath />} />
+            <Route path="/learning-path" element={<Explore />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/community" element={<Community />} />

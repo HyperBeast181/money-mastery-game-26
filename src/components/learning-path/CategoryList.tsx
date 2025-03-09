@@ -28,7 +28,6 @@ const CategoryList: React.FC<CategoryListProps> = ({
         {categories.map((category) => (
           <CategoryButton 
             key={category.id}
-            id={category.id}
             title={category.title}
             icon={category.icon}
             color="bg-app-light-blue"

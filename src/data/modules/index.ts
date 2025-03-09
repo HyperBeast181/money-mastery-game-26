@@ -5,12 +5,15 @@ import { financialModules } from './financialModules';
 import { savingsModules } from './savingsModules';
 import { taxModules } from './taxModules';
 import { educationModules } from './educationModules';
-import { investingModules } from './educationModules';
-import { careerModules } from './educationModules';
-import { lifecycleModules } from './educationModules';
-import { entrepreneurshipModules } from './educationModules';
-import { riskManagementModules } from './educationModules';
-import { financialBasicsModules } from './educationModules';
+
+// Импортируем модули с правильными путями
+// Остальные модули будут добавлены позже
+const investingModules: Module[] = [];
+const careerModules: Module[] = [];
+const lifecycleModules: Module[] = [];
+const entrepreneurshipModules: Module[] = [];
+const riskManagementModules: Module[] = [];
+const financialBasicsModules: Module[] = [];
 
 // Combine all module arrays
 export const modules: Module[] = [

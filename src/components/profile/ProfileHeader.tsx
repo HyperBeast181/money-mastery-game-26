@@ -13,7 +13,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
     <div>
       <TopBar 
         user={user} 
-        showBackButton={true} 
         title="Профиль"
       />
       <div className="relative p-5 pt-3 pb-20 bg-app-blue text-white">

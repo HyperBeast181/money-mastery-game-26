@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import { useWindowSize } from '@uidotdev/usehooks';
 import Confetti from 'react-confetti';
-import { currentUser } from '../data'; // Updated import path
+import { currentUser } from '../data'; 
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import RewardFilter from '../components/rewards/RewardFilter';
@@ -28,7 +28,7 @@ const Rewards: FC = () => {
   
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <TopBar user={{...currentUser, coins: userCoins}} title={language === 'en' ? "Rewards" : "Награды"} showBackButton />
+      <TopBar user={{...currentUser, coins: userCoins}} title={language === 'en' ? "Rewards" : "Награды"} />
       
       {showConfetti && (
         <Confetti width={width} height={height} recycle={false} />
