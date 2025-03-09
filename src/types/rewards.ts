@@ -24,3 +24,9 @@ export interface GiftCard {
 }
 
 export type RewardFilter = 'all' | 'premium' | 'feature' | 'badge' | 'benefit';
+
+export interface GiftCardRedeem {
+  giftCardId: string;
+  userId: string;
+  code?: string;
+}
