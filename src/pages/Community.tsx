@@ -5,14 +5,12 @@ import NavBar from '../components/NavBar';
 import { leaderboardUsers, currentUser } from '../data';
 import TriviaQuiz from '../components/community/TriviaQuiz';
 import { useToast } from '@/hooks/use-toast';
-import { useLanguage } from '../context/LanguageContext';
 import { Trophy, Users } from 'lucide-react';
 
 const Community: FC = () => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [userCoins, setUserCoins] = useState(currentUser.coins);
   const { toast } = useToast();
-  const { language } = useLanguage();
   
   const handleQuizComplete = (score: number) => {
     const coinsEarned = Math.floor(score / 10);

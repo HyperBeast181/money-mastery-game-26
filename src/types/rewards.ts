@@ -13,4 +13,14 @@ export interface Reward {
   icon: LucideIcon;
 }
 
+export interface GiftCard {
+  id: string;
+  name: string;
+  logo: string;
+  value: number;
+  cost: number;
+  costDisplay: string;
+  bgColor: string;
+}
+
 export type RewardFilter = 'all' | 'premium' | 'feature' | 'badge' | 'benefit';

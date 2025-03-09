@@ -1,60 +1,75 @@
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useWindowSize } from '@uidotdev/usehooks';
 import Confetti from 'react-confetti';
 import { currentUser } from '../data'; 
 import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
-import RewardFilter from '../components/rewards/RewardFilter';
-import RewardsGrid from '../components/rewards/RewardsGrid';
-import RedeemConfirmation from '../components/rewards/RedeemConfirmation';
 import { useRewards } from '../hooks/useRewards';
+import GiftCardsGrid from '../components/rewards/GiftCardsGrid';
+import GiftCardVerification from '../components/rewards/GiftCardVerification';
+import GiftCardRedemption from '../components/rewards/GiftCardRedemption';
 import { useLanguage } from '../context/LanguageContext';
 
 const Rewards: FC = () => {
-  const { language } = useLanguage();
+  const { t } = useLanguage();
   const { width, height } = useWindowSize();
   const { 
     userCoins, 
-    rewards, 
-    selectedReward, 
+    gifts, 
+    selectedGift, 
     showConfetti, 
-    filter, 
-    setFilter, 
-    handleRewardClick, 
+    handleGiftSelect, 
     handleRedeem,
-    cancelRedemption
+    cancelRedemption,
+    verificationType,
+    setVerificationType
   } = useRewards(currentUser.coins);
   
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <TopBar user={{...currentUser, coins: userCoins}} title="Награды" />
+      <TopBar user={{...currentUser, coins: userCoins}} title="Маркетплейс" />
       
       {showConfetti && (
         <Confetti width={width} height={height} recycle={false} />
       )}
       
       <div className="p-4">
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
+        <div className="bg-white rounded-2xl px-5 py-6">
+          <h2 className="text-3xl font-bold text-app-dark">
+            Маркетплейс
+          </h2>
+          <p className="text-app-text-light mb-6">
+            Обменяйте ваши монеты на подарочные карты
+          </p>
+          
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-app-dark mb-2">
-              Доступные награды
-            </h2>
-            <p className="text-app-text-light mb-4">
-              Обменяйте ваши монеты на эксклюзивные награды
-            </p>
-            
-            <RewardFilter currentFilter={filter} onFilterChange={setFilter} />
+            <button className="px-4 py-2 bg-gray-800 text-white rounded-full font-medium">
+              Подарочные карты
+            </button>
           </div>
           
-          <RewardsGrid rewards={rewards} onRewardClick={handleRewardClick} />
-          
-          {selectedReward && (
-            <RedeemConfirmation 
-              reward={selectedReward} 
-              onCancel={cancelRedemption}
-              onConfirm={handleRedeem}
-            />
+          {verificationType === 'none' ? (
+            <>
+              <GiftCardVerification onVerify={() => setVerificationType('verified')} />
+              
+              {/* Отображаем карты даже если пользователь не верифицирован */}
+              <div className="mt-6">
+                <GiftCardsGrid gifts={gifts} onGiftSelect={handleGiftSelect} />
+              </div>
+            </>
+          ) : (
+            <>
+              {selectedGift ? (
+                <GiftCardRedemption 
+                  gift={selectedGift} 
+                  onCancel={cancelRedemption}
+                  onConfirm={handleRedeem}
+                />
+              ) : (
+                <GiftCardsGrid gifts={gifts} onGiftSelect={handleGiftSelect} />
+              )}
+            </>
           )}
         </div>
       </div>

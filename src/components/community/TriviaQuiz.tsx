@@ -1,8 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, Clock, Trophy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useLanguage } from '@/context/LanguageContext';
-import { currentUser } from '@/data'; // Updated import path
 
 interface TriviaQuestion {
   id: string;
@@ -26,53 +25,76 @@ const TriviaQuiz: React.FC<TriviaQuizProps> = ({ onClose, onComplete }) => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  const { t, language } = useLanguage();
 
-  // Загрузка вопросов викторины
+  // Загрузка вопросов викторины на русском языке
   useEffect(() => {
     // В реальном приложении здесь будет запрос к API
-    const mockQuestions: TriviaQuestion[] = [
+    const russianQuestions: TriviaQuestion[] = [
       {
         id: '1',
-        text: language === 'en' ? 'What is a budget?' : 'Что такое бюджет?',
+        text: 'Что такое бюджет?',
         options: [
-          { id: '1a', text: language === 'en' ? 'A financial plan for managing income and expenses' : 'Финансовый план для управления доходами и расходами' },
-          { id: '1b', text: language === 'en' ? 'A type of investment' : 'Вид инвестиций' },
-          { id: '1c', text: language === 'en' ? 'A credit card with no fees' : 'Кредитная карта без комиссий' },
-          { id: '1d', text: language === 'en' ? 'A government tax program' : 'Государственная налоговая программа' }
+          { id: '1a', text: 'Финансовый план для управления доходами и расходами' },
+          { id: '1b', text: 'Вид инвестиций' },
+          { id: '1c', text: 'Кредитная карта без комиссий' },
+          { id: '1d', text: 'Государственная налоговая программа' }
         ],
         correctOptionId: '1a',
-        explanation: language === 'en' ? 'A budget is a financial plan that outlines expected income and expenses over a period of time.' : 'Бюджет — это финансовый план, который определяет ожидаемые доходы и расходы за определённый период времени.'
+        explanation: 'Бюджет — это финансовый план, который определяет ожидаемые доходы и расходы за определённый период времени.'
       },
       {
         id: '2',
-        text: language === 'en' ? 'What is compound interest?' : 'Что такое сложный процент?',
+        text: 'Что такое сложный процент?',
         options: [
-          { id: '2a', text: language === 'en' ? 'Interest paid only on the principal' : 'Проценты, выплачиваемые только на основную сумму' },
-          { id: '2b', text: language === 'en' ? 'Interest earned on both principal and previously earned interest' : 'Проценты, начисляемые как на основную сумму, так и на ранее начисленные проценты' },
-          { id: '2c', text: language === 'en' ? 'A type of loan with a fixed rate' : 'Вид кредита с фиксированной ставкой' },
-          { id: '2d', text: language === 'en' ? 'A fee charged by banks for deposits' : 'Комиссия, взимаемая банками за депозиты' }
+          { id: '2a', text: 'Проценты, выплачиваемые только на основную сумму' },
+          { id: '2b', text: 'Проценты, начисляемые как на основную сумму, так и на ранее начисленные проценты' },
+          { id: '2c', text: 'Вид кредита с фиксированной ставкой' },
+          { id: '2d', text: 'Комиссия, взимаемая банками за депозиты' }
         ],
         correctOptionId: '2b',
-        explanation: language === 'en' ? 'Compound interest is interest calculated on the initial principal and also on the accumulated interest of previous periods.' : 'Сложный процент — это проценты, рассчитываемые на начальную сумму, а также на накопленные проценты предыдущих периодов.'
+        explanation: 'Сложный процент — это проценты, рассчитываемые на начальную сумму, а также на накопленные проценты предыдущих периодов.'
       },
       {
         id: '3',
-        text: language === 'en' ? 'What is a credit score?' : 'Что такое кредитный рейтинг?',
+        text: 'Что такое кредитный рейтинг?',
         options: [
-          { id: '3a', text: language === 'en' ? 'The amount of money you owe to creditors' : 'Сумма денег, которую вы должны кредиторам' },
-          { id: '3b', text: language === 'en' ? 'Your checking account balance' : 'Баланс вашего расчётного счёта' },
-          { id: '3c', text: language === 'en' ? 'A numerical expression of your creditworthiness' : 'Числовое выражение вашей кредитоспособности' },
-          { id: '3d', text: language === 'en' ? 'The interest rate on a loan' : 'Процентная ставка по кредиту' }
+          { id: '3a', text: 'Сумма денег, которую вы должны кредиторам' },
+          { id: '3b', text: 'Баланс вашего расчётного счёта' },
+          { id: '3c', text: 'Числовое выражение вашей кредитоспособности' },
+          { id: '3d', text: 'Процентная ставка по кредиту' }
         ],
         correctOptionId: '3c',
-        explanation: language === 'en' ? 'A credit score is a number that represents a person\'s creditworthiness based on their credit history.' : 'Кредитный рейтинг — это число, которое представляет кредитоспособность человека на основе его кредитной истории.'
+        explanation: 'Кредитный рейтинг — это число, которое представляет кредитоспособность человека на основе его кредитной истории.'
+      },
+      {
+        id: '4',
+        text: 'Что такое инфляция?',
+        options: [
+          { id: '4a', text: 'Рост цен на товары и услуги, приводящий к снижению покупательной способности денег' },
+          { id: '4b', text: 'Снижение цен на товары и услуги' },
+          { id: '4c', text: 'Рост стоимости национальной валюты' },
+          { id: '4d', text: 'Период экономического роста' }
+        ],
+        correctOptionId: '4a',
+        explanation: 'Инфляция — это процесс роста общего уровня цен на товары и услуги, в результате которого покупательная способность денег снижается.'
+      },
+      {
+        id: '5',
+        text: 'Что такое диверсификация инвестиций?',
+        options: [
+          { id: '5a', text: 'Вложение всех средств в один актив' },
+          { id: '5b', text: 'Распределение инвестиций между различными активами для снижения риска' },
+          { id: '5c', text: 'Продажа всех активов во время падения рынка' },
+          { id: '5d', text: 'Инвестирование только в государственные облигации' }
+        ],
+        correctOptionId: '5b',
+        explanation: 'Диверсификация — это стратегия распределения инвестиций между различными активами или классами активов для снижения рисков.'
       }
     ];
     
-    setQuestions(mockQuestions);
+    setQuestions(russianQuestions);
     setLoading(false);
-  }, [language]);
+  }, []);
 
   // Таймер для вопроса
   useEffect(() => {
@@ -102,15 +124,15 @@ const TriviaQuiz: React.FC<TriviaQuizProps> = ({ onClose, onComplete }) => {
       // Правильный ответ
       setScore(prev => prev + 100);
       toast({
-        title: language === 'en' ? 'Correct!' : 'Правильно!',
-        description: language === 'en' ? 'You earned 100 points!' : 'Вы заработали 100 баллов!',
+        title: 'Правильно!',
+        description: 'Вы заработали 100 баллов!',
         variant: 'default',
       });
     } else {
       // Неправильный ответ
       toast({
-        title: language === 'en' ? 'Incorrect' : 'Неправильно',
-        description: language === 'en' ? 'The correct answer has been highlighted.' : 'Правильный ответ выделен.',
+        title: 'Неправильно',
+        description: 'Правильный ответ выделен.',
         variant: 'destructive',
       });
     }
@@ -161,17 +183,13 @@ const TriviaQuiz: React.FC<TriviaQuizProps> = ({ onClose, onComplete }) => {
               <Trophy size={40} className="text-app-blue" />
             </div>
             <h2 className="text-2xl font-bold text-app-dark">
-              {language === 'en' ? 'Quiz Completed!' : 'Викторина завершена!'}
+              Викторина завершена!
             </h2>
             <p className="text-app-text-light mt-2">
-              {language === 'en' 
-                ? `Your score: ${score} points` 
-                : `Ваш результат: ${score} баллов`}
+              Ваш результат: {score} баллов
             </p>
             <p className="text-app-text-light mt-2">
-              {language === 'en' 
-                ? `You earned ${Math.floor(score / 10)} coins!` 
-                : `Вы заработали ${Math.floor(score / 10)} монет!`}
+              Вы заработали {Math.floor(score / 10)} монет!
             </p>
           </div>
           
@@ -179,7 +197,7 @@ const TriviaQuiz: React.FC<TriviaQuizProps> = ({ onClose, onComplete }) => {
             onClick={onClose}
             className="w-full bg-app-blue text-white font-medium py-3 rounded-full"
           >
-            {language === 'en' ? 'Return to Community' : 'Вернуться в Сообщество'}
+            Вернуться в Сообщество
           </button>
         </div>
       </div>
@@ -194,11 +212,11 @@ const TriviaQuiz: React.FC<TriviaQuizProps> = ({ onClose, onComplete }) => {
             <ChevronLeft size={24} className="text-app-dark" />
           </button>
           <h2 className="text-xl font-bold text-app-dark">
-            {language === 'en' ? 'Trivia Quiz' : 'Викторина'}
+            Викторина
           </h2>
           <div className="flex items-center text-app-text-light">
             <Clock size={18} className="mr-1" />
-            <span>{timeLeft}s</span>
+            <span>{timeLeft}с</span>
           </div>
         </div>
         
@@ -211,10 +229,10 @@ const TriviaQuiz: React.FC<TriviaQuizProps> = ({ onClose, onComplete }) => {
           </div>
           <div className="flex justify-between text-xs text-app-text-light mt-1">
             <span>
-              {language === 'en' ? 'Question' : 'Вопрос'} {currentQuestionIndex + 1}/{questions.length}
+              Вопрос {currentQuestionIndex + 1}/{questions.length}
             </span>
             <span>
-              {language === 'en' ? 'Score' : 'Счёт'}: {score}
+              Счёт: {score}
             </span>
           </div>
         </div>
