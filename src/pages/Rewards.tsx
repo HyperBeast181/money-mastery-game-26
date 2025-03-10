@@ -1,4 +1,3 @@
-
 import { FC, useState, useEffect } from 'react';
 import { useWindowSize } from '@uidotdev/usehooks';
 import Confetti from 'react-confetti';
@@ -11,19 +10,20 @@ import GiftCardVerification from '../components/rewards/GiftCardVerification';
 import GiftCardRedemption from '../components/rewards/GiftCardRedemption';
 import { supabase } from '../integrations/supabase/client';
 import { useLanguage } from '../context/LanguageContext';
+import { User } from '../types';
+import { useAuth } from '../context/AuthContext';
 
 const Rewards: FC = () => {
   const { t } = useLanguage();
   const { width, height } = useWindowSize();
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
+  const [userObject, setUserObject] = useState<User | null>(null);
   const [userCoinsState, setUserCoinsState] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const { user, profile } = useAuth();
   
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      
+    const loadUserData = async () => {
       if (!user) {
         // Redirect to auth page if not authenticated
         navigate('/auth');
@@ -31,62 +31,58 @@ const Rewards: FC = () => {
       }
       
       try {
-        // Get user profile
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('user_id', user.id)
-          .maybeSingle();
+        setIsLoading(true);
         
-        if (error) {
-          console.error('Error fetching user profile:', error);
-          return;
+        // Use profile from context if available
+        let profileData = profile;
+        
+        // Otherwise fetch from database
+        if (!profileData) {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .maybeSingle();
+          
+          if (error) {
+            console.error('Error fetching user profile:', error);
+            return;
+          }
+          
+          profileData = data;
         }
         
-        if (profile) {
-          setUser({
+        if (profileData) {
+          const userObj = {
             id: user.id,
-            name: profile.name,
-            avatar: profile.avatar,
-            coins: profile.coins,
-            xp: profile.xp,
-            streak: profile.streak,
-            hearts: profile.hearts,
-            joinedDate: new Date(profile.joined_date).toLocaleDateString('ru-RU', { 
+            name: profileData.name || user.user_metadata?.name || 'Пользователь',
+            avatar: profileData.avatar || '/lovable-uploads/66657bf7-1e19-4058-b7e6-4ff8bd5847d3.png',
+            coins: profileData.coins || 0,
+            xp: profileData.xp || 0,
+            streak: profileData.streak || 0,
+            hearts: profileData.hearts || 5,
+            joinedDate: new Date(profileData.joined_date).toLocaleDateString('ru-RU', { 
               day: 'numeric', 
               month: 'short', 
               year: 'numeric' 
             }),
-            completedModules: profile.completed_modules,
-            totalEarned: profile.total_earned,
+            completedModules: profileData.completed_modules || 0,
+            totalEarned: profileData.total_earned || 0,
             badges: []
-          });
-          setUserCoinsState(profile.coins);
+          };
+          
+          setUserObject(userObj);
+          setUserCoinsState(profileData.coins || 0);
         }
       } catch (error) {
-        console.error('Error in checkUser:', error);
+        console.error('Error in loadUserData:', error);
       } finally {
         setIsLoading(false);
       }
     };
     
-    checkUser();
-    
-    // Listen for auth state changes
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_OUT') {
-        navigate('/auth');
-      } else if (event === 'SIGNED_IN' && session) {
-        // Refresh user data on sign in
-        checkUser();
-      }
-    });
-    
-    return () => {
-      // Clean up subscription
-      authListener?.subscription.unsubscribe();
-    };
-  }, [navigate]);
+    loadUserData();
+  }, [user, profile, navigate]);
   
   const { 
     gifts, 
@@ -107,13 +103,13 @@ const Rewards: FC = () => {
     );
   }
   
-  if (!user) {
+  if (!userObject) {
     return null; // This should not happen as navigate would redirect
   }
   
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <TopBar user={user} title="Маркетплейс" />
+      <TopBar user={userObject} title="Маркетплейс" />
       
       {showConfetti && (
         <Confetti width={width} height={height} recycle={false} />

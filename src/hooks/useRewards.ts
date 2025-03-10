@@ -29,7 +29,7 @@ export const useRewards = (initialCoins: number) => {
           return;
         }
         
-        if (data) {
+        if (data && data.length > 0) {
           const formattedGifts: GiftCard[] = data.map(card => ({
             id: card.id,
             name: card.name,
@@ -37,10 +37,33 @@ export const useRewards = (initialCoins: number) => {
             value: card.value,
             cost: card.cost,
             costDisplay: card.cost.toLocaleString(),
-            bgColor: card.bg_color
+            bgColor: card.bg_color || 'bg-blue-500'
           }));
           
           setGifts(formattedGifts);
+        } else {
+          // Fallback for when no gift cards are found
+          const defaultGifts: GiftCard[] = [
+            {
+              id: '1',
+              name: 'OZON',
+              logo: 'https://upload.wikimedia.org/wikipedia/commons/9/95/Ozon_logo.svg',
+              value: 5,
+              cost: 5000,
+              costDisplay: '5 000',
+              bgColor: 'bg-blue-500'
+            },
+            {
+              id: '2',
+              name: 'Яндекс',
+              logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/1200px-Yandex_icon.svg.png',
+              value: 5,
+              cost: 5000,
+              costDisplay: '5 000',
+              bgColor: 'bg-yellow-500'
+            }
+          ];
+          setGifts(defaultGifts);
         }
       } catch (error) {
         console.error('Error in fetchGiftCards:', error);
@@ -119,7 +142,7 @@ export const useRewards = (initialCoins: number) => {
           coins: userCoins - selectedGift.cost,
           total_earned: userCoins
         })
-        .eq('user_id', user.id);
+        .eq('id', user.id);
 
       if (updateError) {
         console.error('Error updating user coins:', updateError);
