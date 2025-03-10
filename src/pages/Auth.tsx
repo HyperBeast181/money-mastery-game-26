@@ -21,12 +21,13 @@ const Auth: FC = () => {
     try {
       if (isLogin) {
         // Login
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
 
         if (error) {
+          console.error('Login error:', error);
           toast({
             title: 'Ошибка входа',
             description: error.message,
@@ -36,10 +37,15 @@ const Auth: FC = () => {
           return;
         }
 
+        console.log('Logged in successfully:', data);
+        toast({
+          title: 'Успешный вход',
+          description: 'Вы успешно вошли в систему',
+        });
         navigate('/');
       } else {
         // Register
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -50,6 +56,7 @@ const Auth: FC = () => {
         });
 
         if (error) {
+          console.error('Registration error:', error);
           toast({
             title: 'Ошибка регистрации',
             description: error.message,
@@ -59,30 +66,56 @@ const Auth: FC = () => {
           return;
         }
 
+        console.log('Registration successful:', data);
+        
+        // Check if email confirmation is required
+        if (data.user?.identities?.length === 0) {
+          toast({
+            title: 'Требуется подтверждение',
+            description: 'Пожалуйста, подтвердите ваш email перед входом',
+          });
+          setIsLogin(true);
+          setIsLoading(false);
+          return;
+        }
+        
         toast({
           title: 'Регистрация успешна',
           description: 'Ваш аккаунт был создан успешно!',
         });
 
         // Auto login after registration
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        try {
+          const { error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
 
-        if (signInError) {
+          if (signInError) {
+            console.error('Auto login error:', signInError);
+            toast({
+              title: 'Ошибка входа',
+              description: 'Пожалуйста, войдите вручную',
+              variant: 'destructive',
+            });
+            setIsLogin(true);
+            setIsLoading(false);
+            return;
+          }
+
+          navigate('/');
+        } catch (loginError: any) {
+          console.error('Auto login exception:', loginError);
           toast({
-            title: 'Ошибка входа',
-            description: 'Пожалуйста, войдите вручную',
+            title: 'Ошибка',
+            description: loginError.message || 'Произошла ошибка при автоматическом входе',
             variant: 'destructive',
           });
-          setIsLoading(false);
-          return;
+          setIsLogin(true);
         }
-
-        navigate('/');
       }
     } catch (error: any) {
+      console.error('Auth exception:', error);
       toast({
         title: 'Ошибка',
         description: error.message || 'Произошла неизвестная ошибка',
@@ -98,11 +131,12 @@ const Auth: FC = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/`
+          redirectTo: `${window.location.origin}/`,
         }
       });
 
       if (error) {
+        console.error('Google sign in error:', error);
         toast({
           title: 'Ошибка входа',
           description: error.message,
@@ -110,6 +144,7 @@ const Auth: FC = () => {
         });
       }
     } catch (error: any) {
+      console.error('Google sign in exception:', error);
       toast({
         title: 'Ошибка',
         description: error.message || 'Произошла неизвестная ошибка',

@@ -13,12 +13,10 @@ const LogoutButton: React.FC = () => {
   const handleLogout = async () => {
     try {
       await signOut();
-      toast({
-        title: "Выход из системы",
-        description: "Вы успешно вышли из системы",
-      });
+      // Уведомление о выходе будет показано внутри метода signOut
       navigate('/auth');
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Error during logout:', error);
       toast({
         title: "Ошибка",
         description: "Произошла ошибка при выходе из системы",

@@ -35,6 +35,19 @@ export function useToast() {
     setToasts(current => [...current, { ...props, id }]);
   };
 
+  // Добавим слушатель для глобальных тостов
+  useEffect(() => {
+    const handleToast = (event: CustomEvent<ToastProps>) => {
+      toast(event.detail);
+    };
+
+    document.addEventListener('toast' as any, handleToast as any);
+
+    return () => {
+      document.removeEventListener('toast' as any, handleToast as any);
+    };
+  }, []);
+
   return { toast, toasts };
 }
 
