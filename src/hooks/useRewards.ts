@@ -1,56 +1,66 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { GiftCard } from '../types/rewards';
-import { supabase } from '../integrations/supabase/client';
+
+// Массив доступных подарочных карт
+const giftCards: GiftCard[] = [
+  {
+    id: 'roblox',
+    name: 'Roblox',
+    logo: '/lovable-uploads/2efecd15-1681-4717-878a-db9a2b6912a6.png',
+    value: 5,
+    cost: 5000,
+    costDisplay: '5,000',
+    bgColor: 'bg-gray-500'
+  },
+  {
+    id: 'apple',
+    name: 'Apple',
+    logo: '/lovable-uploads/5130cba0-a6d2-491c-87a6-3cfe915cc3ef.png',
+    value: 5,
+    cost: 5000,
+    costDisplay: '5,000',
+    bgColor: 'bg-gray-500'
+  },
+  {
+    id: 'ozon',
+    name: 'OZON',
+    logo: 'https://companieslogo.com/img/orig/OZON-D3D094AF.png?t=1633204875',
+    value: 5,
+    cost: 5000,
+    costDisplay: '5,000',
+    bgColor: 'bg-blue-400'
+  },
+  {
+    id: 'yandex',
+    name: 'Яндекс',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png',
+    value: 5,
+    cost: 5000,
+    costDisplay: '5,000',
+    bgColor: 'bg-yellow-400'
+  },
+  {
+    id: 'wildberries',
+    name: 'Wildberries',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Wildberries_logo_icon_2020.jpg/1200px-Wildberries_logo_icon_2020.jpg',
+    value: 5,
+    cost: 5000,
+    costDisplay: '5,000',
+    bgColor: 'bg-purple-500'
+  },
+];
 
 type VerificationType = 'none' | 'verified';
 
 export const useRewards = (initialCoins: number) => {
   const [userCoins, setUserCoins] = useState(initialCoins);
-  const [gifts, setGifts] = useState<GiftCard[]>([]);
+  const [gifts, setGifts] = useState<GiftCard[]>(giftCards);
   const [selectedGift, setSelectedGift] = useState<GiftCard | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
-  const [verificationType, setVerificationType] = useState<VerificationType>('verified');
-  const [isLoading, setIsLoading] = useState(true);
+  const [verificationType, setVerificationType] = useState<VerificationType>('verified'); // По умолчанию устанавливаем "verified" для демонстрации
   const { toast } = useToast();
-
-  // Fetch gift cards from Supabase
-  useEffect(() => {
-    const fetchGiftCards = async () => {
-      try {
-        setIsLoading(true);
-        const { data, error } = await supabase
-          .from('gift_cards')
-          .select('*');
-        
-        if (error) {
-          console.error('Error fetching gift cards:', error);
-          return;
-        }
-        
-        if (data) {
-          const formattedGifts: GiftCard[] = data.map(card => ({
-            id: card.id,
-            name: card.name,
-            logo: card.logo,
-            value: card.value,
-            cost: card.cost,
-            costDisplay: card.cost.toLocaleString(),
-            bgColor: card.bg_color
-          }));
-          
-          setGifts(formattedGifts);
-        }
-      } catch (error) {
-        console.error('Error in fetchGiftCards:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchGiftCards();
-  }, []);
   
   const handleGiftSelect = (gift: GiftCard) => {
     if (verificationType !== 'verified') {
@@ -65,7 +75,7 @@ export const useRewards = (initialCoins: number) => {
     setSelectedGift(gift);
   };
   
-  const handleRedeem = async () => {
+  const handleRedeem = () => {
     if (!selectedGift) return;
     
     if (userCoins < selectedGift.cost) {
@@ -76,83 +86,20 @@ export const useRewards = (initialCoins: number) => {
       });
       return;
     }
-
-    // Get current user
-    const { data: { user } } = await supabase.auth.getUser();
     
-    if (!user) {
-      toast({
-        title: "Требуется вход в систему",
-        description: "Пожалуйста, войдите в систему, чтобы получить подарочную карту",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      // Generate a gift card code
-      const giftCode = Math.random().toString(36).substring(2, 10).toUpperCase();
-
-      // Insert the redemption record
-      const { error: insertError } = await supabase
-        .from('user_gift_cards')
-        .insert({
-          user_id: user.id,
-          gift_card_id: selectedGift.id,
-          code: giftCode
-        });
-
-      if (insertError) {
-        console.error('Error redeeming gift card:', insertError);
-        toast({
-          title: "Ошибка при получении карты",
-          description: "Произошла ошибка при получении подарочной карты. Пожалуйста, попробуйте еще раз.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Update user's coins
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ 
-          coins: userCoins - selectedGift.cost,
-          total_earned: userCoins
-        })
-        .eq('user_id', user.id);
-
-      if (updateError) {
-        console.error('Error updating user coins:', updateError);
-      } else {
-        // Update local state
-        setUserCoins(prev => prev - selectedGift.cost);
-      }
-      
-      // Show confetti
-      setShowConfetti(true);
-      
-      // Show toast with code
-      toast({
-        title: "Подарочная карта получена!",
-        description: `Ваш код: ${giftCode}`,
-        variant: "default",
-      });
-      
-      // Hide confetti after a few seconds
-      setTimeout(() => {
-        setShowConfetti(false);
-      }, 3000);
-      
-      // Reset selected gift
-      setSelectedGift(null);
-    } catch (error) {
-      console.error('Error in handleRedeem:', error);
-      toast({
-        title: "Ошибка",
-        description: "Произошла ошибка при получении подарочной карты",
-        variant: "destructive",
-      });
-    }
+    // Обновляем монеты пользователя
+    setUserCoins(prev => prev - selectedGift.cost);
+    
+    // Показываем конфетти
+    setShowConfetti(true);
+    
+    // Скрываем конфетти через несколько секунд
+    setTimeout(() => {
+      setShowConfetti(false);
+    }, 3000);
+    
+    // Сбрасываем выбранную карту
+    setSelectedGift(null);
   };
     
   return {
@@ -161,7 +108,6 @@ export const useRewards = (initialCoins: number) => {
     selectedGift,
     showConfetti,
     verificationType,
-    isLoading,
     setVerificationType,
     handleGiftSelect,
     handleRedeem,

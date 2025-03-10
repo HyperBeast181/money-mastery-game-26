@@ -33,36 +33,6 @@ export type Database = {
         }
         Relationships: []
       }
-      gift_cards: {
-        Row: {
-          bg_color: string
-          cost: number
-          created_at: string
-          id: string
-          logo: string
-          name: string
-          value: number
-        }
-        Insert: {
-          bg_color?: string
-          cost: number
-          created_at?: string
-          id?: string
-          logo: string
-          name: string
-          value: number
-        }
-        Update: {
-          bg_color?: string
-          cost?: number
-          created_at?: string
-          id?: string
-          logo?: string
-          name?: string
-          value?: number
-        }
-        Relationships: []
-      }
       leaderboard_users: {
         Row: {
           avatar: string
@@ -215,11 +185,9 @@ export type Database = {
           hearts: number | null
           id: string
           joined_date: string | null
-          last_login: string | null
           name: string
           referral_code: string | null
           streak: number | null
-          streak_updated_at: string | null
           total_earned: number | null
           user_id: string | null
           xp: number | null
@@ -231,11 +199,9 @@ export type Database = {
           hearts?: number | null
           id?: string
           joined_date?: string | null
-          last_login?: string | null
           name: string
           referral_code?: string | null
           streak?: number | null
-          streak_updated_at?: string | null
           total_earned?: number | null
           user_id?: string | null
           xp?: number | null
@@ -247,11 +213,9 @@ export type Database = {
           hearts?: number | null
           id?: string
           joined_date?: string | null
-          last_login?: string | null
           name?: string
           referral_code?: string | null
           streak?: number | null
-          streak_updated_at?: string | null
           total_earned?: number | null
           user_id?: string | null
           xp?: number | null
@@ -385,41 +349,6 @@ export type Database = {
           title?: string
         }
         Relationships: []
-      }
-      user_gift_cards: {
-        Row: {
-          code: string | null
-          gift_card_id: string
-          id: string
-          redeemed_at: string
-          status: string
-          user_id: string
-        }
-        Insert: {
-          code?: string | null
-          gift_card_id: string
-          id?: string
-          redeemed_at?: string
-          status?: string
-          user_id: string
-        }
-        Update: {
-          code?: string | null
-          gift_card_id?: string
-          id?: string
-          redeemed_at?: string
-          status?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_gift_cards_gift_card_id_fkey"
-            columns: ["gift_card_id"]
-            isOneToOne: false
-            referencedRelation: "gift_cards"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       user_modules: {
         Row: {
