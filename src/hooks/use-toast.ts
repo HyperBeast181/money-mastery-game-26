@@ -1,11 +1,13 @@
 
 import { useState, useEffect, useRef } from 'react';
+import { ReactNode } from 'react';
 
 interface ToastProps {
   title: string;
   description: string;
   variant?: 'default' | 'destructive';
   duration?: number;
+  action?: ReactNode;
 }
 
 export function useToast() {
