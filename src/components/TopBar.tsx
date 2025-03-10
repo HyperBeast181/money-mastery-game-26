@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
 
 interface TopBarProps {
-  user: User | null;
+  user: User;
   showBackButton?: boolean;
   title?: string;
   onBackClick?: () => void;
@@ -27,21 +27,6 @@ const TopBar: FC<TopBarProps> = ({ user, title }) => {
             </div>
           )}
         </div>
-        
-        {user && (
-          <Link to="/profile" className="flex items-center">
-            <div className="w-8 h-8 rounded-full overflow-hidden">
-              <img 
-                src={user.avatar || '/lovable-uploads/66657bf7-1e19-4058-b7e6-4ff8bd5847d3.png'} 
-                alt={user.name || 'User'} 
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="ml-2 hidden sm:block">
-              <span className="text-sm font-medium text-white">{user.name}</span>
-            </div>
-          </Link>
-        )}
       </div>
     </div>
   );
