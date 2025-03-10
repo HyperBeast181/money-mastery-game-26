@@ -30,15 +30,17 @@ const LoginForm: FC<LoginFormProps> = ({
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log('Начинаем процесс входа с email:', email);
 
     try {
+      console.log('Вызываем Supabase auth.signInWithPassword');
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
-        console.error('Login error:', error);
+        console.error('Ошибка входа:', error);
         toast({
           title: 'Ошибка входа',
           description: error.message,
@@ -48,14 +50,23 @@ const LoginForm: FC<LoginFormProps> = ({
         return;
       }
 
-      console.log('Logged in successfully:', data);
+      console.log('Вход успешен, данные:', data);
+      
+      // Установка сессии в локальное хранилище для дополнительной надежности
+      localStorage.setItem('supabase.auth.token', JSON.stringify(data.session));
+      
       toast({
         title: 'Успешный вход',
         description: 'Вы успешно вошли в систему',
       });
-      navigate('/');
+      
+      // Добавляем небольшую задержку перед переходом
+      setTimeout(() => {
+        console.log('Переходим на главную страницу');
+        navigate('/', { replace: true });
+      }, 500);
     } catch (error: any) {
-      console.error('Login exception:', error);
+      console.error('Исключение при входе:', error);
       toast({
         title: 'Ошибка',
         description: error.message || 'Произошла неизвестная ошибка',
