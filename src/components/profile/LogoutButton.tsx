@@ -3,10 +3,12 @@ import React from 'react';
 import { LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const LogoutButton: React.FC = () => {
   const { signOut } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const handleLogout = async () => {
     try {
@@ -15,6 +17,7 @@ const LogoutButton: React.FC = () => {
         title: "Выход из системы",
         description: "Вы успешно вышли из системы",
       });
+      navigate('/auth');
     } catch (error) {
       toast({
         title: "Ошибка",

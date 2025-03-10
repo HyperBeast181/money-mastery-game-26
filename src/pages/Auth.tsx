@@ -32,6 +32,7 @@ const Auth: FC = () => {
             description: error.message,
             variant: 'destructive',
           });
+          setIsLoading(false);
           return;
         }
 
@@ -54,6 +55,7 @@ const Auth: FC = () => {
             description: error.message,
             variant: 'destructive',
           });
+          setIsLoading(false);
           return;
         }
 
@@ -74,6 +76,7 @@ const Auth: FC = () => {
             description: 'Пожалуйста, войдите вручную',
             variant: 'destructive',
           });
+          setIsLoading(false);
           return;
         }
 
