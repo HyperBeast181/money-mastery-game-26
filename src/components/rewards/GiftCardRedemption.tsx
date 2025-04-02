@@ -16,19 +16,10 @@ const GiftCardRedemption: FC<GiftCardRedemptionProps> = ({ gift, onCancel, onCon
   const handleRedeem = () => {
     setIsRedeeming(true);
     
-    // Имитация процесса обмена
+    // Process redemption
     setTimeout(() => {
-      setIsRedeeming(false);
       onConfirm();
-      
-      // Показываем код карты в тосте
-      const giftCode = Math.random().toString(36).substring(2, 10).toUpperCase();
-      
-      toast({
-        title: "Подарочная карта получена!",
-        description: `Ваш код: ${giftCode}`,
-        variant: "default",
-      });
+      setIsRedeeming(false);
     }, 1500);
   };
   

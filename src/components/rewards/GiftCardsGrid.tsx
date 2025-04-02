@@ -1,21 +1,15 @@
-
 import { FC } from 'react';
 import { GiftCard } from '../../types/rewards';
-
 interface GiftCardsGridProps {
   gifts: GiftCard[];
   onGiftSelect: (gift: GiftCard) => void;
 }
-
-const GiftCardsGrid: FC<GiftCardsGridProps> = ({ gifts, onGiftSelect }) => {
-  return (
-    <div className="space-y-4">
-      {gifts.map(gift => (
-        <div 
-          key={gift.id}
-          onClick={() => onGiftSelect(gift)}
-          className="relative overflow-hidden rounded-xl cursor-pointer transition-transform hover:scale-[1.01]"
-        >
+const GiftCardsGrid: FC<GiftCardsGridProps> = ({
+  gifts,
+  onGiftSelect
+}) => {
+  return <div className="space-y-4">
+      {gifts.map(gift => <div key={gift.id} onClick={() => onGiftSelect(gift)} className="relative overflow-hidden rounded-xl cursor-pointer transition-transform hover:scale-[1.01] bg-[#a860ff]">
           <div className={`p-5 ${gift.bgColor}`}>
             <div className="flex items-center">
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center overflow-hidden">
@@ -38,10 +32,7 @@ const GiftCardsGrid: FC<GiftCardsGridProps> = ({ gifts, onGiftSelect }) => {
               <span className="font-bold text-white text-xl">${gift.value}</span>
             </div>
           </div>
-        </div>
-      ))}
-    </div>
-  );
+        </div>)}
+    </div>;
 };
-
 export default GiftCardsGrid;
